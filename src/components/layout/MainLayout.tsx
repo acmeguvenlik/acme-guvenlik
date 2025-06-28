@@ -1,6 +1,7 @@
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 import { SidebarNav } from "./SidebarNav";
 import { MadeWithDyad } from "@/components/made-with-dyad";
+import { Header } from "./Header"; // Header bileşenini import et
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -9,6 +10,7 @@ interface MainLayoutProps {
 export function MainLayout({ children }: MainLayoutProps) {
   return (
     <div className="min-h-screen flex flex-col">
+      <Header /> {/* Header bileşenini buraya ekledik */}
       <ResizablePanelGroup direction="horizontal" className="flex-grow">
         <ResizablePanel defaultSize={15} minSize={10} maxSize={20}>
           <div className="flex h-full flex-col justify-between border-r bg-sidebar text-sidebar-foreground">
