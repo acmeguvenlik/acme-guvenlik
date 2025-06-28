@@ -26,7 +26,8 @@ import AnnouncementsPage from "./pages/AnnouncementsPage";
 import DealerTicketsPage from "./pages/DealerTicketsPage";
 import AdminTicketsPage from "./pages/AdminTicketsPage";
 import TicketDetailPage from "./pages/TicketDetailPage";
-import DealerTransactionsPage from "./pages/DealerTransactionsPage"; // Yeni import
+import DealerTransactionsPage from "./pages/DealerTransactionsPage";
+import NotificationsPage from "./pages/NotificationsPage"; // Yeni import
 import { ThemeProvider } from "./components/theme/ThemeProvider"; 
 
 const queryClient = new QueryClient();
@@ -88,7 +89,7 @@ const AppContent = () => {
         } 
       />
       <Route 
-        path="/dealers/:dealerId/transactions" // Yeni rota
+        path="/dealers/:dealerId/transactions"
         element={
           <ProtectedRoute allowedRoles={['admin']}>
             <MainLayout>
@@ -203,6 +204,16 @@ const AppContent = () => {
           <ProtectedRoute allowedRoles={['admin', 'dealer', 'viewer']}>
             <MainLayout>
               <AccountPage />
+            </MainLayout>
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/notifications" // Yeni bildirimler rotası
+        element={
+          <ProtectedRoute allowedRoles={['admin', 'dealer']}>
+            <MainLayout>
+              <NotificationsPage />
             </MainLayout>
           </ProtectedRoute>
         } 
