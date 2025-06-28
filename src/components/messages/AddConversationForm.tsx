@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { dummyUsers } from '@/pages/UsersPage'; // Kullanıcı listesi için
+import { dummyUsers } from '@/data/dummyUsers'; // Kullanıcı listesi için yeni konumdan import edildi
 
 const formSchema = z.object({
   subject: z.string().min(5, "Konu en az 5 karakter olmalıdır."),
