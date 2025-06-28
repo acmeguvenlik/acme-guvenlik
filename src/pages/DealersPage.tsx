@@ -10,13 +10,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { PlusCircle, Edit, Trash2, Wallet, TrendingUp, TrendingDown, ListChecks, Download } from "lucide-react"; // ListChecks ve Download import edildi
+import { PlusCircle, Edit, Trash2, Wallet, TrendingUp, TrendingDown, ListChecks, Download } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AddDealerForm, DealerFormData } from "@/components/dealers/AddDealerForm";
 import { showError, showSuccess } from "@/utils/toast";
 import { Link } from "react-router-dom";
 import { dummyDealers as initialDummyDealers } from "@/data/dummyDealers";
-import { exportToCsv } from "@/utils/export"; // exportToCsv import edildi
+import { exportToCsv } from "@/utils/export";
 
 const DealersPage = () => {
   const [dealers, setDealers] = useState<DealerFormData[]>(initialDummyDealers);
