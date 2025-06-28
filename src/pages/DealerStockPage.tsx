@@ -2,25 +2,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Package, Boxes } from "lucide-react";
-
-// Örnek stok verileri (StockPage'den alınmıştır, daha sonra API'den gelebilir)
-const dummyStockItems = [
-  { id: "STK-001", name: "Güvenlik Kamerası", category: "Kamera", quantity: 125, price: 899.99 },
-  { id: "STK-002", name: "DVR Kayıt Cihazı", category: "Kayıt Cihazı", quantity: 42, price: 1499.99 },
-  { id: "STK-003", name: "Hareket Sensörü", category: "Sensör", quantity: 78, price: 249.99 },
-  { id: "STK-004", name: "Alarm Paneli", category: "Panel", quantity: 35, price: 1999.99 },
-  { id: "STK-005", name: "IP Kamera", category: "Kamera", quantity: 90, price: 1200.00 },
-  { id: "STK-006", name: "NVR Kayıt Cihazı", category: "Kayıt Cihazı", quantity: 20, price: 2500.00 },
-];
+import { dummyProducts } from "@/data/dummyProducts"; // dummyProducts import edildi
+import { Link } from "react-router-dom"; // Link import edildi
 
 const DealerStockPage = () => {
-  const totalProductTypes = dummyStockItems.length;
-  const totalStockQuantity = dummyStockItems.reduce((sum, item) => sum + item.quantity, 0);
+  const totalProductTypes = dummyProducts.length;
+  const totalStockQuantity = dummyProducts.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">Ürün Kataloğu</h1>
-      <p className="text-gray-600">Mevcut ürünlerimizi ve stok durumlarını buradan inceleyebilirsiniz.</p>
+      <p className="text-gray-600 dark:text-gray-400">Mevcut ürünlerimizi ve stok durumlarını buradan inceleyebilirsiniz.</p>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>
@@ -64,10 +56,18 @@ const DealerStockPage = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {dummyStockItems.map((item) => (
+              {dummyProducts.map((item) => (
                 <TableRow key={item.id}>
-                  <TableCell className="font-medium">{item.id}</TableCell>
-                  <TableCell>{item.name}</TableCell>
+                  <TableCell className="font-medium">
+                    <Link to={`/product/${item.id}`} className="text-blue-600 hover:underline">
+                      {item.productCode}
+                    </Link>
+                  </TableCell>
+                  <TableCell>
+                    <Link to={`/product/${item.id}`} className="text-blue-600 hover:underline">
+                      {item.productName}
+                    </Link>
+                  </TableCell>
                   <TableCell>{item.category}</TableCell>
                   <TableCell className="text-right">{item.quantity}</TableCell>
                   <TableCell className="text-right">{item.price.toFixed(2)} ₺</TableCell>

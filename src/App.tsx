@@ -19,7 +19,8 @@ import DealerInvoicesPage from "./pages/DealerInvoicesPage";
 import DealerProfilePage from "./pages/DealerProfilePage";
 import AdminSettingsPage from "./pages/AdminSettingsPage";
 import UsersPage from "./pages/UsersPage";
-import ReportsPage from "./pages/ReportsPage"; // ReportsPage'i import et
+import ReportsPage from "./pages/ReportsPage";
+import ProductDetailPage from "./pages/ProductDetailPage"; // ProductDetailPage import edildi
 import { ThemeProvider } from "./components/theme/ThemeProvider"; 
 
 const queryClient = new QueryClient();
@@ -136,6 +137,16 @@ const AppContent = () => {
           <ProtectedRoute allowedRoles={['admin']}>
             <MainLayout>
               <AdminSettingsPage />
+            </MainLayout>
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/product/:id" 
+        element={
+          <ProtectedRoute allowedRoles={['admin', 'dealer']}> {/* Hem admin hem bayi erişebilir */}
+            <MainLayout>
+              <ProductDetailPage />
             </MainLayout>
           </ProtectedRoute>
         } 

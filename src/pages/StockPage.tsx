@@ -6,21 +6,41 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { PlusCircle, Package, Boxes } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AddStockForm } from "@/components/stock/AddStockForm";
-
-// Örnek stok verileri
-const dummyStockItems = [
-  { id: "STK-001", name: "Güvenlik Kamerası", category: "Kamera", quantity: 125, price: 899.99 },
-  { id: "STK-002", name: "DVR Kayıt Cihazı", category: "Kayıt Cihazı", quantity: 42, price: 1499.99 },
-  { id: "STK-003", name: "Hareket Sensörü", category: "Sensör", quantity: 78, price: 249.99 },
-  { id: "STK-004", name: "Alarm Paneli", category: "Panel", quantity: 35, price: 1999.99 },
-];
+import { dummyProducts, Product } from "@/data/dummyProducts"; // dummyProducts import edildi
+import { Link } from "react-router-dom"; // Link import edildi
 
 export const StockPage = () => {
+  const [stockItems, setStockItems] = useState<Product[]>(dummyProducts); // State olarak dummyProducts kullanıldı
   const [searchTerm, setSearchTerm] = useState("");
+  const [isAddStockDialogOpen, setIsAddStockDialogOpen] = useState(false);
+  const [isEditStockDialogOpen, setIsEditStockDialogOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | undefined>(undefined);
 
-  const filteredStockItems = dummyStockItems.filter(item =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.id.toLowerCase().includes(searchTerm.toLowerCase())
+  const handleAddStockSuccess = (newProduct: Product) => {
+    const newId = `STK-${String(stockItems.length + 1).padStart(3, '0')}`;
+    setStockItems((prev) => [...prev, { ...newProduct, id: newId, productCode: newId }]);
+    setIsAddStockDialogOpen(false);
+  };
+
+  const handleEditStockSuccess = (updatedProduct: Product) => {
+    setStockItems((prev) =>
+      prev.map((item) =>
+        item.id === updatedProduct.id ? updatedProduct : item
+      )
+    );
+    setIsEditStockDialogOpen(false);
+    setSelectedProduct(undefined);
+  };
+
+  const openEditDialog = (product: Product) => {
+    setSelectedProduct(product);
+    setIsEditStockDialogOpen(true);
+  };
+
+  const filteredStockItems = stockItems.filter(item =>
+    item.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.productCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -28,9 +48,9 @@ export const StockPage = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Stok Yönetimi</h1>
-          <p className="text-gray-600">Ürün stoklarınızı buradan yönetebilirsiniz</p>
+          <p className="text-gray-600 dark:text-gray-400">Ürün stoklarınızı buradan yönetebilirsiniz</p>
         </div>
-        <Dialog>
+        <Dialog open={isAddStockDialogOpen} onOpenChange={setIsAddStockDialogOpen}>
           <DialogTrigger asChild>
             <Button>
               <PlusCircle className="mr-2 h-4 w-4" />
@@ -41,7 +61,7 @@ export const StockPage = () => {
             <DialogHeader>
               <DialogTitle>Yeni Stok Ekle</DialogTitle>
             </DialogHeader>
-            <AddStockForm />
+            <AddStockForm onSuccess={handleAddStockSuccess} />
           </DialogContent>
         </Dialog>
       </div>
@@ -53,7 +73,7 @@ export const StockPage = () => {
             <Boxes className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{dummyStockItems.length}</div>
+            <div className="text-2xl font-bold">{stockItems.length}</div>
           </CardContent>
         </Card>
         <Card>
@@ -63,7 +83,7 @@ export const StockPage = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {dummyStockItems.reduce((sum, item) => sum + item.quantity, 0)}
+              {stockItems.reduce((sum, item) => sum + item.quantity, 0)}
             </div>
           </CardContent>
         </Card>
@@ -90,22 +110,52 @@ export const StockPage = () => {
                 <TableHead>Kategori</TableHead>
                 <TableHead className="text-right">Adet</TableHead>
                 <TableHead className="text-right">Birim Fiyat</TableHead>
+                <TableHead className="text-right">İşlemler</TableHead> {/* İşlemler sütunu eklendi */}
               </TableRow>
             </TableHeader>
             <TableBody>
               {filteredStockItems.map((item) => (
                 <TableRow key={item.id}>
-                  <TableCell className="font-medium">{item.id}</TableCell>
-                  <TableCell>{item.name}</TableCell>
+                  <TableCell className="font-medium">
+                    <Link to={`/product/${item.id}`} className="text-blue-600 hover:underline">
+                      {item.productCode}
+                    </Link>
+                  </TableCell>
+                  <TableCell>
+                    <Link to={`/product/${item.id}`} className="text-blue-600 hover:underline">
+                      {item.productName}
+                    </Link>
+                  </TableCell>
                   <TableCell>{item.category}</TableCell>
                   <TableCell className="text-right">{item.quantity}</TableCell>
                   <TableCell className="text-right">{item.price.toFixed(2)} ₺</TableCell>
+                  <TableCell className="text-right">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => openEditDialog(item)}
+                    >
+                      Düzenle
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </CardContent>
       </Card>
+
+      {/* Düzenleme Diyaloğu */}
+      <Dialog open={isEditStockDialogOpen} onOpenChange={setIsEditStockDialogOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Stok Düzenle</DialogTitle>
+          </DialogHeader>
+          {selectedProduct && (
+            <AddStockForm initialData={selectedProduct} onSuccess={handleEditStockSuccess} />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
