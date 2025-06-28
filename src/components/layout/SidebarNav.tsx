@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { LayoutDashboard, Users, Package, Wallet, ReceiptText, ShoppingCart, User, Settings } from "lucide-react"; // Settings iconunu import et
+import { LayoutDashboard, Users, Package, ReceiptText, ShoppingCart, User, Settings } from "lucide-react"; // Wallet iconu kaldırıldı
 import { useAuth } from "@/context/AuthContext";
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
@@ -19,7 +19,7 @@ export function SidebarNav({ className, ...props }: SidebarNavProps) {
       icon: LayoutDashboard,
     },
     {
-      title: "Bayiler",
+      title: "Bayiler", // Artık cari hesapları da içeriyor
       href: "/dealers",
       icon: Users,
     },
@@ -29,22 +29,17 @@ export function SidebarNav({ className, ...props }: SidebarNavProps) {
       icon: Package,
     },
     {
-      title: "Cari Hesaplar",
-      href: "/current-accounts",
-      icon: Wallet,
-    },
-    {
       title: "Faturalar",
       href: "/invoices",
       icon: ReceiptText,
     },
     {
-      title: "Siparişler", // Admin için Siparişler menüsü
+      title: "Siparişler",
       href: "/orders",
       icon: ShoppingCart,
     },
     {
-      title: "Ayarlar", // Yeni Ayarlar menüsü
+      title: "Ayarlar",
       href: "/settings",
       icon: Settings,
     },
@@ -57,22 +52,22 @@ export function SidebarNav({ className, ...props }: SidebarNavProps) {
       icon: LayoutDashboard,
     },
     {
-      title: "Siparişlerim", // Bayi için Siparişlerim menüsü
+      title: "Siparişlerim",
       href: "/dealer-orders",
       icon: ShoppingCart,
     },
     {
-      title: "Ürün Kataloğu", // Bayi için Ürün Kataloğu menüsü
+      title: "Ürün Kataloğu",
       href: "/dealer-stock",
       icon: Package,
     },
     {
-      title: "Faturalarım", // Bayi için Faturalarım menüsü
+      title: "Faturalarım",
       href: "/dealer-invoices",
       icon: ReceiptText,
     },
     {
-      title: "Profilim", // Bayi için Profilim menüsü
+      title: "Profilim",
       href: "/dealer-profile",
       icon: User,
     },

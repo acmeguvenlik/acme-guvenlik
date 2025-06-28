@@ -7,7 +7,6 @@ import { MainLayout } from "./components/layout/MainLayout";
 import DashboardPage from "./pages/DashboardPage";
 import DealersPage from "./pages/DealersPage";
 import { StockPage } from "./pages/StockPage";
-import CurrentAccountsPage from "./pages/CurrentAccountsPage";
 import InvoicesPage from "./pages/InvoicesPage";
 import NotFound from "./pages/NotFound";
 import LoginPage from "./pages/LoginPage";
@@ -18,7 +17,7 @@ import OrdersPage from "./pages/OrdersPage";
 import DealerStockPage from "./pages/DealerStockPage";
 import DealerInvoicesPage from "./pages/DealerInvoicesPage";
 import DealerProfilePage from "./pages/DealerProfilePage";
-import AdminSettingsPage from "./pages/AdminSettingsPage"; // AdminSettingsPage'i import et
+import AdminSettingsPage from "./pages/AdminSettingsPage";
 import { ThemeProvider } from "./components/theme/ThemeProvider"; 
 
 const queryClient = new QueryClient();
@@ -89,16 +88,7 @@ const AppContent = () => {
           </ProtectedRoute>
         } 
       />
-      <Route 
-        path="/current-accounts" 
-        element={
-          <ProtectedRoute allowedRoles={['admin']}>
-            <MainLayout>
-              <CurrentAccountsPage />
-            </MainLayout>
-          </ProtectedRoute>
-        } 
-      />
+      {/* Cari Hesaplar rotası kaldırıldı */}
       <Route 
         path="/invoices" 
         element={

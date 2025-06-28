@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { showSuccess, showError } from "@/utils/toast";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const formSchema = z.object({
   id: z.string().optional(), // Düzenleme için id eklendi
@@ -27,6 +28,10 @@ const formSchema = z.object({
   email: z.string().email({
     message: "Geçerli bir e-posta adresi giriniz.",
   }),
+  balance: z.number().default(0), // Yeni: Bakiye alanı
+  accountType: z.enum(["Müşteri", "Tedarikçi", "Diğer"], { // Yeni: Hesap Tipi alanı
+    message: "Geçerli bir hesap tipi seçiniz.",
+  }).default("Müşteri"),
 });
 
 export type DealerFormData = z.infer<typeof formSchema>;
@@ -44,6 +49,8 @@ export function AddDealerForm({ initialData, onSuccess }: AddDealerFormProps) {
       contact: "",
       phone: "",
       email: "",
+      balance: 0,
+      accountType: "Müşteri",
     },
   });
 
@@ -111,6 +118,47 @@ export function AddDealerForm({ initialData, onSuccess }: AddDealerFormProps) {
               <FormLabel>E-posta</FormLabel>
               <FormControl>
                 <Input placeholder="bayi@example.com" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="accountType"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Hesap Tipi</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Hesap Tipi Seçin" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="Müşteri">Müşteri</SelectItem>
+                  <SelectItem value="Tedarikçi">Tedarikçi</SelectItem>
+                  <SelectItem value="Diğer">Diğer</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="balance"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Başlangıç Bakiyesi (₺)</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  placeholder="1000.00"
+                  step="0.01"
+                  {...field}
+                  onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

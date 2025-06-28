@@ -10,17 +10,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { PlusCircle, Edit, Trash2 } from "lucide-react";
+import { PlusCircle, Edit, Trash2, Wallet, TrendingUp, TrendingDown } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AddDealerForm, DealerFormData } from "@/components/dealers/AddDealerForm";
 import { showError, showSuccess } from "@/utils/toast";
 
-// Örnek bayi verileri
+// Örnek bayi verileri (cari hesap bilgileriyle birleştirildi)
 const initialDummyDealers: DealerFormData[] = [
-  { id: "D001", name: "ABC Ticaret", contact: "Ali Can", phone: "5551234567", email: "abc@example.com" },
-  { id: "D002", name: "XYZ Pazarlama", contact: "Ayşe Yılmaz", phone: "5559876543", email: "xyz@example.com" },
-  { id: "D003", name: "Güneş Elektronik", contact: "Mehmet Demir", phone: "5551112233", email: "gunes@example.com" },
-  { id: "D004", name: "Yıldız Dağıtım", contact: "Zeynep Kaya", phone: "5554445566", email: "yildiz@example.com" },
+  { id: "D001", name: "ABC Ticaret", contact: "Ali Can", phone: "5551234567", email: "abc@example.com", balance: 1500.00, accountType: "Müşteri" },
+  { id: "D002", name: "XYZ Pazarlama", contact: "Ayşe Yılmaz", phone: "5559876543", email: "xyz@example.com", balance: -250.50, accountType: "Müşteri" },
+  { id: "D003", name: "Güneş Elektronik", contact: "Mehmet Demir", phone: "5551112233", email: "gunes@example.com", balance: 750.00, accountType: "Tedarikçi" },
+  { id: "D004", name: "Yıldız Dağıtım", contact: "Zeynep Kaya", phone: "5554445566", email: "yildiz@example.com", balance: -1200.00, accountType: "Tedarikçi" },
+  { id: "D005", name: "Merkez Ofis Giderleri", contact: "Canan Ak", phone: "5550001122", email: "merkez@example.com", balance: 0.00, accountType: "Diğer" },
 ];
 
 const DealersPage = () => {
@@ -28,6 +29,7 @@ const DealersPage = () => {
   const [isAddDealerDialogOpen, setIsAddDealerDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedDealer, setSelectedDealer] = useState<DealerFormData | undefined>(undefined);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleAddDealerSuccess = (newDealerData: DealerFormData) => {
     // Yeni bir ID oluştur (şimdilik basit bir yöntem)
@@ -58,31 +60,74 @@ const DealersPage = () => {
     setIsEditDialogOpen(true);
   };
 
+  const filteredDealers = dealers.filter(dealer =>
+    dealer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    dealer.id?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    dealer.contact.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    dealer.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const totalBalance = filteredDealers.reduce((sum, account) => sum + account.balance, 0);
+  const positiveBalance = filteredDealers.filter(acc => acc.balance >= 0).reduce((sum, acc) => sum + acc.balance, 0);
+  const negativeBalance = filteredDealers.filter(acc => acc.balance < 0).reduce((sum, acc) => sum + acc.balance, 0);
+
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Bayiler Yönetimi</h1>
-      <p className="text-gray-600">Sisteme kayıtlı bayilerinizi buradan yönetebilirsiniz.</p>
+      <h1 className="text-3xl font-bold">Bayiler ve Cari Hesaplar Yönetimi</h1>
+      <p className="text-gray-600">Sisteme kayıtlı bayilerinizi ve cari hesaplarını buradan yönetebilirsiniz.</p>
+
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Toplam Bayi/Hesap</CardTitle>
+            <Wallet className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{filteredDealers.length}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Toplam Alacak</CardTitle>
+            <TrendingUp className="h-4 w-4 text-green-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-green-600">₺{positiveBalance.toFixed(2)}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Toplam Borç</CardTitle>
+            <TrendingDown className="h-4 w-4 text-red-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-red-600">₺{Math.abs(negativeBalance).toFixed(2)}</div>
+          </CardContent>
+        </Card>
+      </div>
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-xl font-semibold">Bayi Listesi</CardTitle>
+          <CardTitle className="text-xl font-semibold">Bayi/Cari Hesap Listesi</CardTitle>
           <div className="flex items-center space-x-2">
             <Input
-              placeholder="Bayi ara..."
+              placeholder="Bayi/Hesap ara..."
               className="max-w-sm"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
             <Dialog open={isAddDealerDialogOpen} onOpenChange={setIsAddDealerDialogOpen}>
               <DialogTrigger asChild>
                 <Button>
                   <PlusCircle className="mr-2 h-4 w-4" />
-                  Yeni Bayi Ekle
+                  Yeni Bayi/Hesap Ekle
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                  <DialogTitle>Yeni Bayi Ekle</DialogTitle>
+                  <DialogTitle>Yeni Bayi/Cari Hesap Ekle</DialogTitle>
                   <DialogDescription>
-                    Yeni bir bayi eklemek için aşağıdaki formu doldurun.
+                    Yeni bir bayi veya cari hesap eklemek için aşağıdaki formu doldurun.
                   </DialogDescription>
                 </DialogHeader>
                 <AddDealerForm onSuccess={handleAddDealerSuccess} />
@@ -99,17 +144,23 @@ const DealersPage = () => {
                 <TableHead>Yetkili Kişi</TableHead>
                 <TableHead>Telefon</TableHead>
                 <TableHead>E-posta</TableHead>
+                <TableHead>Hesap Tipi</TableHead>
+                <TableHead className="text-right">Bakiye</TableHead>
                 <TableHead className="text-right">İşlemler</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {dealers.map((dealer) => (
+              {filteredDealers.map((dealer) => (
                 <TableRow key={dealer.id}>
                   <TableCell className="font-medium">{dealer.id}</TableCell>
                   <TableCell>{dealer.name}</TableCell>
                   <TableCell>{dealer.contact}</TableCell>
                   <TableCell>{dealer.phone}</TableCell>
                   <TableCell>{dealer.email}</TableCell>
+                  <TableCell>{dealer.accountType}</TableCell>
+                  <TableCell className={`text-right ${dealer.balance < 0 ? 'text-red-600' : 'text-green-600'}`}>
+                    {dealer.balance.toFixed(2)} ₺
+                  </TableCell>
                   <TableCell className="text-right">
                     <Button
                       variant="ghost"
