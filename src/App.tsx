@@ -15,7 +15,8 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import DealerDashboardPage from "./pages/DealerDashboardPage";
 import DealerOrdersPage from "./pages/DealerOrdersPage";
 import OrdersPage from "./pages/OrdersPage";
-import DealerStockPage from "./pages/DealerStockPage"; // Yeni bayi stok sayfası
+import DealerStockPage from "./pages/DealerStockPage";
+import DealerInvoicesPage from "./pages/DealerInvoicesPage"; // Yeni bayi fatura sayfası
 
 const queryClient = new QueryClient();
 
@@ -143,6 +144,16 @@ const AppContent = () => {
           <ProtectedRoute allowedRoles={['dealer']}>
             <MainLayout>
               <DealerStockPage />
+            </MainLayout>
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/dealer-invoices" 
+        element={
+          <ProtectedRoute allowedRoles={['dealer']}>
+            <MainLayout>
+              <DealerInvoicesPage />
             </MainLayout>
           </ProtectedRoute>
         } 

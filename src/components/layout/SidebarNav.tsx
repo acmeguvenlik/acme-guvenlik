@@ -61,6 +61,11 @@ export function SidebarNav({ className, ...props }: SidebarNavProps) {
       href: "/dealer-stock",
       icon: Package,
     },
+    {
+      title: "Faturalarım", // Bayi için Faturalarım menüsü
+      href: "/dealer-invoices",
+      icon: ReceiptText,
+    },
   ];
 
   const navItems = userRole === 'admin' ? adminNavItems : (userRole === 'dealer' ? dealerNavItems : []);
