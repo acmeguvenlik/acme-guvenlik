@@ -25,15 +25,21 @@ const dummyCurrentAccounts = [
 
 const CurrentAccountsPage = () => {
   const [isAddAccountDialogOpen, setIsAddAccountDialogOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleAddAccountSuccess = () => {
     setIsAddAccountDialogOpen(false);
     // Burada yeni eklenen cari hesabı listeye eklemek için bir state güncellemesi veya veri çekme işlemi yapılabilir.
   };
 
-  const totalBalance = dummyCurrentAccounts.reduce((sum, account) => sum + account.balance, 0);
-  const positiveBalance = dummyCurrentAccounts.filter(acc => acc.balance >= 0).reduce((sum, acc) => sum + acc.balance, 0);
-  const negativeBalance = dummyCurrentAccounts.filter(acc => acc.balance < 0).reduce((sum, acc) => sum + acc.balance, 0);
+  const filteredCurrentAccounts = dummyCurrentAccounts.filter(account =>
+    account.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    account.id.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const totalBalance = filteredCurrentAccounts.reduce((sum, account) => sum + account.balance, 0);
+  const positiveBalance = filteredCurrentAccounts.filter(acc => acc.balance >= 0).reduce((sum, acc) => sum + acc.balance, 0);
+  const negativeBalance = filteredCurrentAccounts.filter(acc => acc.balance < 0).reduce((sum, acc) => sum + acc.balance, 0);
 
   return (
     <div className="space-y-6">
@@ -47,7 +53,7 @@ const CurrentAccountsPage = () => {
             <Wallet className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{dummyCurrentAccounts.length}</div>
+            <div className="text-2xl font-bold">{filteredCurrentAccounts.length}</div>
           </CardContent>
         </Card>
         <Card>
@@ -77,6 +83,8 @@ const CurrentAccountsPage = () => {
             <Input
               placeholder="Hesap ara..."
               className="max-w-sm"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
             <Dialog open={isAddAccountDialogOpen} onOpenChange={setIsAddAccountDialogOpen}>
               <DialogTrigger asChild>
@@ -108,7 +116,7 @@ const CurrentAccountsPage = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {dummyCurrentAccounts.map((account) => (
+              {filteredCurrentAccounts.map((account) => (
                 <TableRow key={account.id}>
                   <TableCell className="font-medium">{account.id}</TableCell>
                   <TableCell>{account.name}</TableCell>
