@@ -18,7 +18,8 @@ import DealerStockPage from "./pages/DealerStockPage";
 import DealerInvoicesPage from "./pages/DealerInvoicesPage";
 import DealerProfilePage from "./pages/DealerProfilePage";
 import AdminSettingsPage from "./pages/AdminSettingsPage";
-import UsersPage from "./pages/UsersPage"; // UsersPage'i import et
+import UsersPage from "./pages/UsersPage";
+import ReportsPage from "./pages/ReportsPage"; // ReportsPage'i import et
 import { ThemeProvider } from "./components/theme/ThemeProvider"; 
 
 const queryClient = new QueryClient();
@@ -115,6 +116,16 @@ const AppContent = () => {
           <ProtectedRoute allowedRoles={['admin']}>
             <MainLayout>
               <UsersPage />
+            </MainLayout>
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/reports" 
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <MainLayout>
+              <ReportsPage />
             </MainLayout>
           </ProtectedRoute>
         } 
