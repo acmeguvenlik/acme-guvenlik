@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,6 +16,13 @@ const dummyStockItems = [
 ];
 
 export const StockPage = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredStockItems = dummyStockItems.filter(item =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.id.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -65,7 +73,12 @@ export const StockPage = () => {
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Stok Listesi</CardTitle>
           <div className="flex space-x-2">
-            <Input placeholder="Ürün ara..." className="max-w-sm" />
+            <Input
+              placeholder="Ürün ara..."
+              className="max-w-sm"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
         </CardHeader>
         <CardContent>
@@ -80,7 +93,7 @@ export const StockPage = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {dummyStockItems.map((item) => (
+              {filteredStockItems.map((item) => (
                 <TableRow key={item.id}>
                   <TableCell className="font-medium">{item.id}</TableCell>
                   <TableCell>{item.name}</TableCell>
