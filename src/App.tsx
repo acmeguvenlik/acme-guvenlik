@@ -21,7 +21,8 @@ import AdminSettingsPage from "./pages/AdminSettingsPage";
 import UsersPage from "./pages/UsersPage";
 import ReportsPage from "./pages/ReportsPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
-import AccountPage from "./pages/AccountPage"; // AccountPage import edildi
+import AccountPage from "./pages/AccountPage";
+import AnnouncementsPage from "./pages/AnnouncementsPage"; // AnnouncementsPage import edildi
 import { ThemeProvider } from "./components/theme/ThemeProvider"; 
 
 const queryClient = new QueryClient();
@@ -133,6 +134,16 @@ const AppContent = () => {
         } 
       />
       <Route 
+        path="/announcements" 
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <MainLayout>
+              <AnnouncementsPage />
+            </MainLayout>
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
         path="/settings" 
         element={
           <ProtectedRoute allowedRoles={['admin']}>
@@ -155,7 +166,7 @@ const AppContent = () => {
       <Route 
         path="/account" 
         element={
-          <ProtectedRoute allowedRoles={['admin', 'dealer', 'viewer']}> {/* Tüm giriş yapmış kullanıcılar erişebilir */}
+          <ProtectedRoute allowedRoles={['admin', 'dealer', 'viewer']}>
             <MainLayout>
               <AccountPage />
             </MainLayout>

@@ -1,8 +1,24 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Package, ShoppingCart, Truck, ReceiptText, User } from "lucide-react"; // User iconunu import et
+import { Package, ShoppingCart, Truck, ReceiptText, User, Megaphone } from "lucide-react"; // Megaphone iconu import edildi
 import { Link } from "react-router-dom";
+import { dummyAnnouncements, Announcement } from "@/data/dummyAnnouncements"; // Duyurular import edildi
+import { useAuth } from "@/context/AuthContext"; // useAuth import edildi
+import { useEffect, useState } from "react";
+import { format } from "date-fns";
 
 const DealerDashboardPage = () => {
+  const { userRole } = useAuth();
+  const [recentAnnouncements, setRecentAnnouncements] = useState<Announcement[]>([]);
+
+  useEffect(() => {
+    // Bayi veya tüm kullanıcılara yönelik son 3 duyuruyu filtrele
+    const filtered = dummyAnnouncements
+      .filter(ann => ann.targetRole === 'dealer' || ann.targetRole === 'all')
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+      .slice(0, 3);
+    setRecentAnnouncements(filtered);
+  }, [userRole]);
+
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">Bayi Paneli - Acme Güvenlik</h1>
@@ -50,10 +66,36 @@ const DealerDashboardPage = () => {
           <CardContent>
             <div className="text-2xl font-bold">Güncelle</div>
             <p className="text-xs text-muted-foreground">Kişisel bilgilerinizi yönetin</p>
-            <Link to="/dealer-profile" className="text-sm text-blue-600 hover:underline">Profilimi düzenle</Link> {/* Yeni link */}
+            <Link to="/dealer-profile" className="text-sm text-blue-600 hover:underline">Profilimi düzenle</Link>
           </CardContent>
         </Card>
       </div>
+
+      {/* Duyurular Kartı */}
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-xl font-semibold">Son Duyurular</CardTitle>
+          <Megaphone className="h-5 w-5 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          {recentAnnouncements.length > 0 ? (
+            <ul className="space-y-3">
+              {recentAnnouncements.map((announcement) => (
+                <li key={announcement.id} className="border-b pb-2 last:border-b-0 last:pb-0">
+                  <h3 className="font-medium text-lg">{announcement.title}</h3>
+                  <p className="text-sm text-muted-foreground line-clamp-2">{announcement.content}</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {format(announcement.createdAt, "dd.MM.yyyy HH:mm")} - Hedef: {announcement.targetRole === 'all' ? 'Tüm Kullanıcılar' : announcement.targetRole === 'admin' ? 'Yöneticiler' : 'Bayiler'}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-muted-foreground">Henüz duyuru bulunmamaktadır.</p>
+          )}
+          {/* Bayi paneli için tüm duyuruları görme linki şimdilik yok, admin paneline yönlendirme yapılabilir veya ayrı bir sayfa eklenebilir. */}
+        </CardContent>
+      </Card>
     </div>
   );
 };
