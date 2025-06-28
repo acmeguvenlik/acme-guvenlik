@@ -32,7 +32,10 @@ import EditProductPage from "./pages/EditProductPage";
 import BlogPage from "./pages/BlogPage";
 import BlogPostDetailPage from "./pages/BlogPostDetailPage";
 import EditBlogPostPage from "./pages/EditBlogPostPage";
-import AddBlogPostPage from "./pages/AddBlogPostPage"; // Yeni import
+import AddBlogPostPage from "./pages/AddBlogPostPage";
+import FAQPage from "./pages/FAQPage"; // Yeni import
+import AddFAQPage from "./pages/AddFAQPage"; // Yeni import
+import EditFAQPage from "./pages/EditFAQPage"; // Yeni import
 import { ThemeProvider } from "./components/theme/ThemeProvider"; 
 
 const queryClient = new QueryClient();
@@ -246,7 +249,7 @@ const AppContent = () => {
         } 
       />
       <Route 
-        path="/blog/add" // Yeni blog yazısı ekleme rotası
+        path="/blog/add"
         element={
           <ProtectedRoute allowedRoles={['admin']}>
             <MainLayout>
@@ -271,6 +274,38 @@ const AppContent = () => {
           <ProtectedRoute allowedRoles={['admin']}>
             <MainLayout>
               <EditBlogPostPage />
+            </MainLayout>
+          </ProtectedRoute>
+        } 
+      />
+
+      {/* SSS Rotaları */}
+      <Route 
+        path="/faq" 
+        element={
+          <ProtectedRoute allowedRoles={['admin', 'dealer']}>
+            <MainLayout>
+              <FAQPage />
+            </MainLayout>
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/faq/add" 
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <MainLayout>
+              <AddFAQPage />
+            </MainLayout>
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/faq/edit/:id" 
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <MainLayout>
+              <EditFAQPage />
             </MainLayout>
           </ProtectedRoute>
         } 
