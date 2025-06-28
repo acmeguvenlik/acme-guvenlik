@@ -1,8 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { LayoutDashboard, Users, Package, Wallet, ReceiptText } from "lucide-react";
-import { useAuth } from "@/context/AuthContext"; // useAuth hook'unu import et
+import { LayoutDashboard, Users, Package, Wallet, ReceiptText, ShoppingCart } from "lucide-react"; // ShoppingCart iconunu import et
+import { useAuth } from "@/context/AuthContext";
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
   className?: string;
@@ -10,7 +10,7 @@ interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
 
 export function SidebarNav({ className, ...props }: SidebarNavProps) {
   const location = useLocation();
-  const { userRole } = useAuth(); // userRole'ü kullan
+  const { userRole } = useAuth();
 
   const adminNavItems = [
     {
@@ -38,6 +38,11 @@ export function SidebarNav({ className, ...props }: SidebarNavProps) {
       href: "/invoices",
       icon: ReceiptText,
     },
+    {
+      title: "Siparişler", // Admin için Siparişler menüsü
+      href: "/orders",
+      icon: ShoppingCart,
+    },
   ];
 
   const dealerNavItems = [
@@ -46,12 +51,11 @@ export function SidebarNav({ className, ...props }: SidebarNavProps) {
       href: "/dealer-dashboard",
       icon: LayoutDashboard,
     },
-    // Bayi rolüne özel diğer menü öğeleri buraya eklenebilir
-    // {
-    //   title: "Siparişlerim",
-    //   href: "/my-orders",
-    //   icon: ShoppingCart,
-    // },
+    {
+      title: "Siparişlerim", // Bayi için Siparişlerim menüsü
+      href: "/dealer-orders",
+      icon: ShoppingCart,
+    },
   ];
 
   const navItems = userRole === 'admin' ? adminNavItems : (userRole === 'dealer' ? dealerNavItems : []);

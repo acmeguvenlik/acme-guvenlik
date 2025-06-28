@@ -10,9 +10,11 @@ import { StockPage } from "./pages/StockPage";
 import CurrentAccountsPage from "./pages/CurrentAccountsPage";
 import InvoicesPage from "./pages/InvoicesPage";
 import NotFound from "./pages/NotFound";
-import LoginPage from "./pages/LoginPage"; // Yeni giriş sayfası
-import { AuthProvider, useAuth } from "./context/AuthContext"; // AuthContext'i import et
-import DealerDashboardPage from "./pages/DealerDashboardPage"; // Yeni bayi paneli sayfası
+import LoginPage from "./pages/LoginPage";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import DealerDashboardPage from "./pages/DealerDashboardPage";
+import DealerOrdersPage from "./pages/DealerOrdersPage"; // Yeni bayi sipariş sayfası
+import OrdersPage from "./pages/OrdersPage"; // Yeni admin sipariş sayfası
 
 const queryClient = new QueryClient();
 
@@ -102,6 +104,17 @@ const AppContent = () => {
           </ProtectedRoute>
         } 
       />
+      <Route 
+        path="/orders" 
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <MainLayout>
+              <OrdersPage />
+            </MainLayout>
+          </ProtectedRoute>
+        } 
+      />
+      
       {/* Bayi Paneli Rotası */}
       <Route 
         path="/dealer-dashboard" 
@@ -109,6 +122,16 @@ const AppContent = () => {
           <ProtectedRoute allowedRoles={['dealer']}>
             <MainLayout>
               <DealerDashboardPage />
+            </MainLayout>
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/dealer-orders" 
+        element={
+          <ProtectedRoute allowedRoles={['dealer']}>
+            <MainLayout>
+              <DealerOrdersPage />
             </MainLayout>
           </ProtectedRoute>
         } 

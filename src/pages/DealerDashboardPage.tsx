@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Package, ShoppingCart, Truck } from "lucide-react";
+import { Link } from "react-router-dom"; // Link bileşenini import et
 
 const DealerDashboardPage = () => {
   return (
@@ -16,6 +17,7 @@ const DealerDashboardPage = () => {
           <CardContent>
             <div className="text-2xl font-bold">5</div>
             <p className="text-xs text-muted-foreground">Yeni siparişleriniz var</p>
+            <Link to="/dealer-orders" className="text-sm text-blue-600 hover:underline">Tüm siparişleri gör</Link>
           </CardContent>
         </Card>
         <Card>
@@ -26,6 +28,7 @@ const DealerDashboardPage = () => {
           <CardContent>
             <div className="text-2xl font-bold">150</div>
             <p className="text-xs text-muted-foreground">Toplam farklı ürün çeşidi</p>
+            {/* Stok sayfası linki eklenebilir */}
           </CardContent>
         </Card>
         <Card>
