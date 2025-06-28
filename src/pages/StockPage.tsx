@@ -3,18 +3,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { PlusCircle, Package, Boxes } from "lucide-react";
+import { PlusCircle, Package, Boxes, Edit } from "lucide-react"; // Edit iconu eklendi
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AddStockForm } from "@/components/stock/AddStockForm";
-import { dummyProducts, Product } from "@/data/dummyProducts"; // dummyProducts import edildi
-import { Link } from "react-router-dom"; // Link import edildi
+import { dummyProducts, Product } from "@/data/dummyProducts";
+import { Link } from "react-router-dom";
 
 export const StockPage = () => {
-  const [stockItems, setStockItems] = useState<Product[]>(dummyProducts); // State olarak dummyProducts kullanıldı
+  const [stockItems, setStockItems] = useState<Product[]>(dummyProducts);
   const [searchTerm, setSearchTerm] = useState("");
   const [isAddStockDialogOpen, setIsAddStockDialogOpen] = useState(false);
-  const [isEditStockDialogOpen, setIsEditStockDialogOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<Product | undefined>(undefined);
+  // isEditStockDialogOpen ve selectedProduct state'leri kaldırıldı
 
   const handleAddStockSuccess = (newProduct: Product) => {
     const newId = `STK-${String(stockItems.length + 1).padStart(3, '0')}`;
@@ -22,20 +21,7 @@ export const StockPage = () => {
     setIsAddStockDialogOpen(false);
   };
 
-  const handleEditStockSuccess = (updatedProduct: Product) => {
-    setStockItems((prev) =>
-      prev.map((item) =>
-        item.id === updatedProduct.id ? updatedProduct : item
-      )
-    );
-    setIsEditStockDialogOpen(false);
-    setSelectedProduct(undefined);
-  };
-
-  const openEditDialog = (product: Product) => {
-    setSelectedProduct(product);
-    setIsEditStockDialogOpen(true);
-  };
+  // handleEditStockSuccess ve openEditDialog fonksiyonları kaldırıldı
 
   const filteredStockItems = stockItems.filter(item =>
     item.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -110,7 +96,7 @@ export const StockPage = () => {
                 <TableHead>Kategori</TableHead>
                 <TableHead className="text-right">Adet</TableHead>
                 <TableHead className="text-right">Birim Fiyat</TableHead>
-                <TableHead className="text-right">İşlemler</TableHead> {/* İşlemler sütunu eklendi */}
+                <TableHead className="text-right">İşlemler</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -130,13 +116,14 @@ export const StockPage = () => {
                   <TableCell className="text-right">{item.quantity}</TableCell>
                   <TableCell className="text-right">{item.price.toFixed(2)} ₺</TableCell>
                   <TableCell className="text-right">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => openEditDialog(item)}
-                    >
-                      Düzenle
-                    </Button>
+                    <Link to={`/stock/edit/${item.id}`}>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                      >
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                    </Link>
                   </TableCell>
                 </TableRow>
               ))}
@@ -144,18 +131,6 @@ export const StockPage = () => {
           </Table>
         </CardContent>
       </Card>
-
-      {/* Düzenleme Diyaloğu */}
-      <Dialog open={isEditStockDialogOpen} onOpenChange={setIsEditStockDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Stok Düzenle</DialogTitle>
-          </DialogHeader>
-          {selectedProduct && (
-            <AddStockForm initialData={selectedProduct} onSuccess={handleEditStockSuccess} />
-          )}
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };

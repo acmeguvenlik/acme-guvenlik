@@ -27,7 +27,8 @@ import DealerTicketsPage from "./pages/DealerTicketsPage";
 import AdminTicketsPage from "./pages/AdminTicketsPage";
 import TicketDetailPage from "./pages/TicketDetailPage";
 import DealerTransactionsPage from "./pages/DealerTransactionsPage";
-import NotificationsPage from "./pages/NotificationsPage"; // Yeni import
+import NotificationsPage from "./pages/NotificationsPage";
+import EditProductPage from "./pages/EditProductPage"; // Yeni import
 import { ThemeProvider } from "./components/theme/ThemeProvider"; 
 
 const queryClient = new QueryClient();
@@ -104,6 +105,16 @@ const AppContent = () => {
           <ProtectedRoute allowedRoles={['admin']}>
             <MainLayout>
               <StockPage />
+            </MainLayout>
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/stock/edit/:id" // Yeni ürün düzenleme rotası
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <MainLayout>
+              <EditProductPage />
             </MainLayout>
           </ProtectedRoute>
         } 
@@ -209,7 +220,7 @@ const AppContent = () => {
         } 
       />
       <Route 
-        path="/notifications" // Yeni bildirimler rotası
+        path="/notifications"
         element={
           <ProtectedRoute allowedRoles={['admin', 'dealer']}>
             <MainLayout>
