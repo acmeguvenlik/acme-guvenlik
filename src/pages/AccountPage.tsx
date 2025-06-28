@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { AccountSettingsForm } from "@/components/account/AccountSettingsForm";
 import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
+import { ThemeToggle } from "@/components/theme/ThemeToggle"; // ThemeToggle import edildi
 
 const AccountPage = () => {
   const { userRole } = useAuth();
@@ -40,6 +41,11 @@ const AccountPage = () => {
         </CardHeader>
         <CardContent>
           {userEmail && <AccountSettingsForm initialEmail={userEmail} onSave={handleSaveAccountSettings} />}
+          <div className="mt-6 pt-4 border-t">
+            <h3 className="text-lg font-semibold mb-2">Tema Ayarları</h3>
+            <p className="text-sm text-muted-foreground mb-4">Uygulamanın görünümünü buradan değiştirebilirsiniz.</p>
+            <ThemeToggle />
+          </div>
         </CardContent>
       </Card>
     </div>
