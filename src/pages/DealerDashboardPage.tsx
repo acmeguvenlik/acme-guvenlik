@@ -1,23 +1,35 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Package, ShoppingCart, Truck, ReceiptText, User, Megaphone } from "lucide-react"; // Megaphone iconu import edildi
+import { Package, ShoppingCart, Truck, ReceiptText, User, Megaphone, TicketIcon } from "lucide-react"; // TicketIcon import edildi
 import { Link } from "react-router-dom";
-import { dummyAnnouncements, Announcement } from "@/data/dummyAnnouncements"; // Duyurular import edildi
-import { useAuth } from "@/context/AuthContext"; // useAuth import edildi
+import { dummyAnnouncements, Announcement } from "@/data/dummyAnnouncements";
+import { dummyTickets, Ticket } from "@/data/dummyTickets"; // dummyTickets import edildi
+import { useAuth } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
 
 const DealerDashboardPage = () => {
   const { userRole } = useAuth();
   const [recentAnnouncements, setRecentAnnouncements] = useState<Announcement[]>([]);
+  const [recentTickets, setRecentTickets] = useState<Ticket[]>([]); // Yeni state
+
+  // Gerçek uygulamada, bu kısım giriş yapan bayinin ID'sine göre filtrelenmelidir.
+  const currentDealerId = "D001"; // Örnek olarak sabit bir bayi ID'si
 
   useEffect(() => {
     // Bayi veya tüm kullanıcılara yönelik son 3 duyuruyu filtrele
-    const filtered = dummyAnnouncements
+    const filteredAnnouncements = dummyAnnouncements
       .filter(ann => ann.targetRole === 'dealer' || ann.targetRole === 'all')
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
       .slice(0, 3);
-    setRecentAnnouncements(filtered);
-  }, [userRole]);
+    setRecentAnnouncements(filteredAnnouncements);
+
+    // Bayiye ait son 3 açık veya yanıtlanmış destek talebini filtrele
+    const filteredTickets = dummyTickets
+      .filter(ticket => ticket.dealerId === currentDealerId && (ticket.status === 'Açık' || ticket.status === 'Yanıtlandı'))
+      .sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime())
+      .slice(0, 3);
+    setRecentTickets(filteredTickets);
+  }, [userRole, currentDealerId]);
 
   return (
     <div className="space-y-6">
@@ -94,6 +106,38 @@ const DealerDashboardPage = () => {
             <p className="text-muted-foreground">Henüz duyuru bulunmamaktadır.</p>
           )}
           {/* Bayi paneli için tüm duyuruları görme linki şimdilik yok, admin paneline yönlendirme yapılabilir veya ayrı bir sayfa eklenebilir. */}
+        </CardContent>
+      </Card>
+
+      {/* Son Destek Talepleri Kartı */}
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-xl font-semibold">Son Destek Taleplerim</CardTitle>
+          <TicketIcon className="h-5 w-5 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          {recentTickets.length > 0 ? (
+            <ul className="space-y-3">
+              {recentTickets.map((ticket) => (
+                <li key={ticket.id} className="border-b pb-2 last:border-b-0 last:pb-0">
+                  <h3 className="font-medium text-lg">
+                    <Link to={`/tickets/${ticket.id}`} className="text-blue-600 hover:underline">
+                      {ticket.subject}
+                    </Link>
+                  </h3>
+                  <p className="text-sm text-muted-foreground line-clamp-2">{ticket.description}</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {format(ticket.updatedAt, "dd.MM.yyyy HH:mm")} - Durum: {ticket.status}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-muted-foreground">Henüz açık veya yanıtlanmış destek talebiniz bulunmamaktadır.</p>
+          )}
+          <div className="mt-4 text-right">
+            <Link to="/dealer-tickets" className="text-sm text-blue-600 hover:underline">Tüm Taleplerimi Gör</Link>
+          </div>
         </CardContent>
       </Card>
     </div>

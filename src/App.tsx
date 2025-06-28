@@ -22,7 +22,10 @@ import UsersPage from "./pages/UsersPage";
 import ReportsPage from "./pages/ReportsPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import AccountPage from "./pages/AccountPage";
-import AnnouncementsPage from "./pages/AnnouncementsPage"; // AnnouncementsPage import edildi
+import AnnouncementsPage from "./pages/AnnouncementsPage";
+import DealerTicketsPage from "./pages/DealerTicketsPage"; // Yeni import
+import AdminTicketsPage from "./pages/AdminTicketsPage";   // Yeni import
+import TicketDetailPage from "./pages/TicketDetailPage";   // Yeni import
 import { ThemeProvider } from "./components/theme/ThemeProvider"; 
 
 const queryClient = new QueryClient();
@@ -144,6 +147,26 @@ const AppContent = () => {
         } 
       />
       <Route 
+        path="/admin-tickets" 
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <MainLayout>
+              <AdminTicketsPage />
+            </MainLayout>
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/tickets/:id" 
+        element={
+          <ProtectedRoute allowedRoles={['admin', 'dealer']}>
+            <MainLayout>
+              <TicketDetailPage />
+            </MainLayout>
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
         path="/settings" 
         element={
           <ProtectedRoute allowedRoles={['admin']}>
@@ -211,6 +234,16 @@ const AppContent = () => {
           <ProtectedRoute allowedRoles={['dealer']}>
             <MainLayout>
               <DealerInvoicesPage />
+            </MainLayout>
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/dealer-tickets" 
+        element={
+          <ProtectedRoute allowedRoles={['dealer']}>
+            <MainLayout>
+              <DealerTicketsPage />
             </MainLayout>
           </ProtectedRoute>
         } 
