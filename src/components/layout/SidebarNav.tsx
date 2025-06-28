@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { LayoutDashboard, Users, Package, ReceiptText, ShoppingCart, User, Settings, UserCog, BarChart, Megaphone, TicketIcon, Bell } from "lucide-react"; // Bell import edildi
+import { LayoutDashboard, Users, Package, ReceiptText, ShoppingCart, User, Settings, UserCog, BarChart, Megaphone, TicketIcon, Bell, Rss } from "lucide-react"; // Rss iconu eklendi
 import { useAuth } from "@/context/AuthContext";
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
@@ -59,9 +59,14 @@ export function SidebarNav({ className, ...props }: SidebarNavProps) {
       icon: TicketIcon,
     },
     {
-      title: "Bildirimler", // Yeni Bildirimler menüsü (Admin)
+      title: "Bildirimler",
       href: "/notifications",
       icon: Bell,
+    },
+    {
+      title: "Blog", // Yeni Blog menüsü (Admin)
+      href: "/blog",
+      icon: Rss,
     },
     {
       title: "Ayarlar",
@@ -102,9 +107,14 @@ export function SidebarNav({ className, ...props }: SidebarNavProps) {
       icon: TicketIcon,
     },
     {
-      title: "Bildirimler", // Yeni Bildirimler menüsü (Bayi)
+      title: "Bildirimler",
       href: "/notifications",
       icon: Bell,
+    },
+    {
+      title: "Blog", // Yeni Blog menüsü (Bayi)
+      href: "/blog",
+      icon: Rss,
     },
     {
       title: "Profilim",

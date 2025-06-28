@@ -1,8 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Package, ShoppingCart, Truck, ReceiptText, User, Megaphone, TicketIcon } from "lucide-react"; // TicketIcon import edildi
+import { Package, ShoppingCart, Truck, ReceiptText, User, Megaphone, TicketIcon, Rss } from "lucide-react"; // Rss iconu import edildi
 import { Link } from "react-router-dom";
 import { dummyAnnouncements, Announcement } from "@/data/dummyAnnouncements";
-import { dummyTickets, Ticket } from "@/data/dummyTickets"; // dummyTickets import edildi
+import { dummyTickets, Ticket } from "@/data/dummyTickets";
+import { dummyBlogPosts, BlogPost } from "@/data/dummyBlogPosts"; // dummyBlogPosts import edildi
 import { useAuth } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
@@ -10,7 +11,8 @@ import { format } from "date-fns";
 const DealerDashboardPage = () => {
   const { userRole } = useAuth();
   const [recentAnnouncements, setRecentAnnouncements] = useState<Announcement[]>([]);
-  const [recentTickets, setRecentTickets] = useState<Ticket[]>([]); // Yeni state
+  const [recentTickets, setRecentTickets] = useState<Ticket[]>([]);
+  const [recentBlogPosts, setRecentBlogPosts] = useState<BlogPost[]>([]); // Yeni state
 
   // Gerçek uygulamada, bu kısım giriş yapan bayinin ID'sine göre filtrelenmelidir.
   const currentDealerId = "D001"; // Örnek olarak sabit bir bayi ID'si
@@ -29,6 +31,12 @@ const DealerDashboardPage = () => {
       .sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime())
       .slice(0, 3);
     setRecentTickets(filteredTickets);
+
+    // Son 3 blog yazısını filtrele
+    const filteredBlogPosts = dummyBlogPosts
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+      .slice(0, 3);
+    setRecentBlogPosts(filteredBlogPosts);
   }, [userRole, currentDealerId]);
 
   return (
@@ -137,6 +145,40 @@ const DealerDashboardPage = () => {
           )}
           <div className="mt-4 text-right">
             <Link to="/dealer-tickets" className="text-sm text-blue-600 hover:underline">Tüm Taleplerimi Gör</Link>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Son Blog Yazıları Kartı */}
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-xl font-semibold">Son Blog Yazıları</CardTitle>
+          <Rss className="h-5 w-5 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          {recentBlogPosts.length > 0 ? (
+            <ul className="space-y-3">
+              {recentBlogPosts.map((post) => (
+                <li key={post.id} className="border-b pb-2 last:border-b-0 last:pb-0">
+                  <h3 className="font-medium text-lg">
+                    <Link to={`/blog/${post.slug}`} className="text-blue-600 hover:underline">
+                      {post.title}
+                    </Link>
+                  </h3>
+                  <p className="text-sm text-muted-foreground line-clamp-2">
+                    {post.content.replace(/<[^>]*>?/gm, '').substring(0, 100)}...
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {format(post.createdAt, "dd.MM.yyyy")} - {post.author}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-muted-foreground">Henüz blog yazısı bulunmamaktadır.</p>
+          )}
+          <div className="mt-4 text-right">
+            <Link to="/blog" className="text-sm text-blue-600 hover:underline">Tüm Blog Yazılarını Gör</Link>
           </div>
         </CardContent>
       </Card>

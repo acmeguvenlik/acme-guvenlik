@@ -28,7 +28,9 @@ import AdminTicketsPage from "./pages/AdminTicketsPage";
 import TicketDetailPage from "./pages/TicketDetailPage";
 import DealerTransactionsPage from "./pages/DealerTransactionsPage";
 import NotificationsPage from "./pages/NotificationsPage";
-import EditProductPage from "./pages/EditProductPage"; // Yeni import
+import EditProductPage from "./pages/EditProductPage";
+import BlogPage from "./pages/BlogPage"; // Yeni import
+import BlogPostDetailPage from "./pages/BlogPostDetailPage"; // Yeni import
 import { ThemeProvider } from "./components/theme/ThemeProvider"; 
 
 const queryClient = new QueryClient();
@@ -110,7 +112,7 @@ const AppContent = () => {
         } 
       />
       <Route 
-        path="/stock/edit/:id" // Yeni ürün düzenleme rotası
+        path="/stock/edit/:id"
         element={
           <ProtectedRoute allowedRoles={['admin']}>
             <MainLayout>
@@ -230,6 +232,28 @@ const AppContent = () => {
         } 
       />
       
+      {/* Blog Rotaları */}
+      <Route 
+        path="/blog" 
+        element={
+          <ProtectedRoute allowedRoles={['admin', 'dealer']}>
+            <MainLayout>
+              <BlogPage />
+            </MainLayout>
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/blog/:slug" 
+        element={
+          <ProtectedRoute allowedRoles={['admin', 'dealer']}>
+            <MainLayout>
+              <BlogPostDetailPage />
+            </MainLayout>
+          </ProtectedRoute>
+        } 
+      />
+
       {/* Bayi Paneli Rotası */}
       <Route 
         path="/dealer-dashboard" 
