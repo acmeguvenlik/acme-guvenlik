@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { LayoutDashboard, Users, Package, Wallet, ReceiptText } from "lucide-react";
+import { useAuth } from "@/context/AuthContext"; // useAuth hook'unu import et
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
   className?: string;
@@ -9,8 +10,9 @@ interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
 
 export function SidebarNav({ className, ...props }: SidebarNavProps) {
   const location = useLocation();
+  const { userRole } = useAuth(); // userRole'ü kullan
 
-  const navItems = [
+  const adminNavItems = [
     {
       title: "Dashboard",
       href: "/dashboard",
@@ -37,6 +39,22 @@ export function SidebarNav({ className, ...props }: SidebarNavProps) {
       icon: ReceiptText,
     },
   ];
+
+  const dealerNavItems = [
+    {
+      title: "Bayi Paneli",
+      href: "/dealer-dashboard",
+      icon: LayoutDashboard,
+    },
+    // Bayi rolüne özel diğer menü öğeleri buraya eklenebilir
+    // {
+    //   title: "Siparişlerim",
+    //   href: "/my-orders",
+    //   icon: ShoppingCart,
+    // },
+  ];
+
+  const navItems = userRole === 'admin' ? adminNavItems : (userRole === 'dealer' ? dealerNavItems : []);
 
   return (
     <nav
