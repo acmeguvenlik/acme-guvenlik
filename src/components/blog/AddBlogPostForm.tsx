@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { showSuccess } from "@/utils/toast";
 import { BlogPost } from "@/data/dummyBlogPosts";
+import { RichTextEditor } from "@/components/editor/RichTextEditor"; // RichTextEditor import edildi
 
 const formSchema = z.object({
   id: z.string().optional(),
@@ -110,7 +111,11 @@ export function AddBlogPostForm({ initialData, onSuccess }: AddBlogPostFormProps
             <FormItem>
               <FormLabel>İçerik</FormLabel>
               <FormControl>
-                <Textarea placeholder="Blog yazısının içeriği..." rows={10} {...field} />
+                <RichTextEditor // Textarea yerine RichTextEditor kullanıldı
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Blog yazısının içeriği..."
+                />
               </FormControl>
               <FormDescription>HTML içeriği desteklenir.</FormDescription>
               <FormMessage />
