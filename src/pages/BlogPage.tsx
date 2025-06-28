@@ -7,8 +7,6 @@ import { dummyBlogPosts, BlogPost } from "@/data/dummyBlogPosts";
 import { format } from "date-fns";
 import { Search, Tag, CalendarDays, User, BookOpen, PlusCircle, Edit, Trash2 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { AddBlogPostForm } from "@/components/blog/AddBlogPostForm";
 import { showSuccess } from "@/utils/toast";
 import { useAuth } from "@/context/AuthContext"; // useAuth hook'unu import et
 
@@ -18,9 +16,6 @@ const BlogPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterCategory, setFilterCategory] = useState("Tümü");
   const [filterTag, setFilterTag] = useState("Tümü");
-  const [isAddBlogPostDialogOpen, setIsAddBlogPostDialogOpen] = useState(false);
-  const [isEditBlogPostDialogOpen, setIsEditBlogPostDialogOpen] = useState(false);
-  const [selectedBlogPost, setSelectedBlogPost] = useState<BlogPost | undefined>(undefined);
 
   const allCategories = useMemo(() => {
     const categories = new Set<string>();
@@ -34,24 +29,6 @@ const BlogPage = () => {
     return ["Tümü", ...Array.from(tags)];
   }, [blogPosts]);
 
-  const handleAddBlogPostSuccess = (newPost: BlogPost) => {
-    // dummyBlogPosts'u doğrudan güncelle ve state'i yeni referansla ayarla
-    dummyBlogPosts.push(newPost);
-    setBlogPosts([...dummyBlogPosts]);
-    setIsAddBlogPostDialogOpen(false);
-  };
-
-  const handleEditBlogPostSuccess = (updatedPost: BlogPost) => {
-    // dummyBlogPosts'u doğrudan güncelle ve state'i yeni referansla ayarla
-    const index = dummyBlogPosts.findIndex(p => p.id === updatedPost.id);
-    if (index !== -1) {
-      dummyBlogPosts[index] = updatedPost;
-    }
-    setBlogPosts([...dummyBlogPosts]);
-    setIsEditBlogPostDialogOpen(false);
-    setSelectedBlogPost(undefined);
-  };
-
   const handleDeleteBlogPost = (id: string) => {
     if (window.confirm("Bu blog yazısını silmek istediğinizden emin misiniz?")) {
       // dummyBlogPosts'u doğrudan güncelle ve state'i yeni referansla ayarla
@@ -62,11 +39,6 @@ const BlogPage = () => {
       setBlogPosts([...dummyBlogPosts]);
       showSuccess("Blog yazısı başarıyla silindi!");
     }
-  };
-
-  const openEditDialog = (post: BlogPost) => {
-    setSelectedBlogPost(post);
-    setIsEditBlogPostDialogOpen(true);
   };
 
   const filteredPosts = useMemo(() => {
@@ -95,23 +67,12 @@ const BlogPage = () => {
           <p className="text-gray-600 dark:text-gray-400">En son güvenlik trendleri, ipuçları ve sektör haberleri.</p>
         </div>
         {userRole === 'admin' && ( // Sadece admin rolü için ekleme butonu
-          <Dialog open={isAddBlogPostDialogOpen} onOpenChange={setIsAddBlogPostDialogOpen}>
-            <DialogTrigger asChild>
-              <Button>
-                <PlusCircle className="mr-2 h-4 w-4" />
-                Yeni Yazı Ekle
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle>Yeni Blog Yazısı Ekle</DialogTitle>
-                <DialogDescription>
-                  Yeni bir blog yazısı oluşturmak için aşağıdaki formu doldurun.
-                </DialogDescription>
-              </DialogHeader>
-              <AddBlogPostForm onSuccess={handleAddBlogPostSuccess} />
-            </DialogContent>
-          </Dialog>
+          <Link to="/blog/add">
+            <Button>
+              <PlusCircle className="mr-2 h-4 w-4" />
+              Yeni Yazı Ekle
+            </Button>
+          </Link>
         )}
       </div>
 
@@ -187,9 +148,11 @@ const BlogPage = () => {
                   </Link>
                   {userRole === 'admin' && ( // Sadece admin rolü için düzenleme ve silme butonları
                     <div className="flex space-x-2">
-                      <Button variant="ghost" size="sm" onClick={() => openEditDialog(post)}>
-                        <Edit className="h-4 w-4" />
-                      </Button>
+                      <Link to={`/blog/edit/${post.id}`}>
+                        <Button variant="ghost" size="sm">
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                      </Link>
                       <Button variant="destructive" size="sm" onClick={() => handleDeleteBlogPost(post.id)}>
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -205,21 +168,6 @@ const BlogPage = () => {
           </div>
         )}
       </div>
-
-      {/* Düzenleme Diyaloğu */}
-      <Dialog open={isEditBlogPostDialogOpen} onOpenChange={setIsEditBlogPostDialogOpen}>
-        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Blog Yazısını Düzenle</DialogTitle>
-            <DialogDescription>
-              Blog yazısı bilgilerini güncellemek için aşağıdaki formu doldurun.
-            </DialogDescription>
-          </DialogHeader>
-          {selectedBlogPost && (
-            <AddBlogPostForm initialData={selectedBlogPost} onSuccess={handleEditBlogPostSuccess} />
-          )}
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };

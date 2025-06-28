@@ -31,7 +31,8 @@ import NotificationsPage from "./pages/NotificationsPage";
 import EditProductPage from "./pages/EditProductPage";
 import BlogPage from "./pages/BlogPage";
 import BlogPostDetailPage from "./pages/BlogPostDetailPage";
-import EditBlogPostPage from "./pages/EditBlogPostPage"; // Yeni import
+import EditBlogPostPage from "./pages/EditBlogPostPage";
+import AddBlogPostPage from "./pages/AddBlogPostPage"; // Yeni import
 import { ThemeProvider } from "./components/theme/ThemeProvider"; 
 
 const queryClient = new QueryClient();
@@ -245,6 +246,16 @@ const AppContent = () => {
         } 
       />
       <Route 
+        path="/blog/add" // Yeni blog yazısı ekleme rotası
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <MainLayout>
+              <AddBlogPostPage />
+            </MainLayout>
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
         path="/blog/:slug" 
         element={
           <ProtectedRoute allowedRoles={['admin', 'dealer']}>
@@ -255,7 +266,7 @@ const AppContent = () => {
         } 
       />
       <Route 
-        path="/blog/edit/:id" // Yeni blog yazısı düzenleme rotası
+        path="/blog/edit/:id"
         element={
           <ProtectedRoute allowedRoles={['admin']}>
             <MainLayout>
