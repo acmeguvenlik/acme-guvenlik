@@ -33,9 +33,10 @@ import BlogPage from "./pages/BlogPage";
 import BlogPostDetailPage from "./pages/BlogPostDetailPage";
 import EditBlogPostPage from "./pages/EditBlogPostPage";
 import AddBlogPostPage from "./pages/AddBlogPostPage";
-import FAQPage from "./pages/FAQPage"; // Yeni import
-import AddFAQPage from "./pages/AddFAQPage"; // Yeni import
-import EditFAQPage from "./pages/EditFAQPage"; // Yeni import
+import FAQPage from "./pages/FAQPage";
+import AddFAQPage from "./pages/AddFAQPage";
+import EditFAQPage from "./pages/EditFAQPage";
+import MessagesPage from "./pages/MessagesPage"; // Yeni import
 import { ThemeProvider } from "./components/theme/ThemeProvider"; 
 
 const queryClient = new QueryClient();
@@ -306,6 +307,18 @@ const AppContent = () => {
           <ProtectedRoute allowedRoles={['admin']}>
             <MainLayout>
               <EditFAQPage />
+            </MainLayout>
+          </ProtectedRoute>
+        } 
+      />
+
+      {/* Mesajlaşma Rotaları */}
+      <Route 
+        path="/messages" 
+        element={
+          <ProtectedRoute allowedRoles={['admin', 'dealer']}>
+            <MainLayout>
+              <MessagesPage />
             </MainLayout>
           </ProtectedRoute>
         } 
