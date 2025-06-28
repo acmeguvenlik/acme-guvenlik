@@ -16,23 +16,36 @@ import { AddOrderForm } from "@/components/orders/AddOrderForm";
 import { format } from "date-fns";
 
 // Örnek bayi sipariş verileri
-const dummyDealerOrders = [
-  { id: "ORD-001", orderNumber: "ORD-2024-001", productName: "Güvenlik Kamerası", quantity: 2, totalPrice: 1799.98, orderDate: new Date("2024-07-20"), status: "Beklemede" },
-  { id: "ORD-002", orderNumber: "ORD-2024-002", productName: "DVR Kayıt Cihazı", quantity: 1, totalPrice: 1499.99, orderDate: new Date("2024-07-18"), status: "Tamamlandı" },
-  { id: "ORD-003", orderNumber: "ORD-2024-003", productName: "Hareket Sensörü", quantity: 5, totalPrice: 1249.95, orderDate: new Date("2024-07-15"), status: "Kargoda" },
+interface Order {
+  id: string;
+  orderNumber: string;
+  productName: string;
+  quantity: number;
+  totalPrice: number;
+  orderDate: Date;
+  status: "Beklemede" | "Kargoda" | "Tamamlandı" | "İptal Edildi";
+  dealerId?: string; // Cari entegrasyon için eklendi
+  dealerName?: string; // Cari entegrasyon için eklendi
+}
+
+const initialDummyDealerOrders: Order[] = [
+  { id: "ORD-001", orderNumber: "ORD-2024-001", productName: "Güvenlik Kamerası", quantity: 2, totalPrice: 1799.98, orderDate: new Date("2024-07-20"), status: "Beklemede", dealerId: "D001", dealerName: "ABC Ticaret" },
+  { id: "ORD-002", orderNumber: "ORD-2024-002", productName: "DVR Kayıt Cihazı", quantity: 1, totalPrice: 1499.99, orderDate: new Date("2024-07-18"), status: "Tamamlandı", dealerId: "D001", dealerName: "ABC Ticaret" },
+  { id: "ORD-003", orderNumber: "ORD-2024-003", productName: "Hareket Sensörü", quantity: 5, totalPrice: 1249.95, orderDate: new Date("2024-07-15"), status: "Kargoda", dealerId: "D001", dealerName: "ABC Ticaret" },
 ];
 
 const DealerOrdersPage = () => {
+  const [dealerOrders, setDealerOrders] = useState<Order[]>(initialDummyDealerOrders);
   const [isAddOrderDialogOpen, setIsAddOrderDialogOpen] = useState(false);
 
-  const handleAddOrderSuccess = () => {
+  const handleAddOrderSuccess = (newOrder: Order) => {
+    setDealerOrders((prev) => [...prev, newOrder]); // Yeni siparişi listeye ekle
     setIsAddOrderDialogOpen(false);
-    // Burada yeni eklenen siparişi listeye eklemek için bir state güncellemesi veya veri çekme işlemi yapılabilir.
   };
 
-  const totalOrders = dummyDealerOrders.length;
-  const pendingOrders = dummyDealerOrders.filter(order => order.status === "Beklemede").length;
-  const completedOrders = dummyDealerOrders.filter(order => order.status === "Tamamlandı").length;
+  const totalOrders = dealerOrders.length;
+  const pendingOrders = dealerOrders.filter(order => order.status === "Beklemede").length;
+  const completedOrders = dealerOrders.filter(order => order.status === "Tamamlandı").length;
 
   return (
     <div className="space-y-6">
@@ -109,7 +122,7 @@ const DealerOrdersPage = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {dummyDealerOrders.map((order) => (
+              {dealerOrders.map((order) => (
                 <TableRow key={order.id}>
                   <TableCell className="font-medium">{order.orderNumber}</TableCell>
                   <TableCell>{order.productName}</TableCell>
