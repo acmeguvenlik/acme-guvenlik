@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { LayoutDashboard, Users, Package, ReceiptText, ShoppingCart, User, Settings } from "lucide-react"; // Wallet iconu kaldırıldı
+import { LayoutDashboard, Users, Package, ReceiptText, ShoppingCart, User, Settings, UserCog } from "lucide-react"; // UserCog iconunu import et
 import { useAuth } from "@/context/AuthContext";
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
@@ -19,7 +19,7 @@ export function SidebarNav({ className, ...props }: SidebarNavProps) {
       icon: LayoutDashboard,
     },
     {
-      title: "Bayiler", // Artık cari hesapları da içeriyor
+      title: "Bayiler",
       href: "/dealers",
       icon: Users,
     },
@@ -37,6 +37,11 @@ export function SidebarNav({ className, ...props }: SidebarNavProps) {
       title: "Siparişler",
       href: "/orders",
       icon: ShoppingCart,
+    },
+    {
+      title: "Kullanıcılar", // Yeni Kullanıcılar menüsü
+      href: "/users",
+      icon: UserCog,
     },
     {
       title: "Ayarlar",

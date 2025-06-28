@@ -18,12 +18,13 @@ import DealerStockPage from "./pages/DealerStockPage";
 import DealerInvoicesPage from "./pages/DealerInvoicesPage";
 import DealerProfilePage from "./pages/DealerProfilePage";
 import AdminSettingsPage from "./pages/AdminSettingsPage";
+import UsersPage from "./pages/UsersPage"; // UsersPage'i import et
 import { ThemeProvider } from "./components/theme/ThemeProvider"; 
 
 const queryClient = new QueryClient();
 
 // Giriş yapmış kullanıcılar için korumalı rota bileşeni
-const ProtectedRoute = ({ children, allowedRoles }: { children: JSX.Element; allowedRoles: ('admin' | 'dealer')[] }) => {
+const ProtectedRoute = ({ children, allowedRoles }: { children: JSX.Element; allowedRoles: ('admin' | 'dealer' | 'viewer')[] }) => {
   const { isAuthenticated, userRole } = useAuth();
 
   if (!isAuthenticated) {
@@ -88,7 +89,6 @@ const AppContent = () => {
           </ProtectedRoute>
         } 
       />
-      {/* Cari Hesaplar rotası kaldırıldı */}
       <Route 
         path="/invoices" 
         element={
@@ -105,6 +105,16 @@ const AppContent = () => {
           <ProtectedRoute allowedRoles={['admin']}>
             <MainLayout>
               <OrdersPage />
+            </MainLayout>
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/users" 
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <MainLayout>
+              <UsersPage />
             </MainLayout>
           </ProtectedRoute>
         } 
