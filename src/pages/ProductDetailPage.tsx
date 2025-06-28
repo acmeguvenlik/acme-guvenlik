@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { dummyProducts } from "@/data/dummyProducts"; // Dummy ürün verileri import edildi
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"; // Carousel bileşenleri import edildi
 
 const ProductDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -41,28 +42,67 @@ const ProductDetailPage = () => {
         </CardHeader>
         <CardContent className="grid md:grid-cols-2 gap-6">
           <div className="flex flex-col space-y-4">
-            {product.imageUrl && (
-              <div className="w-full h-64 bg-gray-200 dark:bg-gray-700 rounded-md overflow-hidden flex items-center justify-center">
-                <img 
-                  src={product.imageUrl} 
-                  alt={product.productName} 
-                  className="object-cover w-full h-full" 
-                  onError={(e) => { e.currentTarget.src = "https://via.placeholder.com/400x300?text=Görsel+Yok"; }} // Hata durumunda placeholder
-                />
+            {product.imageUrls && product.imageUrls.length > 0 ? (
+              <Carousel className="w-full max-w-xs mx-auto">
+                <CarouselContent>
+                  {product.imageUrls.map((url, index) => (
+                    <CarouselItem key={index}>
+                      <div className="p-1">
+                        <Card>
+                          <CardContent className="flex aspect-square items-center justify-center p-6">
+                            <img 
+                              src={url} 
+                              alt={`${product.productName} - Görsel ${index + 1}`} 
+                              className="object-contain w-full h-full max-h-64" 
+                              onError={(e) => { e.currentTarget.src = "https://via.placeholder.com/400x300?text=Görsel+Yok"; }}
+                            />
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+              </Carousel>
+            ) : (
+              <div className="w-full h-64 bg-gray-200 dark:bg-gray-700 rounded-md overflow-hidden flex items-center justify-center text-muted-foreground">
+                Görsel Yok
               </div>
             )}
+            
             <div>
               <h3 className="text-lg font-semibold mb-2">Genel Bilgiler</h3>
               <p><strong>Kategori:</strong> {product.category}</p>
               <p><strong>Mevcut Adet:</strong> {product.quantity}</p>
               <p><strong>Birim Fiyat:</strong> ₺{product.price.toFixed(2)}</p>
+              {product.variants && <p><strong>Varyantlar:</strong> {product.variants}</p>}
             </div>
           </div>
           <div>
             <h3 className="text-lg font-semibold mb-2">Açıklama</h3>
-            <p className="text-gray-700 dark:text-gray-300">
+            <p className="text-gray-700 dark:text-gray-300 mb-4">
               {product.description || "Bu ürün için henüz bir açıklama bulunmamaktadır."}
             </p>
+
+            {product.supplier && (
+              <>
+                <h3 className="text-lg font-semibold mb-2">Tedarikçi Bilgileri</h3>
+                <p><strong>Adı:</strong> {product.supplier.name}</p>
+                {product.supplier.contactPerson && <p><strong>Yetkili Kişi:</strong> {product.supplier.contactPerson}</p>}
+                {product.supplier.phone && <p><strong>Telefon:</strong> {product.supplier.phone}</p>}
+                {product.supplier.email && <p><strong>E-posta:</strong> {product.supplier.email}</p>}
+              </>
+            )}
+
+            {product.seo && (
+              <>
+                <h3 className="text-lg font-semibold mt-4 mb-2">SEO Ayarları</h3>
+                {product.seo.metaTitle && <p><strong>Meta Başlığı:</strong> {product.seo.metaTitle}</p>}
+                {product.seo.metaDescription && <p><strong>Meta Açıklaması:</strong> {product.seo.metaDescription}</p>}
+                {product.seo.keywords && <p><strong>Anahtar Kelimeler:</strong> {product.seo.keywords}</p>}
+              </>
+            )}
           </div>
         </CardContent>
       </Card>
