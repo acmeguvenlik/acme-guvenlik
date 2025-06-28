@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { AddConversationForm } from '@/components/messages/AddConversationForm';
 import { showSuccess } from '@/utils/toast';
-import { dummyUsers } from '@/pages/UsersPage'; // Kullanıcı listesi için (şimdilik UsersPage'den alıyoruz)
+import { dummyUsers } from '@/data/dummyUsers'; // Kullanıcı listesi için doğru konumdan import edildi
 
 const MessagesPage = () => {
   const { userRole } = useAuth();
