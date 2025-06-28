@@ -15,6 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { showSuccess } from "@/utils/toast";
 import { Ticket } from "@/data/dummyTickets";
+import { RichTextEditor } from "@/components/editor/RichTextEditor"; // RichTextEditor import edildi
 
 const formSchema = z.object({
   subject: z.string().min(5, "Konu en az 5 karakter olmalıdır."),
@@ -87,7 +88,11 @@ export function AddTicketForm({ onSuccess, initialData }: AddTicketFormProps) {
             <FormItem>
               <FormLabel>Açıklama</FormLabel>
               <FormControl>
-                <Textarea placeholder="Detaylı açıklama..." rows={5} {...field} />
+                <RichTextEditor // Textarea yerine RichTextEditor kullanıldı
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Detaylı açıklama..."
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
