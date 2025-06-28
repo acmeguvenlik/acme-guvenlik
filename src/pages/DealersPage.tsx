@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +11,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { PlusCircle } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { AddDealerForm } from "@/components/dealers/AddDealerForm";
 
 // Örnek bayi verileri
 const dummyDealers = [
@@ -20,6 +23,13 @@ const dummyDealers = [
 ];
 
 const DealersPage = () => {
+  const [isAddDealerDialogOpen, setIsAddDealerDialogOpen] = useState(false);
+
+  const handleAddDealerSuccess = () => {
+    setIsAddDealerDialogOpen(false); // Form gönderildikten sonra diyalogu kapat
+    // Burada yeni eklenen bayiyi listeye eklemek için bir state güncellemesi veya veri çekme işlemi yapılabilir.
+  };
+
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">Bayiler Yönetimi</h1>
@@ -33,10 +43,23 @@ const DealersPage = () => {
               placeholder="Bayi ara..."
               className="max-w-sm"
             />
-            <Button>
-              <PlusCircle className="mr-2 h-4 w-4" />
-              Yeni Bayi Ekle
-            </Button>
+            <Dialog open={isAddDealerDialogOpen} onOpenChange={setIsAddDealerDialogOpen}>
+              <DialogTrigger asChild>
+                <Button>
+                  <PlusCircle className="mr-2 h-4 w-4" />
+                  Yeni Bayi Ekle
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Yeni Bayi Ekle</DialogTitle>
+                  <DialogDescription>
+                    Yeni bir bayi eklemek için aşağıdaki formu doldurun.
+                  </DialogDescription>
+                </DialogHeader>
+                <AddDealerForm onSuccess={handleAddDealerSuccess} />
+              </DialogContent>
+            </Dialog>
           </div>
         </CardHeader>
         <CardContent>
