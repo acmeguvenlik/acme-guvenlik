@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
@@ -8,11 +9,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ShoppingCart, CheckCircle, Clock } from "lucide-react";
+import { ShoppingCart, CheckCircle, Clock, MoreHorizontal } from "lucide-react";
 import { format } from "date-fns";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { UpdateOrderStatusForm } from "@/components/orders/UpdateOrderStatusForm"; // Yeni form bileşeni import edildi
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 // Örnek tüm sipariş verileri (admin görünümü için)
-const dummyAllOrders = [
+interface Order {
+  id: string;
+  orderNumber: string;
+  dealerName: string;
+  productName: string;
+  quantity: number;
+  totalPrice: number;
+  orderDate: Date;
+  status: "Beklemede" | "Kargoda" | "Tamamlandı" | "İptal Edildi";
+}
+
+const initialDummyAllOrders: Order[] = [
   { id: "ORD-001", orderNumber: "ORD-2024-001", dealerName: "ABC Ticaret", productName: "Güvenlik Kamerası", quantity: 2, totalPrice: 1799.98, orderDate: new Date("2024-07-20"), status: "Beklemede" },
   { id: "ORD-002", orderNumber: "ORD-2024-002", dealerName: "XYZ Pazarlama", productName: "DVR Kayıt Cihazı", quantity: 1, totalPrice: 1499.99, orderDate: new Date("2024-07-18"), status: "Tamamlandı" },
   { id: "ORD-003", orderNumber: "ORD-2024-003", dealerName: "Güneş Elektronik", productName: "Hareket Sensörü", quantity: 5, totalPrice: 1249.95, orderDate: new Date("2024-07-15"), status: "Kargoda" },
@@ -20,9 +36,36 @@ const dummyAllOrders = [
 ];
 
 const OrdersPage = () => {
-  const totalOrders = dummyAllOrders.length;
-  const pendingOrders = dummyAllOrders.filter(order => order.status === "Beklemede").length;
-  const completedOrders = dummyAllOrders.filter(order => order.status === "Tamamlandı").length;
+  const [allOrders, setAllOrders] = useState<Order[]>(initialDummyAllOrders);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isUpdateStatusDialogOpen, setIsUpdateStatusDialogOpen] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<Order | undefined>(undefined);
+
+  const handleUpdateStatusSuccess = (orderId: string, newStatus: string) => {
+    setAllOrders((prevOrders) =>
+      prevOrders.map((order) =>
+        order.id === orderId ? { ...order, status: newStatus as Order["status"] } : order
+      )
+    );
+    setIsUpdateStatusDialogOpen(false);
+    setSelectedOrder(undefined);
+  };
+
+  const openUpdateStatusDialog = (order: Order) => {
+    setSelectedOrder(order);
+    setIsUpdateStatusDialogOpen(true);
+  };
+
+  const filteredOrders = allOrders.filter(order =>
+    order.orderNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    order.dealerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    order.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    order.status.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const totalOrders = filteredOrders.length;
+  const pendingOrders = filteredOrders.filter(order => order.status === "Beklemede").length;
+  const completedOrders = filteredOrders.filter(order => order.status === "Tamamlandı").length;
 
   return (
     <div className="space-y-6">
@@ -63,7 +106,12 @@ const OrdersPage = () => {
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Tüm Siparişler Listesi</CardTitle>
           <div className="flex space-x-2">
-            <Input placeholder="Sipariş ara..." className="max-w-sm" />
+            <Input
+              placeholder="Sipariş ara..."
+              className="max-w-sm"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
         </CardHeader>
         <CardContent>
@@ -77,10 +125,11 @@ const OrdersPage = () => {
                 <TableHead className="text-right">Toplam Tutar</TableHead>
                 <TableHead>Tarih</TableHead>
                 <TableHead>Durum</TableHead>
+                <TableHead className="text-right">İşlemler</TableHead> {/* Yeni İşlemler sütunu */}
               </TableRow>
             </TableHeader>
             <TableBody>
-              {dummyAllOrders.map((order) => (
+              {filteredOrders.map((order) => (
                 <TableRow key={order.id}>
                   <TableCell className="font-medium">{order.orderNumber}</TableCell>
                   <TableCell>{order.dealerName}</TableCell>
@@ -89,12 +138,49 @@ const OrdersPage = () => {
                   <TableCell className="text-right">{order.totalPrice.toFixed(2)} ₺</TableCell>
                   <TableCell>{format(order.orderDate, "dd.MM.yyyy")}</TableCell>
                   <TableCell>{order.status}</TableCell>
+                  <TableCell className="text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-8 p-0">
+                          <span className="sr-only">Menüyü aç</span>
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DialogTrigger asChild>
+                          <DropdownMenuItem onClick={() => openUpdateStatusDialog(order)}>
+                            Durumu Güncelle
+                          </DropdownMenuItem>
+                        </DialogTrigger>
+                        {/* Diğer işlemler buraya eklenebilir */}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </CardContent>
       </Card>
+
+      {/* Sipariş Durumu Güncelleme Diyaloğu */}
+      <Dialog open={isUpdateStatusDialogOpen} onOpenChange={setIsUpdateStatusDialogOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Sipariş Durumunu Güncelle</DialogTitle>
+            <DialogDescription>
+              Sipariş #{selectedOrder?.orderNumber} için durumu güncelleyin.
+            </DialogDescription>
+          </DialogHeader>
+          {selectedOrder && (
+            <UpdateOrderStatusForm
+              orderId={selectedOrder.id}
+              currentStatus={selectedOrder.status}
+              onSuccess={handleUpdateStatusSuccess}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
