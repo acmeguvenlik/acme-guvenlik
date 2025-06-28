@@ -14,6 +14,7 @@ import { dummyTickets, Ticket } from "@/data/dummyTickets";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/components/ui/button"; // Button bileşeni import edildi
 
 const AdminTicketsPage = () => {
   // dummyTickets'ın güncel bir kopyasını kullanarak state'i başlat
