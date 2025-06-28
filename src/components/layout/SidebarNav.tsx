@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { LayoutDashboard, Users, Package, Wallet, ReceiptText, ShoppingCart, User } from "lucide-react"; // User iconunu import et
+import { LayoutDashboard, Users, Package, Wallet, ReceiptText, ShoppingCart, User, Settings } from "lucide-react"; // Settings iconunu import et
 import { useAuth } from "@/context/AuthContext";
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
@@ -42,6 +42,11 @@ export function SidebarNav({ className, ...props }: SidebarNavProps) {
       title: "Siparişler", // Admin için Siparişler menüsü
       href: "/orders",
       icon: ShoppingCart,
+    },
+    {
+      title: "Ayarlar", // Yeni Ayarlar menüsü
+      href: "/settings",
+      icon: Settings,
     },
   ];
 

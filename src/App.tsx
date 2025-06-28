@@ -18,7 +18,8 @@ import OrdersPage from "./pages/OrdersPage";
 import DealerStockPage from "./pages/DealerStockPage";
 import DealerInvoicesPage from "./pages/DealerInvoicesPage";
 import DealerProfilePage from "./pages/DealerProfilePage";
-import { ThemeProvider } from "./components/theme/ThemeProvider"; // ThemeProvider'ı import et
+import AdminSettingsPage from "./pages/AdminSettingsPage"; // AdminSettingsPage'i import et
+import { ThemeProvider } from "./components/theme/ThemeProvider"; 
 
 const queryClient = new QueryClient();
 
@@ -118,6 +119,16 @@ const AppContent = () => {
           </ProtectedRoute>
         } 
       />
+      <Route 
+        path="/settings" 
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <MainLayout>
+              <AdminSettingsPage />
+            </MainLayout>
+          </ProtectedRoute>
+        } 
+      />
       
       {/* Bayi Paneli Rotası */}
       <Route 
@@ -184,7 +195,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
-          <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme"> {/* ThemeProvider eklendi */}
+          <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
             <AppContent />
           </ThemeProvider>
         </AuthProvider>
