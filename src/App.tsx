@@ -16,7 +16,8 @@ import DealerDashboardPage from "./pages/DealerDashboardPage";
 import DealerOrdersPage from "./pages/DealerOrdersPage";
 import OrdersPage from "./pages/OrdersPage";
 import DealerStockPage from "./pages/DealerStockPage";
-import DealerInvoicesPage from "./pages/DealerInvoicesPage"; // Yeni bayi fatura sayfası
+import DealerInvoicesPage from "./pages/DealerInvoicesPage";
+import DealerProfilePage from "./pages/DealerProfilePage"; // Yeni bayi profil sayfası
 
 const queryClient = new QueryClient();
 
@@ -154,6 +155,16 @@ const AppContent = () => {
           <ProtectedRoute allowedRoles={['dealer']}>
             <MainLayout>
               <DealerInvoicesPage />
+            </MainLayout>
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/dealer-profile" 
+        element={
+          <ProtectedRoute allowedRoles={['dealer']}>
+            <MainLayout>
+              <DealerProfilePage />
             </MainLayout>
           </ProtectedRoute>
         } 
