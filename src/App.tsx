@@ -13,8 +13,9 @@ import NotFound from "./pages/NotFound";
 import LoginPage from "./pages/LoginPage";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import DealerDashboardPage from "./pages/DealerDashboardPage";
-import DealerOrdersPage from "./pages/DealerOrdersPage"; // Yeni bayi sipariş sayfası
-import OrdersPage from "./pages/OrdersPage"; // Yeni admin sipariş sayfası
+import DealerOrdersPage from "./pages/DealerOrdersPage";
+import OrdersPage from "./pages/OrdersPage";
+import DealerStockPage from "./pages/DealerStockPage"; // Yeni bayi stok sayfası
 
 const queryClient = new QueryClient();
 
@@ -132,6 +133,16 @@ const AppContent = () => {
           <ProtectedRoute allowedRoles={['dealer']}>
             <MainLayout>
               <DealerOrdersPage />
+            </MainLayout>
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/dealer-stock" 
+        element={
+          <ProtectedRoute allowedRoles={['dealer']}>
+            <MainLayout>
+              <DealerStockPage />
             </MainLayout>
           </ProtectedRoute>
         } 

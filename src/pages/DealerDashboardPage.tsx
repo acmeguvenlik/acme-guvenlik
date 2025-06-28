@@ -28,7 +28,7 @@ const DealerDashboardPage = () => {
           <CardContent>
             <div className="text-2xl font-bold">150</div>
             <p className="text-xs text-muted-foreground">Toplam farklı ürün çeşidi</p>
-            {/* Stok sayfası linki eklenebilir */}
+            <Link to="/dealer-stock" className="text-sm text-blue-600 hover:underline">Ürün kataloğunu gör</Link> {/* Yeni link */}
           </CardContent>
         </Card>
         <Card>

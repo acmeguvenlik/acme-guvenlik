@@ -56,6 +56,11 @@ export function SidebarNav({ className, ...props }: SidebarNavProps) {
       href: "/dealer-orders",
       icon: ShoppingCart,
     },
+    {
+      title: "Ürün Kataloğu", // Bayi için Ürün Kataloğu menüsü
+      href: "/dealer-stock",
+      icon: Package,
+    },
   ];
 
   const navItems = userRole === 'admin' ? adminNavItems : (userRole === 'dealer' ? dealerNavItems : []);
