@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/table";
 import { ArrowLeft, PlusCircle, DollarSign } from "lucide-react";
 import { dummyTransactions, Transaction } from "@/data/dummyTransactions";
-import { dummyDealers } from "@/components/dealers/AddDealerForm"; // dummyDealers'ı import et
+import { dummyDealers } from "@/data/dummyDealers"; // dummyDealers yeni konumundan import edildi
 import { format } from "date-fns";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AddTransactionForm } from "@/components/dealers/AddTransactionForm";

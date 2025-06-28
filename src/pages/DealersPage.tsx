@@ -15,15 +15,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { AddDealerForm, DealerFormData } from "@/components/dealers/AddDealerForm";
 import { showError, showSuccess } from "@/utils/toast";
 import { Link } from "react-router-dom"; // Link import edildi
-
-// Örnek bayi verileri (cari hesap bilgileriyle birleştirildi)
-const initialDummyDealers: DealerFormData[] = [
-  { id: "D001", name: "ABC Ticaret", contact: "Ali Can", phone: "5551234567", email: "abc@example.com", balance: 1500.00, accountType: "Müşteri" },
-  { id: "D002", name: "XYZ Pazarlama", contact: "Ayşe Yılmaz", phone: "5559876543", email: "xyz@example.com", balance: -250.50, accountType: "Müşteri" },
-  { id: "D003", name: "Güneş Elektronik", contact: "Mehmet Demir", phone: "5551112233", email: "gunes@example.com", balance: 750.00, accountType: "Tedarikçi" },
-  { id: "D004", name: "Yıldız Dağıtım", contact: "Zeynep Kaya", phone: "5554445566", email: "yildiz@example.com", balance: -1200.00, accountType: "Tedarikçi" },
-  { id: "D005", name: "Merkez Ofis Giderleri", contact: "Canan Ak", phone: "5550001122", email: "merkez@example.com", balance: 0.00, accountType: "Diğer" },
-];
+import { dummyDealers as initialDummyDealers } from "@/data/dummyDealers"; // dummyDealers yeni konumundan import edildi
 
 const DealersPage = () => {
   const [dealers, setDealers] = useState<DealerFormData[]>(initialDummyDealers);

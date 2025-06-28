@@ -15,7 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { showSuccess, showError } from "@/utils/toast";
 import { Transaction } from "@/data/dummyTransactions";
-import { dummyDealers, DealerFormData } from "@/components/dealers/AddDealerForm"; // dummyDealers'ı import et
+import { dummyDealers } from "@/data/dummyDealers"; // dummyDealers yeni konumundan import edildi
 
 const formSchema = z.object({
   type: z.enum(["Ödeme", "Borç", "Fatura", "İade", "Diğer"], {
