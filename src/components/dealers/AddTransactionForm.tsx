@@ -18,6 +18,7 @@ import { Transaction } from "@/data/dummyTransactions";
 import { dummyDealers } from "@/data/dummyDealers"; // dummyDealers yeni konumundan import edildi
 
 const formSchema = z.object({
+  id: z.string().optional(), // Düzenleme için id eklendi
   type: z.enum(["Ödeme", "Borç", "Fatura", "İade", "Diğer"], {
     message: "Geçerli bir işlem tipi seçiniz.",
   }),
@@ -31,13 +32,19 @@ const formSchema = z.object({
 
 interface AddTransactionFormProps {
   dealerId: string;
+  initialData?: Transaction; // Düzenleme için başlangıç verileri
   onSuccess?: (newTransaction: Transaction) => void;
 }
 
-export function AddTransactionForm({ dealerId, onSuccess }: AddTransactionFormProps) {
+export function AddTransactionForm({ dealerId, initialData, onSuccess }: AddTransactionFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
+    defaultValues: initialData ? {
+      id: initialData.id,
+      type: initialData.type,
+      amount: Math.abs(initialData.amount), // Düzenlerken tutarı pozitif göster
+      description: initialData.description,
+    } : {
       type: "Ödeme",
       amount: 0,
       description: "",
@@ -45,27 +52,24 @@ export function AddTransactionForm({ dealerId, onSuccess }: AddTransactionFormPr
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    const processedAmount = values.type === "Borç" || values.type === "Fatura" ? -values.amount : values.amount;
+    
     const newTransaction: Transaction = {
-      id: `TRN-${Date.now()}`,
+      id: initialData?.id || `TRN-${Date.now()}`,
       dealerId: dealerId,
       type: values.type,
-      amount: values.type === "Borç" || values.type === "Fatura" ? -values.amount : values.amount, // Borç ve Fatura için tutarı negatif yap
+      amount: processedAmount,
       description: values.description,
-      date: new Date(),
+      date: initialData?.date || new Date(), // Düzenlemede tarihi koru
     };
 
-    // Dummy veriyi güncelle (gerçek uygulamada backend API çağrısı olur)
-    // dummyTransactions.push(newTransaction); // Bu kısım dışarıda yönetilecek
-
-    // Bayinin bakiyesini güncelle
-    const dealerIndex = dummyDealers.findIndex(d => d.id === dealerId);
-    if (dealerIndex !== -1) {
-      dummyDealers[dealerIndex].balance += newTransaction.amount;
-      // State'i güncellemek için DealersPage'deki dummyDealers'ı yeniden set etmemiz gerekebilir.
-      // Bu dummy data yapısında doğrudan güncelleme yapıyoruz.
+    if (initialData) {
+      // Düzenleme modu
+      showSuccess("İşlem başarıyla güncellendi!");
+    } else {
+      // Ekleme modu
+      showSuccess("İşlem başarıyla eklendi!");
     }
-
-    showSuccess("İşlem başarıyla eklendi ve bakiye güncellendi!");
     form.reset();
     onSuccess?.(newTransaction);
   }
@@ -129,7 +133,9 @@ export function AddTransactionForm({ dealerId, onSuccess }: AddTransactionFormPr
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">İşlemi Ekle</Button>
+        <Button type="submit" className="w-full">
+          {initialData ? "İşlemi Güncelle" : "İşlemi Ekle"}
+        </Button>
       </form>
     </Form>
   );
