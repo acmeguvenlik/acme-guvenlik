@@ -5,28 +5,72 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { dummyBlogPosts, BlogPost } from "@/data/dummyBlogPosts";
 import { format } from "date-fns";
-import { Search, Tag, CalendarDays, User, BookOpen } from "lucide-react";
+import { Search, Tag, CalendarDays, User, BookOpen, PlusCircle, Edit, Trash2 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { AddBlogPostForm } from "@/components/blog/AddBlogPostForm";
+import { showSuccess } from "@/utils/toast";
+import { useAuth } from "@/context/AuthContext"; // useAuth hook'unu import et
 
 const BlogPage = () => {
+  const { userRole } = useAuth(); // Kullanıcı rolünü al
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>(dummyBlogPosts); // dummyBlogPosts'u state olarak yönet
   const [searchTerm, setSearchTerm] = useState("");
   const [filterCategory, setFilterCategory] = useState("Tümü");
   const [filterTag, setFilterTag] = useState("Tümü");
+  const [isAddBlogPostDialogOpen, setIsAddBlogPostDialogOpen] = useState(false);
+  const [isEditBlogPostDialogOpen, setIsEditBlogPostDialogOpen] = useState(false);
+  const [selectedBlogPost, setSelectedBlogPost] = useState<BlogPost | undefined>(undefined);
 
   const allCategories = useMemo(() => {
     const categories = new Set<string>();
-    dummyBlogPosts.forEach(post => categories.add(post.category));
+    blogPosts.forEach(post => categories.add(post.category));
     return ["Tümü", ...Array.from(categories)];
-  }, []);
+  }, [blogPosts]);
 
   const allTags = useMemo(() => {
     const tags = new Set<string>();
-    dummyBlogPosts.forEach(post => post.tags.forEach(tag => tags.add(tag)));
+    blogPosts.forEach(post => post.tags.forEach(tag => tags.add(tag)));
     return ["Tümü", ...Array.from(tags)];
-  }, []);
+  }, [blogPosts]);
+
+  const handleAddBlogPostSuccess = (newPost: BlogPost) => {
+    // dummyBlogPosts'u doğrudan güncelle ve state'i yeni referansla ayarla
+    dummyBlogPosts.push(newPost);
+    setBlogPosts([...dummyBlogPosts]);
+    setIsAddBlogPostDialogOpen(false);
+  };
+
+  const handleEditBlogPostSuccess = (updatedPost: BlogPost) => {
+    // dummyBlogPosts'u doğrudan güncelle ve state'i yeni referansla ayarla
+    const index = dummyBlogPosts.findIndex(p => p.id === updatedPost.id);
+    if (index !== -1) {
+      dummyBlogPosts[index] = updatedPost;
+    }
+    setBlogPosts([...dummyBlogPosts]);
+    setIsEditBlogPostDialogOpen(false);
+    setSelectedBlogPost(undefined);
+  };
+
+  const handleDeleteBlogPost = (id: string) => {
+    if (window.confirm("Bu blog yazısını silmek istediğinizden emin misiniz?")) {
+      // dummyBlogPosts'u doğrudan güncelle ve state'i yeni referansla ayarla
+      const index = dummyBlogPosts.findIndex(p => p.id === id);
+      if (index !== -1) {
+        dummyBlogPosts.splice(index, 1);
+      }
+      setBlogPosts([...dummyBlogPosts]);
+      showSuccess("Blog yazısı başarıyla silindi!");
+    }
+  };
+
+  const openEditDialog = (post: BlogPost) => {
+    setSelectedBlogPost(post);
+    setIsEditBlogPostDialogOpen(true);
+  };
 
   const filteredPosts = useMemo(() => {
-    let tempPosts = dummyBlogPosts.filter(post =>
+    let tempPosts = blogPosts.filter(post =>
       post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       post.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
       post.author.toLowerCase().includes(searchTerm.toLowerCase())
@@ -41,12 +85,35 @@ const BlogPage = () => {
     }
 
     return tempPosts.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-  }, [searchTerm, filterCategory, filterTag]);
+  }, [blogPosts, searchTerm, filterCategory, filterTag]);
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Blog Yazıları</h1>
-      <p className="text-gray-600 dark:text-gray-400">En son güvenlik trendleri, ipuçları ve sektör haberleri.</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">Blog Yazıları</h1>
+          <p className="text-gray-600 dark:text-gray-400">En son güvenlik trendleri, ipuçları ve sektör haberleri.</p>
+        </div>
+        {userRole === 'admin' && ( // Sadece admin rolü için ekleme butonu
+          <Dialog open={isAddBlogPostDialogOpen} onOpenChange={setIsAddBlogPostDialogOpen}>
+            <DialogTrigger asChild>
+              <Button>
+                <PlusCircle className="mr-2 h-4 w-4" />
+                Yeni Yazı Ekle
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>Yeni Blog Yazısı Ekle</DialogTitle>
+                <DialogDescription>
+                  Yeni bir blog yazısı oluşturmak için aşağıdaki formu doldurun.
+                </DialogDescription>
+              </DialogHeader>
+              <AddBlogPostForm onSuccess={handleAddBlogPostSuccess} />
+            </DialogContent>
+          </Dialog>
+        )}
+      </div>
 
       <div className="flex flex-col md:flex-row gap-4 mb-6">
         <Input
@@ -112,11 +179,23 @@ const BlogPage = () => {
                     </span>
                   ))}
                 </div>
-                <Link to={`/blog/${post.slug}`}>
-                  <Button variant="outline" size="sm" className="w-full">
-                    <BookOpen className="h-4 w-4 mr-2" /> Yazıyı Oku
-                  </Button>
-                </Link>
+                <div className="flex justify-between items-center mt-4">
+                  <Link to={`/blog/${post.slug}`}>
+                    <Button variant="outline" size="sm">
+                      <BookOpen className="h-4 w-4 mr-2" /> Yazıyı Oku
+                    </Button>
+                  </Link>
+                  {userRole === 'admin' && ( // Sadece admin rolü için düzenleme ve silme butonları
+                    <div className="flex space-x-2">
+                      <Button variant="ghost" size="sm" onClick={() => openEditDialog(post)}>
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button variant="destructive" size="sm" onClick={() => handleDeleteBlogPost(post.id)}>
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  )}
+                </div>
               </CardContent>
             </Card>
           ))
@@ -126,6 +205,21 @@ const BlogPage = () => {
           </div>
         )}
       </div>
+
+      {/* Düzenleme Diyaloğu */}
+      <Dialog open={isEditBlogPostDialogOpen} onOpenChange={setIsEditBlogPostDialogOpen}>
+        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Blog Yazısını Düzenle</DialogTitle>
+            <DialogDescription>
+              Blog yazısı bilgilerini güncellemek için aşağıdaki formu doldurun.
+            </DialogDescription>
+          </DialogHeader>
+          {selectedBlogPost && (
+            <AddBlogPostForm initialData={selectedBlogPost} onSuccess={handleEditBlogPostSuccess} />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

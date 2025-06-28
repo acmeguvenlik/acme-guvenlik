@@ -1,14 +1,35 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, CalendarDays, User, Tag, BookOpen } from "lucide-react";
+import { ArrowLeft, CalendarDays, User, Tag, Edit, Trash2 } from "lucide-react"; // Edit ve Trash2 import edildi
 import { dummyBlogPosts } from "@/data/dummyBlogPosts";
 import { format } from "date-fns";
+import { useAuth } from "@/context/AuthContext"; // useAuth hook'unu import et
+import { showSuccess } from "@/utils/toast"; // showSuccess toast'u import edildi
 
 const BlogPostDetailPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-  const post = dummyBlogPosts.find(p => p.slug === slug);
+  const { userRole } = useAuth(); // Kullanıcı rolünü al
+  const [post, setPost] = useState(dummyBlogPosts.find(p => p.slug === slug)); // Postu state olarak yönet
+
+  // dummyBlogPosts'ta dışarıdan bir değişiklik olduğunda state'i güncellemek için
+  // (gerçek bir uygulamada bu bir API çağrısı veya global state yönetimi ile yapılırdı)
+  useEffect(() => {
+    setPost(dummyBlogPosts.find(p => p.slug === slug));
+  }, [slug, dummyBlogPosts]); // dummyBlogPosts referansı değişirse (örneğin yeni bir dizi atanırsa) tetiklenir
+
+  const handleDeleteBlogPost = () => {
+    if (!post) return;
+    if (window.confirm(`"${post.title}" başlıklı blog yazısını silmek istediğinizden emin misiniz?`)) {
+      const index = dummyBlogPosts.findIndex(p => p.id === post.id);
+      if (index !== -1) {
+        dummyBlogPosts.splice(index, 1);
+        showSuccess("Blog yazısı başarıyla silindi!");
+        navigate("/blog"); // Silme sonrası blog listesine geri dön
+      }
+    }
+  };
 
   if (!post) {
     return (
@@ -28,12 +49,26 @@ const BlogPostDetailPage = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">{post.title}</h1>
-        <Link to="/blog">
-          <Button variant="outline">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Tüm Yazılara Dön
-          </Button>
-        </Link>
+        <div className="flex items-center space-x-2">
+          {userRole === 'admin' && ( // Sadece admin rolü için düzenleme ve silme butonları
+            <>
+              <Link to={`/blog/edit/${post.id}`}> {/* Düzenleme sayfasına yönlendirme */}
+                <Button variant="outline" size="sm">
+                  <Edit className="h-4 w-4 mr-2" /> Düzenle
+                </Button>
+              </Link>
+              <Button variant="destructive" size="sm" onClick={handleDeleteBlogPost}>
+                <Trash2 className="h-4 w-4 mr-2" /> Sil
+              </Button>
+            </>
+          )}
+          <Link to="/blog">
+            <Button variant="outline">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Tüm Yazılara Dön
+            </Button>
+          </Link>
+        </div>
       </div>
       <p className="text-gray-600 dark:text-gray-400">Blog yazısının detaylı içeriği.</p>
 
