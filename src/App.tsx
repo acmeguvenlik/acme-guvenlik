@@ -6,7 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { MainLayout } from "./components/layout/MainLayout";
 import DashboardPage from "./pages/DashboardPage";
 import DealersPage from "./pages/DealersPage";
-import { StockPage } from "./pages/StockPage"; // Named export olduğu için süslü parantez içinde import edildi
+import { StockPage } from "./pages/StockPage";
+import CurrentAccountsPage from "./pages/CurrentAccountsPage"; // Yeni eklenen sayfa
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,8 +22,8 @@ const App = () => (
           <Route path="/" element={<MainLayout><DashboardPage /></MainLayout>} />
           <Route path="/dashboard" element={<MainLayout><DashboardPage /></MainLayout>} />
           <Route path="/dealers" element={<MainLayout><DealersPage /></MainLayout>} />
-          <Route path="/stock" element={<MainLayout><StockPage /></MainLayout>} /> {/* Stok sayfası eklendi */}
-          <Route path="/current-accounts" element={<MainLayout><div className="p-6 text-center text-xl font-semibold">Cari Hesaplar Sayfası (Yakında)</div></MainLayout>} />
+          <Route path="/stock" element={<MainLayout><StockPage /></MainLayout>} />
+          <Route path="/current-accounts" element={<MainLayout><CurrentAccountsPage /></MainLayout>} /> {/* Cari Hesaplar sayfası eklendi */}
           <Route path="/invoices" element={<MainLayout><div className="p-6 text-center text-xl font-semibold">Faturalar Sayfası (Yakında)</div></MainLayout>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
