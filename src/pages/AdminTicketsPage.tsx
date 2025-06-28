@@ -16,9 +16,16 @@ import { Link } from "react-router-dom";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const AdminTicketsPage = () => {
-  const [tickets, setTickets] = useState<Ticket[]>(dummyTickets);
+  // dummyTickets'ın güncel bir kopyasını kullanarak state'i başlat
+  const [tickets, setTickets] = useState<Ticket[]>(() => [...dummyTickets]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState<string>("Tümü");
+
+  // dummyTickets'ta dışarıdan bir değişiklik olduğunda state'i güncellemek için
+  // (gerçek bir uygulamada bu bir API çağrısı veya global state yönetimi ile yapılırdı)
+  useEffect(() => {
+    setTickets([...dummyTickets]);
+  }, [dummyTickets]); // dummyTickets referansı değişirse (örneğin yeni bir dizi atanırsa) tetiklenir
 
   const filteredTickets = tickets.filter(ticket =>
     (ticket.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -114,23 +121,31 @@ const AdminTicketsPage = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredTickets.map((ticket) => (
-                <TableRow key={ticket.id}>
-                  <TableCell className="font-medium">{ticket.id}</TableCell>
-                  <TableCell>{ticket.subject}</TableCell>
-                  <TableCell>{ticket.dealerName}</TableCell>
-                  <TableCell>{ticket.priority}</TableCell>
-                  <TableCell>{ticket.status}</TableCell>
-                  <TableCell>{format(ticket.updatedAt, "dd.MM.yyyy HH:mm")}</TableCell>
-                  <TableCell className="text-right">
-                    <Link to={`/tickets/${ticket.id}`}>
-                      <Button variant="outline" size="sm">
-                        <MessageSquare className="h-4 w-4 mr-2" /> Detaylar
-                      </Button>
-                    </Link>
+              {filteredTickets.length > 0 ? (
+                filteredTickets.map((ticket) => (
+                  <TableRow key={ticket.id}>
+                    <TableCell className="font-medium">{ticket.id}</TableCell>
+                    <TableCell>{ticket.subject}</TableCell>
+                    <TableCell>{ticket.dealerName}</TableCell>
+                    <TableCell>{ticket.priority}</TableCell>
+                    <TableCell>{ticket.status}</TableCell>
+                    <TableCell>{format(ticket.updatedAt, "dd.MM.yyyy HH:mm")}</TableCell>
+                    <TableCell className="text-right">
+                      <Link to={`/tickets/${ticket.id}`}>
+                        <Button variant="outline" size="sm">
+                          <MessageSquare className="h-4 w-4 mr-2" /> Detaylar
+                        </Button>
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={7} className="text-center text-muted-foreground">
+                    Gösterilecek destek talebi bulunmamaktadır.
                   </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </CardContent>
