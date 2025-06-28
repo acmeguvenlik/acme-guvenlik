@@ -53,6 +53,11 @@ export function SidebarNav({ className, ...props }: SidebarNavProps) {
       href: "/settings",
       icon: Settings,
     },
+    {
+      title: "Hesabım", // Yeni Hesap Ayarları menüsü
+      href: "/account",
+      icon: User,
+    },
   ];
 
   const dealerNavItems = [
@@ -79,6 +84,11 @@ export function SidebarNav({ className, ...props }: SidebarNavProps) {
     {
       title: "Profilim",
       href: "/dealer-profile",
+      icon: User,
+    },
+    {
+      title: "Hesabım", // Yeni Hesap Ayarları menüsü
+      href: "/account",
       icon: User,
     },
   ];
