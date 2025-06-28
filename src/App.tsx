@@ -17,7 +17,8 @@ import DealerOrdersPage from "./pages/DealerOrdersPage";
 import OrdersPage from "./pages/OrdersPage";
 import DealerStockPage from "./pages/DealerStockPage";
 import DealerInvoicesPage from "./pages/DealerInvoicesPage";
-import DealerProfilePage from "./pages/DealerProfilePage"; // Yeni bayi profil sayfası
+import DealerProfilePage from "./pages/DealerProfilePage";
+import { ThemeProvider } from "./components/theme/ThemeProvider"; // ThemeProvider'ı import et
 
 const queryClient = new QueryClient();
 
@@ -183,7 +184,9 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
-          <AppContent />
+          <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme"> {/* ThemeProvider eklendi */}
+            <AppContent />
+          </ThemeProvider>
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>

@@ -2,14 +2,15 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
-import { useAuth } from "@/context/AuthContext"; // useAuth hook'unu import et
+import { useAuth } from "@/context/AuthContext";
+import { ThemeToggle } from "@/components/theme/ThemeToggle"; // ThemeToggle'ı import et
 
 interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   title?: string;
 }
 
 export function Header({ title, className, ...props }: HeaderProps) {
-  const { logout, isAuthenticated } = useAuth(); // logout ve isAuthenticated'ı kullan
+  const { logout, isAuthenticated } = useAuth();
 
   return (
     <header
@@ -20,8 +21,9 @@ export function Header({ title, className, ...props }: HeaderProps) {
       {...props}
     >
       <h1 className="text-xl font-semibold">{title || "Acme Güvenlik Yönetim Paneli"}</h1>
-      <div>
-        {isAuthenticated && ( // Sadece giriş yapılmışsa çıkış butonunu göster
+      <div className="flex items-center space-x-4"> {/* Tema değiştirme düğmesi için flex container */}
+        <ThemeToggle /> {/* Tema değiştirme düğmesi */}
+        {isAuthenticated && (
           <Button variant="ghost" size="sm" onClick={logout}>
             <LogOut className="mr-2 h-4 w-4" /> Çıkış Yap
           </Button>
