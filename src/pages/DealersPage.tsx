@@ -10,10 +10,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { PlusCircle, Edit, Trash2, Wallet, TrendingUp, TrendingDown } from "lucide-react";
+import { PlusCircle, Edit, Trash2, Wallet, TrendingUp, TrendingDown, ListChecks } from "lucide-react"; // ListChecks import edildi
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AddDealerForm, DealerFormData } from "@/components/dealers/AddDealerForm";
 import { showError, showSuccess } from "@/utils/toast";
+import { Link } from "react-router-dom"; // Link import edildi
 
 // Örnek bayi verileri (cari hesap bilgileriyle birleştirildi)
 const initialDummyDealers: DealerFormData[] = [
@@ -162,6 +163,11 @@ const DealersPage = () => {
                     {dealer.balance.toFixed(2)} ₺
                   </TableCell>
                   <TableCell className="text-right">
+                    <Link to={`/dealers/${dealer.id}/transactions`}>
+                      <Button variant="outline" size="sm" className="mr-2">
+                        <ListChecks className="h-4 w-4" />
+                      </Button>
+                    </Link>
                     <Button
                       variant="ghost"
                       size="sm"

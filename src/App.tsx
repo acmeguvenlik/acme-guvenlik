@@ -23,9 +23,10 @@ import ReportsPage from "./pages/ReportsPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import AccountPage from "./pages/AccountPage";
 import AnnouncementsPage from "./pages/AnnouncementsPage";
-import DealerTicketsPage from "./pages/DealerTicketsPage"; // Yeni import
-import AdminTicketsPage from "./pages/AdminTicketsPage";   // Yeni import
-import TicketDetailPage from "./pages/TicketDetailPage";   // Yeni import
+import DealerTicketsPage from "./pages/DealerTicketsPage";
+import AdminTicketsPage from "./pages/AdminTicketsPage";
+import TicketDetailPage from "./pages/TicketDetailPage";
+import DealerTransactionsPage from "./pages/DealerTransactionsPage"; // Yeni import
 import { ThemeProvider } from "./components/theme/ThemeProvider"; 
 
 const queryClient = new QueryClient();
@@ -82,6 +83,16 @@ const AppContent = () => {
           <ProtectedRoute allowedRoles={['admin']}>
             <MainLayout>
               <DealersPage />
+            </MainLayout>
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/dealers/:dealerId/transactions" // Yeni rota
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <MainLayout>
+              <DealerTransactionsPage />
             </MainLayout>
           </ProtectedRoute>
         } 
