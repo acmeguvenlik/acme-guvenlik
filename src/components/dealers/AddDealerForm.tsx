@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { showSuccess, showError } from "@/utils/toast";
 
 const formSchema = z.object({
+  id: z.string().optional(), // Düzenleme için id eklendi
   name: z.string().min(2, {
     message: "Bayi adı en az 2 karakter olmalıdır.",
   }),
@@ -28,14 +29,17 @@ const formSchema = z.object({
   }),
 });
 
+export type DealerFormData = z.infer<typeof formSchema>;
+
 interface AddDealerFormProps {
-  onSuccess?: () => void;
+  initialData?: DealerFormData; // Düzenleme için başlangıç verileri
+  onSuccess?: (data: DealerFormData) => void;
 }
 
-export function AddDealerForm({ onSuccess }: AddDealerFormProps) {
-  const form = useForm<z.infer<typeof formSchema>>({
+export function AddDealerForm({ initialData, onSuccess }: AddDealerFormProps) {
+  const form = useForm<DealerFormData>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
+    defaultValues: initialData || {
       name: "",
       contact: "",
       phone: "",
@@ -43,12 +47,18 @@ export function AddDealerForm({ onSuccess }: AddDealerFormProps) {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Burada gerçek bir API çağrısı yapılabilir
-    console.log("Yeni bayi verileri:", values);
-    showSuccess("Bayi başarıyla eklendi!");
+  function onSubmit(values: DealerFormData) {
+    if (initialData?.id) {
+      // Düzenleme modu
+      console.log("Bayi güncellendi:", values);
+      showSuccess("Bayi başarıyla güncellendi!");
+    } else {
+      // Ekleme modu
+      console.log("Yeni bayi verileri:", values);
+      showSuccess("Bayi başarıyla eklendi!");
+    }
     form.reset();
-    onSuccess?.(); // Diyalogu kapatmak için callback
+    onSuccess?.(values); // Diyalogu kapatmak ve listeyi güncellemek için callback
   }
 
   return (
@@ -106,7 +116,9 @@ export function AddDealerForm({ onSuccess }: AddDealerFormProps) {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">Bayi Ekle</Button>
+        <Button type="submit" className="w-full">
+          {initialData?.id ? "Bayiyi Güncelle" : "Bayi Ekle"}
+        </Button>
       </form>
     </Form>
   );
