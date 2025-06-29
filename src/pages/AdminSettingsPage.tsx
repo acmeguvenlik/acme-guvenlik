@@ -3,9 +3,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SiteSettingsForm } from "@/components/settings/SiteSettingsForm";
 import { RegistrationSettingsForm } from "@/components/settings/RegistrationSettingsForm";
 import { SeoSettingsForm } from "@/components/settings/SeoSettingsForm";
+import { EmailSettingsForm } from "@/components/settings/EmailSettingsForm"; // Yeni import
+import { IntegrationSettingsForm } from "@/components/settings/IntegrationSettingsForm"; // Yeni import
+import { SecuritySettingsForm } from "@/components/settings/SecuritySettingsForm"; // Yeni import
 import { SeoHead } from "@/components/seo/SeoHead";
-import { Button } from "@/components/ui/button"; // Button import edildi
-import { ExternalLink } from "lucide-react"; // ExternalLink iconu import edildi
+import { Button } from "@/components/ui/button";
+import { ExternalLink } from "lucide-react";
 
 const AdminSettingsPage = () => {
   return (
@@ -15,10 +18,13 @@ const AdminSettingsPage = () => {
       <p className="text-gray-600">Uygulamanızın genel ayarlarını buradan yönetin.</p>
 
       <Tabs defaultValue="site" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-6"> {/* grid-cols-3'ten grid-cols-6'ya güncellendi */}
           <TabsTrigger value="site">Site Ayarları</TabsTrigger>
           <TabsTrigger value="registration">Kayıt Ayarları</TabsTrigger>
           <TabsTrigger value="seo">SEO Ayarları</TabsTrigger>
+          <TabsTrigger value="email">E-posta Ayarları</TabsTrigger> {/* Yeni sekme */}
+          <TabsTrigger value="integrations">Entegrasyonlar</TabsTrigger> {/* Yeni sekme */}
+          <TabsTrigger value="security">Güvenlik Ayarları</TabsTrigger> {/* Yeni sekme */}
         </TabsList>
         <TabsContent value="site">
           <Card>
@@ -54,7 +60,7 @@ const AdminSettingsPage = () => {
                 Arama motoru optimizasyonu için meta etiketlerini ve diğer ayarları düzenleyin.
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4"> {/* space-y-4 eklendi */}
+            <CardContent className="space-y-4">
               <SeoSettingsForm />
               <div className="border-t pt-4 mt-4">
                 <h3 className="text-lg font-semibold mb-2">Site Haritası</h3>
@@ -68,6 +74,48 @@ const AdminSettingsPage = () => {
                   </a>
                 </Button>
               </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        {/* Yeni E-posta Ayarları Sekmesi */}
+        <TabsContent value="email">
+          <Card>
+            <CardHeader>
+              <CardTitle>E-posta Ayarları</CardTitle>
+              <CardDescription>
+                Uygulamanızın e-posta gönderme (SMTP) ayarlarını yapılandırın.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <EmailSettingsForm />
+            </CardContent>
+          </Card>
+        </TabsContent>
+        {/* Yeni Entegrasyon Ayarları Sekmesi */}
+        <TabsContent value="integrations">
+          <Card>
+            <CardHeader>
+              <CardTitle>Entegrasyon Ayarları</CardTitle>
+              <CardDescription>
+                Harici servisler için API anahtarları ve entegrasyon bilgilerini yönetin.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <IntegrationSettingsForm />
+            </CardContent>
+          </Card>
+        </TabsContent>
+        {/* Yeni Güvenlik Ayarları Sekmesi */}
+        <TabsContent value="security">
+          <Card>
+            <CardHeader>
+              <CardTitle>Güvenlik Ayarları</CardTitle>
+              <CardDescription>
+                Uygulamanızın temel güvenlik politikalarını yapılandırın.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <SecuritySettingsForm />
             </CardContent>
           </Card>
         </TabsContent>
