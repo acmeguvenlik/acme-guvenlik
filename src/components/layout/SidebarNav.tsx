@@ -145,7 +145,7 @@ export function SidebarNav({ className, ...props }: SidebarNavProps) {
           <Button
             key={item.href}
             asChild
-            variant={isActive ? "secondary" : "ghost"}
+            variant={isActive ? "default" : "ghost"} {/* Aktif öğe için 'default' varyantı kullanıldı */}
             className="justify-start"
           >
             <Link to={item.href}>
