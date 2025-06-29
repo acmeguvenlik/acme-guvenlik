@@ -11,15 +11,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { showSuccess, showError } from "@/utils/toast";
+import { showSuccess } from "@/utils/toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
-import { dummyDealers } from "@/data/dummyDealers"; // dummyDealers import edildi
-import { dummyTransactions, Transaction } from "@/data/dummyTransactions"; // dummyTransactions import edildi
 
 const formSchema = z.object({
   invoiceNumber: z.string().min(3, {
@@ -40,7 +38,7 @@ const formSchema = z.object({
 });
 
 interface AddInvoiceFormProps {
-  onSuccess?: (newInvoice: z.infer<typeof formSchema> & { id: string }) => void;
+  onSuccess?: () => void;
 }
 
 export function AddInvoiceForm({ onSuccess }: AddInvoiceFormProps) {
@@ -56,36 +54,10 @@ export function AddInvoiceForm({ onSuccess }: AddInvoiceFormProps) {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const newInvoiceId = `INV-${Date.now()}`;
-    const newInvoice = { ...values, id: newInvoiceId };
-
-    // Bayiyi bul ve bakiyesini güncelle
-    const dealer = dummyDealers.find(d => d.name === values.dealerName);
-    if (dealer) {
-      // Fatura tutarı bakiyeden düşülür
-      dealer.balance -= values.amount;
-
-      // Yeni işlem kaydı oluştur
-      const newTransaction: Transaction = {
-        id: `TRN-${Date.now()}`,
-        dealerId: dealer.id!, // Bayi ID'si mevcut olmalı
-        type: "Fatura",
-        amount: -values.amount, // Fatura olduğu için negatif tutar
-        description: `${values.invoiceNumber} numaralı fatura`,
-        date: values.invoiceDate,
-      };
-      dummyTransactions.push(newTransaction); // Global dummy listeye ekle
-
-      showSuccess("Fatura başarıyla eklendi ve bayi bakiyesi güncellendi!");
-      console.log("Yeni fatura verileri:", newInvoice);
-      console.log("Güncellenmiş bayi bakiyesi:", dealer.name, dealer.balance);
-    } else {
-      showError(`Bayi "${values.dealerName}" bulunamadı. Fatura eklendi ancak bakiye güncellenemedi.`);
-      console.warn("Yeni fatura verileri (bakiye güncellenmedi):", newInvoice);
-    }
-    
+    console.log("Yeni fatura verileri:", values);
+    showSuccess("Fatura başarıyla eklendi!");
     form.reset();
-    onSuccess?.(newInvoice);
+    onSuccess?.();
   }
 
   return (

@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { LayoutDashboard, Users, Package, ReceiptText, ShoppingCart, User, Settings, UserCog, BarChart, Megaphone, TicketIcon, Bell, Rss, HelpCircle, MessageSquareText } from "lucide-react"; // MessageSquareText iconu eklendi
+import { LayoutDashboard, Users, Package, ReceiptText, ShoppingCart, User, Settings, UserCog, BarChart, Megaphone, TicketIcon, Bell, Rss } from "lucide-react"; // Rss iconu eklendi
 import { useAuth } from "@/context/AuthContext";
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
@@ -64,19 +64,9 @@ export function SidebarNav({ className, ...props }: SidebarNavProps) {
       icon: Bell,
     },
     {
-      title: "Blog",
+      title: "Blog", // Yeni Blog menüsü (Admin)
       href: "/blog",
       icon: Rss,
-    },
-    {
-      title: "Sıkça Sorulan Sorular",
-      href: "/faq",
-      icon: HelpCircle,
-    },
-    {
-      title: "Mesajlar", // Yeni Mesajlar menüsü
-      href: "/messages",
-      icon: MessageSquareText,
     },
     {
       title: "Ayarlar",
@@ -122,19 +112,9 @@ export function SidebarNav({ className, ...props }: SidebarNavProps) {
       icon: Bell,
     },
     {
-      title: "Blog",
+      title: "Blog", // Yeni Blog menüsü (Bayi)
       href: "/blog",
       icon: Rss,
-    },
-    {
-      title: "Sıkça Sorulan Sorular",
-      href: "/faq",
-      icon: HelpCircle,
-    },
-    {
-      title: "Mesajlar", // Yeni Mesajlar menüsü
-      href: "/messages",
-      icon: MessageSquareText,
     },
     {
       title: "Profilim",

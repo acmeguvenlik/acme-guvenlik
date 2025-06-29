@@ -3,38 +3,25 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { PlusCircle, Package, Boxes, Edit, Trash2 } from "lucide-react"; // Trash2 iconu eklendi
+import { PlusCircle, Package, Boxes, Edit } from "lucide-react"; // Edit iconu eklendi
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AddStockForm } from "@/components/stock/AddStockForm";
 import { dummyProducts, Product } from "@/data/dummyProducts";
 import { Link } from "react-router-dom";
-import { showSuccess } from "@/utils/toast"; // showSuccess import edildi
 
 export const StockPage = () => {
   const [stockItems, setStockItems] = useState<Product[]>(dummyProducts);
   const [searchTerm, setSearchTerm] = useState("");
   const [isAddStockDialogOpen, setIsAddStockDialogOpen] = useState(false);
+  // isEditStockDialogOpen ve selectedProduct state'leri kaldırıldı
 
   const handleAddStockSuccess = (newProduct: Product) => {
     const newId = `STK-${String(stockItems.length + 1).padStart(3, '0')}`;
-    const productWithId = { ...newProduct, id: newId, productCode: newId };
-    dummyProducts.push(productWithId); // Dummy veriye ekle
-    setStockItems((prev) => [...prev, productWithId]);
+    setStockItems((prev) => [...prev, { ...newProduct, id: newId, productCode: newId }]);
     setIsAddStockDialogOpen(false);
   };
 
-  const handleDeleteProduct = (id: string) => {
-    if (window.confirm("Bu ürünü silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.")) {
-      // dummyProducts dizisinden ürünü kaldır
-      const index = dummyProducts.findIndex(p => p.id === id);
-      if (index !== -1) {
-        dummyProducts.splice(index, 1);
-      }
-      // State'i güncelle
-      setStockItems((prev) => prev.filter((item) => item.id !== id));
-      showSuccess("Ürün başarıyla silindi!");
-    }
-  };
+  // handleEditStockSuccess ve openEditDialog fonksiyonları kaldırıldı
 
   const filteredStockItems = stockItems.filter(item =>
     item.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -133,18 +120,10 @@ export const StockPage = () => {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="mr-2" // Sil butonu ile arasına boşluk bırakmak için
                       >
                         <Edit className="h-4 w-4" />
                       </Button>
                     </Link>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => handleDeleteProduct(item.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

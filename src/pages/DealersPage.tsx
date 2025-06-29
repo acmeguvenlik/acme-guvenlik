@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,13 +10,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { PlusCircle, Edit, Trash2, Wallet, TrendingUp, TrendingDown, ListChecks, Download } from "lucide-react";
+import { PlusCircle, Edit, Trash2, Wallet, TrendingUp, TrendingDown, ListChecks } from "lucide-react"; // ListChecks import edildi
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AddDealerForm, DealerFormData } from "@/components/dealers/AddDealerForm";
 import { showError, showSuccess } from "@/utils/toast";
-import { Link } from "react-router-dom";
-import { dummyDealers as initialDummyDealers } from "@/data/dummyDealers";
-import { exportToCsv } from "@/utils/export";
+import { Link } from "react-router-dom"; // Link import edildi
+import { dummyDealers as initialDummyDealers } from "@/data/dummyDealers"; // dummyDealers yeni konumundan import edildi
 
 const DealersPage = () => {
   const [dealers, setDealers] = useState<DealerFormData[]>(initialDummyDealers);
@@ -65,20 +64,6 @@ const DealersPage = () => {
   const positiveBalance = filteredDealers.filter(acc => acc.balance >= 0).reduce((sum, acc) => sum + acc.balance, 0);
   const negativeBalance = filteredDealers.filter(acc => acc.balance < 0).reduce((sum, acc) => sum + acc.balance, 0);
 
-  const handleExportCsv = () => {
-    const columns = [
-      { header: "Bayi Kodu", key: "id" },
-      { header: "Bayi Adı", key: "name" },
-      { header: "Yetkili Kişi", key: "contact" },
-      { header: "Telefon", key: "phone" },
-      { header: "E-posta", key: "email" },
-      { header: "Hesap Tipi", key: "accountType" },
-      { header: "Bakiye", key: "balance" },
-    ];
-    exportToCsv(filteredDealers, "bayi_listesi", columns);
-    showSuccess("Bayi listesi CSV olarak dışa aktarıldı!");
-  };
-
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">Bayiler ve Cari Hesaplar Yönetimi</h1>
@@ -124,10 +109,6 @@ const DealersPage = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <Button variant="outline" onClick={handleExportCsv}>
-              <Download className="mr-2 h-4 w-4" />
-              Dışa Aktar (CSV)
-            </Button>
             <Dialog open={isAddDealerDialogOpen} onOpenChange={setIsAddDealerDialogOpen}>
               <DialogTrigger asChild>
                 <Button>
@@ -206,7 +187,7 @@ const DealersPage = () => {
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Bayiyi Düzenle</CardTitle>
+            <DialogTitle>Bayiyi Düzenle</DialogTitle>
             <DialogDescription>
               Bayi bilgilerini güncellemek için aşağıdaki formu doldurun.
             </DialogDescription>

@@ -14,7 +14,13 @@ import { PlusCircle, Edit, Trash2, Users } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AddUserForm, UserFormData } from "@/components/users/AddUserForm";
 import { showSuccess } from "@/utils/toast";
-import { dummyUsers as initialDummyUsers } from "@/data/dummyUsers"; // dummyUsers yeni konumundan import edildi
+
+// Örnek kullanıcı verileri
+const initialDummyUsers: UserFormData[] = [
+  { id: "U001", username: "admin", email: "admin@acme.com", role: "admin", password: "admin" },
+  { id: "U002", username: "dealer", email: "dealer@acme.com", role: "dealer", password: "dealer" },
+  { id: "U003", username: "viewer1", email: "viewer1@acme.com", role: "viewer", password: "viewer" },
+];
 
 const UsersPage = () => {
   const [users, setUsers] = useState<UserFormData[]>(initialDummyUsers);

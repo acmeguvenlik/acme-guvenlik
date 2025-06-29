@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { showSuccess } from "@/utils/toast";
 import { Product } from "@/data/dummyProducts";
-import { RichTextEditor } from "@/components/editor/RichTextEditor"; // RichTextEditor import edildi
 
 const formSchema = z.object({
   id: z.string().optional(),
@@ -181,11 +180,7 @@ export function AddStockForm({ initialData, onSuccess }: AddStockFormProps) {
             <FormItem>
               <FormLabel>Açıklama (Opsiyonel)</FormLabel>
               <FormControl>
-                <RichTextEditor // Textarea yerine RichTextEditor kullanıldı
-                  value={field.value}
-                  onChange={field.onChange}
-                  placeholder="Ürün hakkında detaylı bilgi..."
-                />
+                <Textarea placeholder="Ürün hakkında detaylı bilgi..." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -316,7 +311,7 @@ export function AddStockForm({ initialData, onSuccess }: AddStockFormProps) {
         />
 
         <Button type="submit" className="w-full">
-          {initialData ? "Stok Güncelle" : "Stok Ekle"}
+          {initialData?.id ? "Stok Güncelle" : "Stok Ekle"}
         </Button>
       </form>
     </Form>

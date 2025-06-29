@@ -16,16 +16,7 @@ import { AddInvoiceForm } from "@/components/invoices/AddInvoiceForm";
 import { format } from "date-fns";
 
 // Örnek fatura verileri
-interface Invoice {
-  id: string;
-  invoiceNumber: string;
-  dealerName: string;
-  amount: number;
-  invoiceDate: Date;
-  status: "Ödendi" | "Beklemede" | "İptal Edildi";
-}
-
-const initialDummyInvoices: Invoice[] = [
+const dummyInvoices = [
   { id: "INV-2024-001", invoiceNumber: "INV-2024-001", dealerName: "ABC Ticaret", amount: 1500.00, invoiceDate: new Date("2024-07-01"), status: "Ödendi" },
   { id: "INV-2024-002", invoiceNumber: "INV-2024-002", dealerName: "XYZ Pazarlama", amount: 250.50, invoiceDate: new Date("2024-07-05"), status: "Beklemede" },
   { id: "INV-2024-003", invoiceNumber: "INV-2024-003", dealerName: "Güneş Elektronik", amount: 750.00, invoiceDate: new Date("2024-07-10"), status: "Ödendi" },
@@ -34,17 +25,16 @@ const initialDummyInvoices: Invoice[] = [
 ];
 
 const InvoicesPage = () => {
-  const [invoices, setInvoices] = useState<Invoice[]>(initialDummyInvoices);
   const [isAddInvoiceDialogOpen, setIsAddInvoiceDialogOpen] = useState(false);
 
-  const handleAddInvoiceSuccess = (newInvoice: Invoice) => {
-    setInvoices((prev) => [...prev, newInvoice]); // Yeni faturayı listeye ekle
+  const handleAddInvoiceSuccess = () => {
     setIsAddInvoiceDialogOpen(false);
+    // Burada yeni eklenen faturayı listeye eklemek için bir state güncellemesi veya veri çekme işlemi yapılabilir.
   };
 
-  const totalInvoices = invoices.length;
-  const totalAmount = invoices.reduce((sum, invoice) => sum + invoice.amount, 0);
-  const pendingInvoices = invoices.filter(invoice => invoice.status === "Beklemede").length;
+  const totalInvoices = dummyInvoices.length;
+  const totalAmount = dummyInvoices.reduce((sum, invoice) => sum + invoice.amount, 0);
+  const pendingInvoices = dummyInvoices.filter(invoice => invoice.status === "Beklemede").length;
 
   return (
     <div className="space-y-6">
@@ -120,7 +110,7 @@ const InvoicesPage = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {invoices.map((invoice) => (
+              {dummyInvoices.map((invoice) => (
                 <TableRow key={invoice.id}>
                   <TableCell className="font-medium">{invoice.invoiceNumber}</TableCell>
                   <TableCell>{invoice.dealerName}</TableCell>

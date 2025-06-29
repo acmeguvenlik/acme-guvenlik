@@ -11,11 +11,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { showSuccess, showError } from "@/utils/toast";
+import { showSuccess } from "@/utils/toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { dummyDealers } from "@/data/dummyDealers"; // dummyDealers import edildi
-import { dummyTransactions, Transaction } from "@/data/dummyTransactions"; // dummyTransactions import edildi
 
 // Dummy ürün listesi (şimdilik stok sayfasından alınmıştır, daha sonra API'den gelebilir)
 const dummyProducts = [
@@ -36,7 +34,7 @@ const formSchema = z.object({
 });
 
 interface AddOrderFormProps {
-  onSuccess?: (newOrder: z.infer<typeof formSchema> & { id: string; productName: string; totalPrice: number; dealerId: string; dealerName: string; orderNumber: string; orderDate: Date; status: string; }) => void;
+  onSuccess?: () => void;
 }
 
 export function AddOrderForm({ onSuccess }: AddOrderFormProps) {
@@ -51,58 +49,14 @@ export function AddOrderForm({ onSuccess }: AddOrderFormProps) {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const selectedProduct = dummyProducts.find(p => p.id === values.productId);
-    if (!selectedProduct) {
-      showError("Seçilen ürün bulunamadı.");
-      return;
-    }
-
-    const totalPrice = selectedProduct.price * values.quantity;
-    const newOrderId = `ORD-${Date.now()}`;
-    const orderNumber = `ORD-${new Date().getFullYear()}-${String(dummyTransactions.length + 1).padStart(3, '0')}`; // Basit bir sipariş numarası
-
-    // Bu formun bayi paneli için kullanıldığı varsayıldığından, şimdilik sabit bir bayi ID'si kullanıyoruz.
-    // Gerçek uygulamada bu, giriş yapan bayinin ID'si olmalıdır.
-    const currentDealerId = "D001"; 
-    const currentDealer = dummyDealers.find(d => d.id === currentDealerId);
-
-    if (!currentDealer) {
-      showError("Giriş yapan bayi bilgisi bulunamadı. Sipariş oluşturulamadı.");
-      return;
-    }
-
-    const newOrder = {
-      id: newOrderId,
-      orderNumber: orderNumber,
-      productName: selectedProduct.name,
-      quantity: values.quantity,
-      totalPrice: totalPrice,
-      orderDate: new Date(),
-      status: "Beklemede", // Yeni sipariş varsayılan olarak beklemede
-      dealerId: currentDealer.id!,
-      dealerName: currentDealer.name,
+    console.log("Yeni sipariş verileri:", {
       ...values,
-    };
-
-    // Bayi bakiyesini güncelle (sipariş bir borç oluşturur)
-    currentDealer.balance -= totalPrice;
-
-    // Yeni işlem kaydı oluştur
-    const newTransaction: Transaction = {
-      id: `TRN-${Date.now()}`,
-      dealerId: currentDealer.id!,
-      type: "Borç", // Sipariş olduğu için borç tipi
-      amount: -totalPrice, // Borç olduğu için negatif tutar
-      description: `${newOrder.orderNumber} numaralı sipariş (${selectedProduct.name} x ${values.quantity})`,
-      date: new Date(),
-    };
-    dummyTransactions.push(newTransaction); // Global dummy listeye ekle
-
-    showSuccess("Sipariş başarıyla oluşturuldu ve bayi bakiyesi güncellendi!");
-    console.log("Yeni sipariş verileri:", newOrder);
-    console.log("Güncellenmiş bayi bakiyesi:", currentDealer.name, currentDealer.balance);
-    
+      productName: selectedProduct?.name,
+      totalPrice: selectedProduct ? selectedProduct.price * values.quantity : 0,
+    });
+    showSuccess("Sipariş başarıyla oluşturuldu!");
     form.reset();
-    onSuccess?.(newOrder);
+    onSuccess?.();
   }
 
   return (

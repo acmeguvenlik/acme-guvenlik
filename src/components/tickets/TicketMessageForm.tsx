@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { showSuccess } from "@/utils/toast";
-import { RichTextEditor } from "@/components/editor/RichTextEditor"; // RichTextEditor import edildi
 
 const formSchema = z.object({
   content: z.string().min(1, "Mesaj boş olamaz."),
@@ -44,11 +43,7 @@ export function TicketMessageForm({ onSendMessage }: TicketMessageFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <RichTextEditor // Textarea yerine RichTextEditor kullanıldı
-                  value={field.value}
-                  onChange={field.onChange}
-                  placeholder="Mesajınızı buraya yazın..."
-                />
+                <Textarea placeholder="Mesajınızı buraya yazın..." rows={3} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
