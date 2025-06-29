@@ -1,7 +1,8 @@
+import React from "react"; // React import edildi
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { LayoutDashboard, Users, Package, ReceiptText, ShoppingCart, User, Settings, UserCog, BarChart, Megaphone, TicketIcon, Bell, Rss } from "lucide-react"; // Rss iconu eklendi
+import { LayoutDashboard, Users, Package, ReceiptText, ShoppingCart, User, Settings, UserCog, BarChart, Megaphone, TicketIcon, Bell, Rss } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
@@ -64,7 +65,7 @@ export function SidebarNav({ className, ...props }: SidebarNavProps) {
       icon: Bell,
     },
     {
-      title: "Blog", // Yeni Blog menüsü (Admin)
+      title: "Blog",
       href: "/blog",
       icon: Rss,
     },
@@ -112,7 +113,7 @@ export function SidebarNav({ className, ...props }: SidebarNavProps) {
       icon: Bell,
     },
     {
-      title: "Blog", // Yeni Blog menüsü (Bayi)
+      title: "Blog",
       href: "/blog",
       icon: Rss,
     },
@@ -145,7 +146,7 @@ export function SidebarNav({ className, ...props }: SidebarNavProps) {
           <Button
             key={item.href}
             asChild
-            variant={isActive ? "default" : "ghost"} {/* Aktif öğe için 'default' varyantı kullanıldı */}
+            variant={isActive ? "default" : "ghost"}
             className="justify-start"
           >
             <Link to={item.href}>
