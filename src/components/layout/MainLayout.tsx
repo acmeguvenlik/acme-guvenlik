@@ -1,11 +1,12 @@
+import React from "react"; // React import edildi
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 import { SidebarNav } from "./SidebarNav";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Header } from "./Header";
 import { useAuth } from "@/context/AuthContext";
-import { useIsMobile } from "@/hooks/use-mobile"; // useIsMobile hook'unu import et
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"; // Sheet bileşenlerini import et
-import { Menu } from "lucide-react"; // Hamburger menü ikonu için
+import { useIsMobile } from "@/hooks/use-mobile";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Menu } from "lucide-react";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -13,8 +14,8 @@ interface MainLayoutProps {
 
 export function MainLayout({ children }: MainLayoutProps) {
   const { isAuthenticated } = useAuth();
-  const isMobile = useIsMobile(); // Mobil olup olmadığını kontrol et
-  const [isSheetOpen, setIsSheetOpen] = React.useState(false); // Sheet'in açık/kapalı durumu
+  const isMobile = useIsMobile();
+  const [isSheetOpen, setIsSheetOpen] = React.useState(false);
 
   if (!isAuthenticated) {
     return null;
@@ -22,7 +23,7 @@ export function MainLayout({ children }: MainLayoutProps) {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header onMenuClick={() => setIsSheetOpen(true)} /> {/* Header'a menü tıklama prop'u ekle */}
+      <Header onMenuClick={() => setIsSheetOpen(true)} />
       {isMobile ? (
         <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
           <SheetContent side="left" className="p-0 w-64">
@@ -34,7 +35,7 @@ export function MainLayout({ children }: MainLayoutProps) {
               <MadeWithDyad />
             </div>
           </SheetContent>
-          <div className="flex-1 overflow-auto p-4 sm:p-6"> {/* Mobil padding ayarı */}
+          <div className="flex-1 overflow-auto p-4 sm:p-6">
             {children}
           </div>
         </Sheet>
