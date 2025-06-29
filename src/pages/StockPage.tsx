@@ -3,11 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { PlusCircle, Package, Boxes, Edit } from "lucide-react"; // Edit iconu eklendi
+import { PlusCircle, Package, Boxes, Edit } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AddStockForm } from "@/components/stock/AddStockForm";
 import { dummyProducts, Product } from "@/data/dummyProducts";
 import { Link } from "react-router-dom";
+import { EmptyState } from "@/components/EmptyState"; // EmptyState import edildi
 
 export const StockPage = () => {
   const [stockItems, setStockItems] = useState<Product[]>(dummyProducts);
@@ -88,47 +89,56 @@ export const StockPage = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Stok Kodu</TableHead>
-                <TableHead>Ürün Adı</TableHead>
-                <TableHead>Kategori</TableHead>
-                <TableHead className="text-right">Adet</TableHead>
-                <TableHead className="text-right">Birim Fiyat</TableHead>
-                <TableHead className="text-right">İşlemler</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredStockItems.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell className="font-medium">
-                    <Link to={`/product/${item.id}`} className="text-blue-600 hover:underline">
-                      {item.productCode}
-                    </Link>
-                  </TableCell>
-                  <TableCell>
-                    <Link to={`/product/${item.id}`} className="text-blue-600 hover:underline">
-                      {item.productName}
-                    </Link>
-                  </TableCell>
-                  <TableCell>{item.category}</TableCell>
-                  <TableCell className="text-right">{item.quantity}</TableCell>
-                  <TableCell className="text-right">{item.price.toFixed(2)} ₺</TableCell>
-                  <TableCell className="text-right">
-                    <Link to={`/stock/edit/${item.id}`}>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                    </Link>
-                  </TableCell>
+          {filteredStockItems.length > 0 ? (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Stok Kodu</TableHead>
+                  <TableHead>Ürün Adı</TableHead>
+                  <TableHead>Kategori</TableHead>
+                  <TableHead className="text-right">Adet</TableHead>
+                  <TableHead className="text-right">Birim Fiyat</TableHead>
+                  <TableHead className="text-right">İşlemler</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {filteredStockItems.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell className="font-medium">
+                      <Link to={`/product/${item.id}`} className="text-blue-600 hover:underline">
+                        {item.productCode}
+                      </Link>
+                    </TableCell>
+                    <TableCell>
+                      <Link to={`/product/${item.id}`} className="text-blue-600 hover:underline">
+                        {item.productName}
+                      </Link>
+                    </TableCell>
+                    <TableCell>{item.category}</TableCell>
+                    <TableCell className="text-right">{item.quantity}</TableCell>
+                    <TableCell className="text-right">{item.price.toFixed(2)} ₺</TableCell>
+                    <TableCell className="text-right">
+                      <Link to={`/stock/edit/${item.id}`}>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          ) : (
+            <EmptyState
+              title="Ürün Bulunamadı"
+              description="Aradığınız kriterlere uygun ürün bulunamadı. Yeni bir ürün ekleyebilir veya arama teriminizi değiştirebilirsiniz."
+              buttonText="Yeni Stok Ekle"
+              onButtonClick={() => setIsAddStockDialogOpen(true)}
+            />
+          )}
         </CardContent>
       </Card>
     </div>

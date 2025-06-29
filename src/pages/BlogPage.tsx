@@ -8,11 +8,12 @@ import { format } from "date-fns";
 import { Search, Tag, CalendarDays, User, BookOpen, PlusCircle, Edit, Trash2 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { showSuccess } from "@/utils/toast";
-import { useAuth } from "@/context/AuthContext"; // useAuth hook'unu import et
+import { useAuth } from "@/context/AuthContext";
+import { EmptyState } from "@/components/EmptyState"; // EmptyState import edildi
 
 const BlogPage = () => {
-  const { userRole } = useAuth(); // Kullanıcı rolünü al
-  const [blogPosts, setBlogPosts] = useState<BlogPost[]>(dummyBlogPosts); // dummyBlogPosts'u state olarak yönet
+  const { userRole } = useAuth();
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>(dummyBlogPosts);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterCategory, setFilterCategory] = useState("Tümü");
   const [filterTag, setFilterTag] = useState("Tümü");
@@ -31,7 +32,6 @@ const BlogPage = () => {
 
   const handleDeleteBlogPost = (id: string) => {
     if (window.confirm("Bu blog yazısını silmek istediğinizden emin misiniz?")) {
-      // dummyBlogPosts'u doğrudan güncelle ve state'i yeni referansla ayarla
       const index = dummyBlogPosts.findIndex(p => p.id === id);
       if (index !== -1) {
         dummyBlogPosts.splice(index, 1);
@@ -66,7 +66,7 @@ const BlogPage = () => {
           <h1 className="text-3xl font-bold">Blog Yazıları</h1>
           <p className="text-gray-600 dark:text-gray-400">En son güvenlik trendleri, ipuçları ve sektör haberleri.</p>
         </div>
-        {userRole === 'admin' && ( // Sadece admin rolü için ekleme butonu
+        {userRole === 'admin' && (
           <Link to="/blog/add">
             <Button>
               <PlusCircle className="mr-2 h-4 w-4" />
@@ -146,7 +146,7 @@ const BlogPage = () => {
                       <BookOpen className="h-4 w-4 mr-2" /> Yazıyı Oku
                     </Button>
                   </Link>
-                  {userRole === 'admin' && ( // Sadece admin rolü için düzenleme ve silme butonları
+                  {userRole === 'admin' && (
                     <div className="flex space-x-2">
                       <Link to={`/blog/edit/${post.id}`}>
                         <Button variant="ghost" size="sm">
@@ -163,8 +163,13 @@ const BlogPage = () => {
             </Card>
           ))
         ) : (
-          <div className="col-span-full text-center text-muted-foreground py-8">
-            Gösterilecek blog yazısı bulunmamaktadır.
+          <div className="col-span-full">
+            <EmptyState
+              title="Blog Yazısı Bulunamadı"
+              description="Aradığınız kriterlere uygun blog yazısı bulunamadı. Yeni bir yazı ekleyebilir veya arama/filtreleme terimlerinizi değiştirebilirsiniz."
+              buttonText={userRole === 'admin' ? "Yeni Yazı Ekle" : undefined}
+              onButtonClick={userRole === 'admin' ? () => window.location.href = "/blog/add" : undefined}
+            />
           </div>
         )}
       </div>

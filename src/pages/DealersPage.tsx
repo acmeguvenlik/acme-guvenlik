@@ -10,12 +10,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { PlusCircle, Edit, Trash2, Wallet, TrendingUp, TrendingDown, ListChecks } from "lucide-react"; // ListChecks import edildi
+import { PlusCircle, Edit, Trash2, Wallet, TrendingUp, TrendingDown, ListChecks } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AddDealerForm, DealerFormData } from "@/components/dealers/AddDealerForm";
 import { showError, showSuccess } from "@/utils/toast";
-import { Link } from "react-router-dom"; // Link import edildi
-import { dummyDealers as initialDummyDealers } from "@/data/dummyDealers"; // dummyDealers yeni konumundan import edildi
+import { Link } from "react-router-dom";
+import { dummyDealers as initialDummyDealers } from "@/data/dummyDealers";
+import { EmptyState } from "@/components/EmptyState"; // EmptyState import edildi
 
 const DealersPage = () => {
   const [dealers, setDealers] = useState<DealerFormData[]>(initialDummyDealers);
@@ -129,57 +130,66 @@ const DealersPage = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Bayi Kodu</TableHead>
-                <TableHead>Bayi Adı</TableHead>
-                <TableHead>Yetkili Kişi</TableHead>
-                <TableHead>Telefon</TableHead>
-                <TableHead>E-posta</TableHead>
-                <TableHead>Hesap Tipi</TableHead>
-                <TableHead className="text-right">Bakiye</TableHead>
-                <TableHead className="text-right">İşlemler</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredDealers.map((dealer) => (
-                <TableRow key={dealer.id}>
-                  <TableCell className="font-medium">{dealer.id}</TableCell>
-                  <TableCell>{dealer.name}</TableCell>
-                  <TableCell>{dealer.contact}</TableCell>
-                  <TableCell>{dealer.phone}</TableCell>
-                  <TableCell>{dealer.email}</TableCell>
-                  <TableCell>{dealer.accountType}</TableCell>
-                  <TableCell className={`text-right ${dealer.balance < 0 ? 'text-red-600' : 'text-green-600'}`}>
-                    {dealer.balance.toFixed(2)} ₺
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Link to={`/dealers/${dealer.id}/transactions`}>
-                      <Button variant="outline" size="sm" className="mr-2">
-                        <ListChecks className="h-4 w-4" />
-                      </Button>
-                    </Link>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="mr-2"
-                      onClick={() => openEditDialog(dealer)}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => handleDeleteDealer(dealer.id!)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </TableCell>
+          {filteredDealers.length > 0 ? (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Bayi Kodu</TableHead>
+                  <TableHead>Bayi Adı</TableHead>
+                  <TableHead>Yetkili Kişi</TableHead>
+                  <TableHead>Telefon</TableHead>
+                  <TableHead>E-posta</TableHead>
+                  <TableHead>Hesap Tipi</TableHead>
+                  <TableHead className="text-right">Bakiye</TableHead>
+                  <TableHead className="text-right">İşlemler</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {filteredDealers.map((dealer) => (
+                  <TableRow key={dealer.id}>
+                    <TableCell className="font-medium">{dealer.id}</TableCell>
+                    <TableCell>{dealer.name}</TableCell>
+                    <TableCell>{dealer.contact}</TableCell>
+                    <TableCell>{dealer.phone}</TableCell>
+                    <TableCell>{dealer.email}</TableCell>
+                    <TableCell>{dealer.accountType}</TableCell>
+                    <TableCell className={`text-right ${dealer.balance < 0 ? 'text-red-600' : 'text-green-600'}`}>
+                      {dealer.balance.toFixed(2)} ₺
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Link to={`/dealers/${dealer.id}/transactions`}>
+                        <Button variant="outline" size="sm" className="mr-2">
+                          <ListChecks className="h-4 w-4" />
+                        </Button>
+                      </Link>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="mr-2"
+                        onClick={() => openEditDialog(dealer)}
+                      >
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => handleDeleteDealer(dealer.id!)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          ) : (
+            <EmptyState
+              title="Bayi Bulunamadı"
+              description="Aradığınız kriterlere uygun bayi bulunamadı. Yeni bir bayi ekleyebilir veya arama teriminizi değiştirebilirsiniz."
+              buttonText="Yeni Bayi Ekle"
+              onButtonClick={() => setIsAddDealerDialogOpen(true)}
+            />
+          )}
         </CardContent>
       </Card>
 
