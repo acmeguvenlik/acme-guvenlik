@@ -115,18 +115,18 @@ const AdminPagesPage = () => {
       </div>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0 pb-2">
           <CardTitle className="text-xl font-semibold">Sayfa Listesi</CardTitle>
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2 w-full sm:w-auto">
             <Input
               placeholder="Sayfa ara..."
-              className="max-w-sm"
+              className="max-w-sm w-full"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             <Dialog open={isAddPageDialogOpen} onOpenChange={setIsAddPageDialogOpen}>
               <DialogTrigger asChild>
-                <Button>
+                <Button className="w-full sm:w-auto">
                   <PlusCircle className="mr-2 h-4 w-4" />
                   Yeni Sayfa Ekle
                 </Button>
@@ -145,50 +145,52 @@ const AdminPagesPage = () => {
         </CardHeader>
         <CardContent>
           {filteredPages.length > 0 ? (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Başlık</TableHead>
-                  <TableHead>URL Slug</TableHead>
-                  <TableHead>Üst Sayfa</TableHead>
-                  <TableHead>Hedef Kitle</TableHead>
-                  <TableHead>Son Güncelleme</TableHead>
-                  <TableHead className="text-right">İşlemler</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredPages.map((page) => (
-                  <TableRow key={page.id}>
-                    <TableCell className="font-medium">
-                      <Link to={`/pages/${page.slug}`} className="text-blue-600 hover:underline">
-                        {page.title}
-                      </Link>
-                    </TableCell>
-                    <TableCell>/pages/{page.slug}</TableCell>
-                    <TableCell>{getParentTitle(page.parentId)}</TableCell>
-                    <TableCell>{page.targetRole === 'all' ? 'Tüm Kullanıcılar' : page.targetRole === 'admin' ? 'Yöneticiler' : 'Bayiler'}</TableCell>
-                    <TableCell>{format(page.updatedAt, "dd.MM.yyyy HH:mm")}</TableCell>
-                    <TableCell className="text-right">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="mr-2"
-                        onClick={() => openEditDialog(page)}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => handleDeletePage(page.id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </TableCell>
+            <div className="overflow-x-auto"> {/* Tabloyu duyarlı hale getir */}
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Başlık</TableHead>
+                    <TableHead>URL Slug</TableHead>
+                    <TableHead>Üst Sayfa</TableHead>
+                    <TableHead>Hedef Kitle</TableHead>
+                    <TableHead>Son Güncelleme</TableHead>
+                    <TableHead className="text-right">İşlemler</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {filteredPages.map((page) => (
+                    <TableRow key={page.id}>
+                      <TableCell className="font-medium">
+                        <Link to={`/pages/${page.slug}`} className="text-blue-600 hover:underline">
+                          {page.title}
+                        </Link>
+                      </TableCell>
+                      <TableCell>/pages/{page.slug}</TableCell>
+                      <TableCell>{getParentTitle(page.parentId)}</TableCell>
+                      <TableCell>{page.targetRole === 'all' ? 'Tüm Kullanıcılar' : page.targetRole === 'admin' ? 'Yöneticiler' : 'Bayiler'}</TableCell>
+                      <TableCell>{format(page.updatedAt, "dd.MM.yyyy HH:mm")}</TableCell>
+                      <TableCell className="text-right">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="mr-2"
+                          onClick={() => openEditDialog(page)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => handleDeletePage(page.id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           ) : (
             <EmptyState
               title="Sayfa Bulunamadı"

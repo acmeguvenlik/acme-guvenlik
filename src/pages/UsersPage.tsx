@@ -14,7 +14,7 @@ import { PlusCircle, Edit, Trash2, Users } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AddUserForm, UserFormData } from "@/components/users/AddUserForm";
 import { showSuccess } from "@/utils/toast";
-import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
+import { SeoHead } from "@/components/seo/SeoHead";
 
 // Örnek kullanıcı verileri
 const initialDummyUsers: UserFormData[] = [
@@ -83,18 +83,18 @@ const UsersPage = () => {
       </div>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0 pb-2">
           <CardTitle className="text-xl font-semibold">Kullanıcı Listesi</CardTitle>
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2 w-full sm:w-auto">
             <Input
               placeholder="Kullanıcı ara..."
-              className="max-w-sm"
+              className="max-w-sm w-full"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             <Dialog open={isAddUserDialogOpen} onOpenChange={setIsAddUserDialogOpen}>
               <DialogTrigger asChild>
-                <Button>
+                <Button className="w-full sm:w-auto">
                   <PlusCircle className="mr-2 h-4 w-4" />
                   Yeni Kullanıcı Ekle
                 </Button>
@@ -112,44 +112,46 @@ const UsersPage = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>ID</TableHead>
-                <TableHead>Kullanıcı Adı</TableHead>
-                <TableHead>E-posta</TableHead>
-                <TableHead>Rol</TableHead>
-                <TableHead className="text-right">İşlemler</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredUsers.map((user) => (
-                <TableRow key={user.id}>
-                  <TableCell className="font-medium">{user.id}</TableCell>
-                  <TableCell>{user.username}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.role}</TableCell>
-                  <TableCell className="text-right">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="mr-2"
-                      onClick={() => openEditDialog(user)}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => handleDeleteUser(user.id!)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </TableCell>
+          <div className="overflow-x-auto"> {/* Tabloyu duyarlı hale getir */}
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>ID</TableHead>
+                  <TableHead>Kullanıcı Adı</TableHead>
+                  <TableHead>E-posta</TableHead>
+                  <TableHead>Rol</TableHead>
+                  <TableHead className="text-right">İşlemler</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {filteredUsers.map((user) => (
+                  <TableRow key={user.id}>
+                    <TableCell className="font-medium">{user.id}</TableCell>
+                    <TableCell>{user.username}</TableCell>
+                    <TableCell>{user.email}</TableCell>
+                    <TableCell>{user.role}</TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="mr-2"
+                        onClick={() => openEditDialog(user)}
+                      >
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => handleDeleteUser(user.id!)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
 

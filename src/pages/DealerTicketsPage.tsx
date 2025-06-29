@@ -17,7 +17,7 @@ import { dummyTickets, Ticket } from "@/data/dummyTickets";
 import { useAuth } from "@/context/AuthContext";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
-import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
+import { SeoHead } from "@/components/seo/SeoHead";
 
 const DealerTicketsPage = () => {
   const { userRole } = useAuth();
@@ -84,18 +84,18 @@ const DealerTicketsPage = () => {
       </div>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0 pb-2">
           <CardTitle className="text-xl font-semibold">Taleplerim Listesi</CardTitle>
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2 w-full sm:w-auto">
             <Input
               placeholder="Talep ara..."
-              className="max-w-sm"
+              className="max-w-sm w-full"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             <Dialog open={isAddTicketDialogOpen} onOpenChange={setIsAddTicketDialogOpen}>
               <DialogTrigger asChild>
-                <Button>
+                <Button className="w-full sm:w-auto">
                   <PlusCircle className="mr-2 h-4 w-4" />
                   Yeni Talep Oluştur
                 </Button>
@@ -113,36 +113,38 @@ const DealerTicketsPage = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Talep No</TableHead>
-                <TableHead>Konu</TableHead>
-                <TableHead>Öncelik</TableHead>
-                <TableHead>Durum</TableHead>
-                <TableHead>Oluşturulma Tarihi</TableHead>
-                <TableHead className="text-right">İşlemler</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredTickets.map((ticket) => (
-                <TableRow key={ticket.id}>
-                  <TableCell className="font-medium">{ticket.id}</TableCell>
-                  <TableCell>{ticket.subject}</TableCell>
-                  <TableCell>{ticket.priority}</TableCell>
-                  <TableCell>{ticket.status}</TableCell>
-                  <TableCell>{format(ticket.createdAt, "dd.MM.yyyy HH:mm")}</TableCell>
-                  <TableCell className="text-right">
-                    <Link to={`/tickets/${ticket.id}`}>
-                      <Button variant="outline" size="sm">
-                        <MessageSquare className="h-4 w-4 mr-2" /> Detaylar
-                      </Button>
-                    </Link>
-                  </TableCell>
+          <div className="overflow-x-auto"> {/* Tabloyu duyarlı hale getir */}
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Talep No</TableHead>
+                  <TableHead>Konu</TableHead>
+                  <TableHead>Öncelik</TableHead>
+                  <TableHead>Durum</TableHead>
+                  <TableHead>Oluşturulma Tarihi</TableHead>
+                  <TableHead className="text-right">İşlemler</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {filteredTickets.map((ticket) => (
+                  <TableRow key={ticket.id}>
+                    <TableCell className="font-medium">{ticket.id}</TableCell>
+                    <TableCell>{ticket.subject}</TableCell>
+                    <TableCell>{ticket.priority}</TableCell>
+                    <TableCell>{ticket.status}</TableCell>
+                    <TableCell>{format(ticket.createdAt, "dd.MM.yyyy HH:mm")}</TableCell>
+                    <TableCell className="text-right">
+                      <Link to={`/tickets/${ticket.id}`}>
+                        <Button variant="outline" size="sm">
+                          <MessageSquare className="h-4 w-4 mr-2" /> Detaylar
+                        </Button>
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
     </div>

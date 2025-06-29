@@ -15,7 +15,7 @@ import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
+import { SeoHead } from "@/components/seo/SeoHead";
 
 const AdminTicketsPage = () => {
   const [tickets, setTickets] = useState<Ticket[]>(() => [...dummyTickets]);
@@ -86,17 +86,17 @@ const AdminTicketsPage = () => {
       </div>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
+        <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
           <CardTitle>Tüm Talepler Listesi</CardTitle>
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2 w-full sm:w-auto">
             <Input
               placeholder="Talep ara..."
-              className="max-w-sm"
+              className="max-w-sm w-full"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             <Select onValueChange={setFilterStatus} defaultValue="Tümü">
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-full sm:w-[180px]">
                 <SelectValue placeholder="Duruma Göre Filtrele" />
               </SelectTrigger>
               <SelectContent>
@@ -110,46 +110,48 @@ const AdminTicketsPage = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Talep No</TableHead>
-                <TableHead>Konu</TableHead>
-                <TableHead>Bayi Adı</TableHead>
-                <TableHead>Öncelik</TableHead>
-                <TableHead>Durum</TableHead>
-                <TableHead>Son Güncelleme</TableHead>
-                <TableHead className="text-right">İşlemler</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredTickets.length > 0 ? (
-                filteredTickets.map((ticket) => (
-                  <TableRow key={ticket.id}>
-                    <TableCell className="font-medium">{ticket.id}</TableCell>
-                    <TableCell>{ticket.subject}</TableCell>
-                    <TableCell>{ticket.dealerName}</TableCell>
-                    <TableCell>{ticket.priority}</TableCell>
-                    <TableCell>{ticket.status}</TableCell>
-                    <TableCell>{format(ticket.updatedAt, "dd.MM.yyyy HH:mm")}</TableCell>
-                    <TableCell className="text-right">
-                      <Link to={`/tickets/${ticket.id}`}>
-                        <Button variant="outline" size="sm">
-                          <MessageSquare className="h-4 w-4 mr-2" /> Detaylar
-                        </Button>
-                      </Link>
+          <div className="overflow-x-auto"> {/* Tabloyu duyarlı hale getir */}
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Talep No</TableHead>
+                  <TableHead>Konu</TableHead>
+                  <TableHead>Bayi Adı</TableHead>
+                  <TableHead>Öncelik</TableHead>
+                  <TableHead>Durum</TableHead>
+                  <TableHead>Son Güncelleme</TableHead>
+                  <TableHead className="text-right">İşlemler</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredTickets.length > 0 ? (
+                  filteredTickets.map((ticket) => (
+                    <TableRow key={ticket.id}>
+                      <TableCell className="font-medium">{ticket.id}</TableCell>
+                      <TableCell>{ticket.subject}</TableCell>
+                      <TableCell>{ticket.dealerName}</TableCell>
+                      <TableCell>{ticket.priority}</TableCell>
+                      <TableCell>{ticket.status}</TableCell>
+                      <TableCell>{format(ticket.updatedAt, "dd.MM.yyyy HH:mm")}</TableCell>
+                      <TableCell className="text-right">
+                        <Link to={`/tickets/${ticket.id}`}>
+                          <Button variant="outline" size="sm">
+                            <MessageSquare className="h-4 w-4 mr-2" /> Detaylar
+                          </Button>
+                        </Link>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={7} className="text-center text-muted-foreground">
+                      Gösterilecek destek talebi bulunmamaktadır.
                     </TableCell>
                   </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={7} className="text-center text-muted-foreground">
-                    Gösterilecek destek talebi bulunmamaktadır.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+                )}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
     </div>

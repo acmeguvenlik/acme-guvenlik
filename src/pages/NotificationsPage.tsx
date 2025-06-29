@@ -9,6 +9,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+
 } from "@/components/ui/table";
 import { Bell, CheckCircle, XCircle, Info, TriangleAlert, Trash2, MailOpen, Mail } from "lucide-react";
 import { dummyNotifications, Notification } from "@/data/dummyNotifications";
@@ -18,7 +19,7 @@ import { Link } from "react-router-dom";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { showSuccess } from "@/utils/toast";
 import { SeoHead } from "@/components/seo/SeoHead";
-import { useTranslation } from "react-i18next"; // useTranslation hook'u eklendi
+import { useTranslation } from "react-i18next";
 
 const NotificationsPage = () => {
   const { userRole } = useAuth();
@@ -26,7 +27,7 @@ const NotificationsPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterReadStatus, setFilterReadStatus] = useState<string>("Tümü");
   const [filterType, setFilterType] = useState<string>("Tümü");
-  const { t } = useTranslation(); // useTranslation hook'unu kullan
+  const { t } = useTranslation();
 
   useEffect(() => {
     const filteredForRole = dummyNotifications.filter(notif =>
@@ -121,45 +122,45 @@ const NotificationsPage = () => {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{{{t("common.notifications")}}} ({{totalCount}})</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("common.notifications")} ({totalCount})</CardTitle>
             <Bell className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{{totalCount}}</div>
+            <div className="text-2xl font-bold">{totalCount}</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{{t("common.notifications")}} ({{unreadCount}})</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("common.notifications")} ({unreadCount})</CardTitle>
             <Mail className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{{unreadCount}}</div>
+            <div className="text-2xl font-bold">{unreadCount}</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{{t("common.notifications")}} ({{totalCount - unreadCount}})</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("common.notifications")} ({totalCount - unreadCount})</CardTitle>
             <MailOpen className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{{totalCount - unreadCount}}</div>
+            <div className="text-2xl font-bold">{totalCount - unreadCount}</div>
           </CardContent>
         </Card>
       </div>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
+        <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
           <CardTitle>{t("common.notifications")}</CardTitle>
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2 w-full sm:w-auto">
             <Input
               placeholder={t("common.notifications")}
-              className="max-w-sm"
+              className="max-w-sm w-full"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             <Select onValueChange={setFilterReadStatus} defaultValue="Tümü">
-              <SelectTrigger className="w-[150px]">
+              <SelectTrigger className="w-full sm:w-[150px]">
                 <SelectValue placeholder={t("common.notifications")} />
               </SelectTrigger>
               <SelectContent>
@@ -169,7 +170,7 @@ const NotificationsPage = () => {
               </SelectContent>
             </Select>
             <Select onValueChange={setFilterType} defaultValue="Tümü">
-              <SelectTrigger className="w-[150px]">
+              <SelectTrigger className="w-full sm:w-[150px]">
                 <SelectValue placeholder={t("common.notifications")} />
               </SelectTrigger>
               <SelectContent>
@@ -180,71 +181,73 @@ const NotificationsPage = () => {
                 <SelectItem value="error">Hata</SelectItem>
               </SelectContent>
             </Select>
-            <Button variant="outline" onClick={handleMarkAllAsRead}>
+            <Button variant="outline" onClick={handleMarkAllAsRead} className="w-full sm:w-auto">
               Tümünü Okundu İşaretle
             </Button>
-            <Button variant="destructive" onClick={handleDeleteAllReadNotifications}>
+            <Button variant="destructive" onClick={handleDeleteAllReadNotifications} className="w-full sm:w-auto">
               Okunmuşları Sil
             </Button>
           </div>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[50px]">Tip</TableHead>
-                <TableHead>Başlık</TableHead>
-                <TableHead>Mesaj</TableHead>
-                <TableHead>Tarih</TableHead>
-                <TableHead className="text-right">İşlemler</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredNotifications.length > 0 ? (
-                filteredNotifications.map((notification) => (
-                  <TableRow key={notification.id} className={notification.read ? "text-muted-foreground" : "font-semibold"}>
-                    <TableCell>{getIcon(notification.type)}</TableCell>
-                    <TableCell>{notification.title}</TableCell>
-                    <TableCell>
-                      {notification.link ? (
-                        <Link to={notification.link} className="hover:underline">
-                          {notification.message}
-                        </Link>
-                      ) : (
-                        notification.message
-                      )}
-                    </TableCell>
-                    <TableCell>{format(notification.createdAt, "dd.MM.yyyy HH:mm")}</TableCell>
-                    <TableCell className="text-right">
-                      {!notification.read && (
+          <div className="overflow-x-auto"> {/* Tabloyu duyarlı hale getir */}
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[50px]">Tip</TableHead>
+                  <TableHead>Başlık</TableHead>
+                  <TableHead>Mesaj</TableHead>
+                  <TableHead>Tarih</TableHead>
+                  <TableHead className="text-right">İşlemler</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredNotifications.length > 0 ? (
+                  filteredNotifications.map((notification) => (
+                    <TableRow key={notification.id} className={notification.read ? "text-muted-foreground" : "font-semibold"}>
+                      <TableCell>{getIcon(notification.type)}</TableCell>
+                      <TableCell>{notification.title}</TableCell>
+                      <TableCell>
+                        {notification.link ? (
+                          <Link to={notification.link} className="hover:underline">
+                            {notification.message}
+                          </Link>
+                        ) : (
+                          notification.message
+                        )}
+                      </TableCell>
+                      <TableCell>{format(notification.createdAt, "dd.MM.yyyy HH:mm")}</TableCell>
+                      <TableCell className="text-right">
+                        {!notification.read && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="mr-2"
+                            onClick={() => handleMarkAsRead(notification.id)}
+                          >
+                            <MailOpen className="h-4 w-4" />
+                          </Button>
+                        )}
                         <Button
-                          variant="ghost"
+                          variant="destructive"
                           size="sm"
-                          className="mr-2"
-                          onClick={() => handleMarkAsRead(notification.id)}
+                          onClick={() => handleDeleteNotification(notification.id)}
                         >
-                          <MailOpen className="h-4 w-4" />
+                          <Trash2 className="h-4 w-4" />
                         </Button>
-                      )}
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => handleDeleteNotification(notification.id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={5} className="text-center text-muted-foreground">
+                      Gösterilecek bildirim bulunmamaktadır.
                     </TableCell>
                   </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={5} className="text-center text-muted-foreground">
-                    Gösterilecek bildirim bulunmamaktadır.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+                )}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
     </div>

@@ -19,7 +19,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { AddTransactionForm } from "@/components/dealers/AddTransactionForm";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { showSuccess } from "@/utils/toast";
-import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
+import { SeoHead } from "@/components/seo/SeoHead";
 
 const DealerTransactionsPage = () => {
   const { dealerId } = useParams<{ dealerId: string }>();
@@ -130,10 +130,10 @@ const DealerTransactionsPage = () => {
   return (
     <div className="space-y-6">
       <SeoHead title={`${dealerName} Cari Hesap Hareketleri`} description={`${dealerName} bayisinin tüm finansal hareketlerini inceleyin.`} />
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
         <h1 className="text-3xl font-bold">{dealerName} Cari Hesap Hareketleri</h1>
         <Link to="/dealers">
-          <Button variant="outline">
+          <Button variant="outline" className="w-full sm:w-auto">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Bayi Listesine Dön
           </Button>
@@ -155,17 +155,17 @@ const DealerTransactionsPage = () => {
       </Card>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
+        <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
           <CardTitle>İşlem Listesi</CardTitle>
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2 w-full sm:w-auto">
             <Input
               placeholder="İşlem ara..."
-              className="max-w-sm"
+              className="max-w-sm w-full"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             <Select onValueChange={setFilterType} defaultValue="Tümü">
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-full sm:w-[180px]">
                 <SelectValue placeholder="Tipe Göre Filtrele" />
               </SelectTrigger>
               <SelectContent>
@@ -177,13 +177,13 @@ const DealerTransactionsPage = () => {
                 <SelectItem value="Diğer">Diğer</SelectItem>
               </SelectContent>
             </Select>
-            <Button variant="outline" size="sm" onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}>
+            <Button variant="outline" size="sm" onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')} className="w-full sm:w-auto">
               {sortOrder === 'asc' ? <ArrowUpWideNarrow className="h-4 w-4" /> : <ArrowDownWideNarrow className="h-4 w-4" />}
               <span className="ml-2 hidden sm:inline">Tarih</span>
             </Button>
             <Dialog open={isAddTransactionDialogOpen} onOpenChange={setIsAddTransactionDialogOpen}>
               <DialogTrigger asChild>
-                <Button>
+                <Button className="w-full sm:w-auto">
                   <PlusCircle className="mr-2 h-4 w-4" />
                   Yeni İşlem Ekle
                 </Button>
@@ -201,56 +201,58 @@ const DealerTransactionsPage = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>İşlem ID</TableHead>
-                <TableHead>Tarih</TableHead>
-                <TableHead>Tip</TableHead>
-                <TableHead>Açıklama</TableHead>
-                <TableHead className="text-right">Tutar</TableHead>
-                <TableHead className="text-right">İşlemler</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredAndSortedTransactions.length > 0 ? (
-                filteredAndSortedTransactions.map((transaction) => (
-                  <TableRow key={transaction.id}>
-                    <TableCell className="font-medium">{transaction.id}</TableCell>
-                    <TableCell>{format(transaction.date, "dd.MM.yyyy HH:mm")}</TableCell>
-                    <TableCell>{transaction.type}</TableCell>
-                    <TableCell>{transaction.description}</TableCell>
-                    <TableCell className={`text-right ${transaction.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>
-                      {transaction.amount.toFixed(2)} ₺
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="mr-2"
-                        onClick={() => openEditDialog(transaction)}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => handleDeleteTransaction(transaction.id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
+          <div className="overflow-x-auto"> {/* Tabloyu duyarlı hale getir */}
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>İşlem ID</TableHead>
+                  <TableHead>Tarih</TableHead>
+                  <TableHead>Tip</TableHead>
+                  <TableHead>Açıklama</TableHead>
+                  <TableHead className="text-right">Tutar</TableHead>
+                  <TableHead className="text-right">İşlemler</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredAndSortedTransactions.length > 0 ? (
+                  filteredAndSortedTransactions.map((transaction) => (
+                    <TableRow key={transaction.id}>
+                      <TableCell className="font-medium">{transaction.id}</TableCell>
+                      <TableCell>{format(transaction.date, "dd.MM.yyyy HH:mm")}</TableCell>
+                      <TableCell>{transaction.type}</TableCell>
+                      <TableCell>{transaction.description}</TableCell>
+                      <TableCell className={`text-right ${transaction.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>
+                        {transaction.amount.toFixed(2)} ₺
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="mr-2"
+                          onClick={() => openEditDialog(transaction)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => handleDeleteTransaction(transaction.id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={6} className="text-center text-muted-foreground">
+                      Bu bayi için henüz bir işlem bulunmamaktadır.
                     </TableCell>
                   </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={6} className="text-center text-muted-foreground">
-                    Bu bayi için henüz bir işlem bulunmamaktadır.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+                )}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
 

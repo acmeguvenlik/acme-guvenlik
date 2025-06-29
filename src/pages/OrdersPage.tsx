@@ -15,7 +15,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Button } from "@/components/ui/button";
 import { UpdateOrderStatusForm } from "@/components/orders/UpdateOrderStatusForm";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
+import { SeoHead } from "@/components/seo/SeoHead";
 
 // Örnek tüm sipariş verileri (admin görünümü için)
 interface Order {
@@ -105,62 +105,64 @@ const OrdersPage = () => {
       </div>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
+        <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
           <CardTitle>Tüm Siparişler Listesi</CardTitle>
-          <div className="flex space-x-2">
+          <div className="flex space-x-2 w-full sm:w-auto">
             <Input
               placeholder="Sipariş ara..."
-              className="max-w-sm"
+              className="max-w-sm w-full"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Sipariş No</TableHead>
-                <TableHead>Bayi Adı</TableHead>
-                <TableHead>Ürün Adı</TableHead>
-                <TableHead className="text-right">Miktar</TableHead>
-                <TableHead className="text-right">Toplam Tutar</TableHead>
-                <TableHead>Tarih</TableHead>
-                <TableHead>Durum</TableHead>
-                <TableHead className="text-right">İşlemler</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredOrders.map((order) => (
-                <TableRow key={order.id}>
-                  <TableCell className="font-medium">{order.orderNumber}</TableCell>
-                  <TableCell>{order.dealerName}</TableCell>
-                  <TableCell>{order.productName}</TableCell>
-                  <TableCell className="text-right">{order.quantity}</TableCell>
-                  <TableCell className="text-right">{order.totalPrice.toFixed(2)} ₺</TableCell>
-                  <TableCell>{format(order.orderDate, "dd.MM.yyyy")}</TableCell>
-                  <TableCell>{order.status}</TableCell>
-                  <TableCell className="text-right">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                          <span className="sr-only">Menüyü aç</span>
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DialogTrigger asChild>
-                          <DropdownMenuItem onClick={() => openUpdateStatusDialog(order)}>
-                            Durumu Güncelle
-                          </DropdownMenuItem>
-                        </DialogTrigger>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
+          <div className="overflow-x-auto"> {/* Tabloyu duyarlı hale getir */}
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Sipariş No</TableHead>
+                  <TableHead>Bayi Adı</TableHead>
+                  <TableHead>Ürün Adı</TableHead>
+                  <TableHead className="text-right">Miktar</TableHead>
+                  <TableHead className="text-right">Toplam Tutar</TableHead>
+                  <TableHead>Tarih</TableHead>
+                  <TableHead>Durum</TableHead>
+                  <TableHead className="text-right">İşlemler</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {filteredOrders.map((order) => (
+                  <TableRow key={order.id}>
+                    <TableCell className="font-medium">{order.orderNumber}</TableCell>
+                    <TableCell>{order.dealerName}</TableCell>
+                    <TableCell>{order.productName}</TableCell>
+                    <TableCell className="text-right">{order.quantity}</TableCell>
+                    <TableCell className="text-right">{order.totalPrice.toFixed(2)} ₺</TableCell>
+                    <TableCell>{format(order.orderDate, "dd.MM.yyyy")}</TableCell>
+                    <TableCell>{order.status}</TableCell>
+                    <TableCell className="text-right">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" className="h-8 w-8 p-0">
+                            <span className="sr-only">Menüyü aç</span>
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DialogTrigger asChild>
+                            <DropdownMenuItem onClick={() => openUpdateStatusDialog(order)}>
+                              Durumu Güncelle
+                            </DropdownMenuItem>
+                          </DialogTrigger>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
 

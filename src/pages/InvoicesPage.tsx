@@ -14,7 +14,7 @@ import { PlusCircle, ReceiptText, DollarSign, Clock } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AddInvoiceForm } from "@/components/invoices/AddInvoiceForm";
 import { format } from "date-fns";
-import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
+import { SeoHead } from "@/components/seo/SeoHead";
 
 // Örnek fatura verileri
 const dummyInvoices = [
@@ -73,16 +73,16 @@ const InvoicesPage = () => {
       </div>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0 pb-2">
           <CardTitle className="text-xl font-semibold">Fatura Listesi</CardTitle>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 w-full sm:w-auto">
             <Input
               placeholder="Fatura ara..."
-              className="max-w-sm"
+              className="max-w-sm w-full"
             />
             <Dialog open={isAddInvoiceDialogOpen} onOpenChange={setIsAddInvoiceDialogOpen}>
               <DialogTrigger asChild>
-                <Button>
+                <Button className="w-full sm:w-auto">
                   <PlusCircle className="mr-2 h-4 w-4" />
                   Yeni Fatura Ekle
                 </Button>
@@ -100,28 +100,30 @@ const InvoicesPage = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Fatura No</TableHead>
-                <TableHead>Bayi Adı</TableHead>
-                <TableHead className="text-right">Tutar</TableHead>
-                <TableHead>Tarih</TableHead>
-                <TableHead>Durum</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {dummyInvoices.map((invoice) => (
-                <TableRow key={invoice.id}>
-                  <TableCell className="font-medium">{invoice.invoiceNumber}</TableCell>
-                  <TableCell>{invoice.dealerName}</TableCell>
-                  <TableCell className="text-right">{invoice.amount.toFixed(2)} ₺</TableCell>
-                  <TableCell>{format(invoice.invoiceDate, "dd.MM.yyyy")}</TableCell>
-                  <TableCell>{invoice.status}</TableCell>
+          <div className="overflow-x-auto"> {/* Tabloyu duyarlı hale getir */}
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Fatura No</TableHead>
+                  <TableHead>Bayi Adı</TableHead>
+                  <TableHead className="text-right">Tutar</TableHead>
+                  <TableHead>Tarih</TableHead>
+                  <TableHead>Durum</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {dummyInvoices.map((invoice) => (
+                  <TableRow key={invoice.id}>
+                    <TableCell className="font-medium">{invoice.invoiceNumber}</TableCell>
+                    <TableCell>{invoice.dealerName}</TableCell>
+                    <TableCell className="text-right">{invoice.amount.toFixed(2)} ₺</TableCell>
+                    <TableCell>{format(invoice.invoiceDate, "dd.MM.yyyy")}</TableCell>
+                    <TableCell>{invoice.status}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
     </div>

@@ -16,7 +16,7 @@ import { AddAnnouncementForm } from "@/components/announcements/AddAnnouncementF
 import { dummyAnnouncements, Announcement } from "@/data/dummyAnnouncements";
 import { showSuccess } from "@/utils/toast";
 import { format } from "date-fns";
-import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
+import { SeoHead } from "@/components/seo/SeoHead";
 
 const AnnouncementsPage = () => {
   const [announcements, setAnnouncements] = useState<Announcement[]>(dummyAnnouncements);
@@ -77,18 +77,18 @@ const AnnouncementsPage = () => {
       </div>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0 pb-2">
           <CardTitle className="text-xl font-semibold">Duyuru Listesi</CardTitle>
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2 w-full sm:w-auto">
             <Input
               placeholder="Duyuru ara..."
-              className="max-w-sm"
+              className="max-w-sm w-full"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             <Dialog open={isAddAnnouncementDialogOpen} onOpenChange={setIsAddAnnouncementDialogOpen}>
               <DialogTrigger asChild>
-                <Button>
+                <Button className="w-full sm:w-auto">
                   <PlusCircle className="mr-2 h-4 w-4" />
                   Yeni Duyuru Ekle
                 </Button>
@@ -106,42 +106,44 @@ const AnnouncementsPage = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Başlık</TableHead>
-                <TableHead>Hedef Kitle</TableHead>
-                <TableHead>Tarih</TableHead>
-                <TableHead className="text-right">İşlemler</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredAnnouncements.map((ann) => (
-                <TableRow key={ann.id}>
-                  <TableCell className="font-medium">{ann.title}</TableCell>
-                  <TableCell>{ann.targetRole === 'all' ? 'Tüm Kullanıcılar' : ann.targetRole === 'admin' ? 'Yöneticiler' : 'Bayiler'}</TableCell>
-                  <TableCell>{format(ann.createdAt, "dd.MM.yyyy HH:mm")}</TableCell>
-                  <TableCell className="text-right">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="mr-2"
-                      onClick={() => openEditDialog(ann)}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => handleDeleteAnnouncement(ann.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </TableCell>
+          <div className="overflow-x-auto"> {/* Tabloyu duyarlı hale getir */}
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Başlık</TableHead>
+                  <TableHead>Hedef Kitle</TableHead>
+                  <TableHead>Tarih</TableHead>
+                  <TableHead className="text-right">İşlemler</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {filteredAnnouncements.map((ann) => (
+                  <TableRow key={ann.id}>
+                    <TableCell className="font-medium">{ann.title}</TableCell>
+                    <TableCell>{ann.targetRole === 'all' ? 'Tüm Kullanıcılar' : ann.targetRole === 'admin' ? 'Yöneticiler' : 'Bayiler'}</TableCell>
+                    <TableCell>{format(ann.createdAt, "dd.MM.yyyy HH:mm")}</TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="mr-2"
+                        onClick={() => openEditDialog(ann)}
+                      >
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => handleDeleteAnnouncement(ann.id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
 

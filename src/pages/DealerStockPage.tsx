@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Package, Boxes } from "lucide-react";
 import { dummyProducts } from "@/data/dummyProducts";
 import { Link } from "react-router-dom";
-import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
+import { SeoHead } from "@/components/seo/SeoHead";
 
 const DealerStockPage = () => {
   const totalProductTypes = dummyProducts.length;
@@ -40,43 +40,45 @@ const DealerStockPage = () => {
       </div>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
+        <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
           <CardTitle>Ürün Listesi</CardTitle>
-          <div className="flex space-x-2">
-            <Input placeholder="Ürün ara..." className="max-w-sm" />
+          <div className="flex space-x-2 w-full sm:w-auto">
+            <Input placeholder="Ürün ara..." className="max-w-sm w-full" />
           </div>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Stok Kodu</TableHead>
-                <TableHead>Ürün Adı</TableHead>
-                <TableHead>Kategori</TableHead>
-                <TableHead className="text-right">Adet</TableHead>
-                <TableHead className="text-right">Birim Fiyat</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {dummyProducts.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell className="font-medium">
-                    <Link to={`/product/${item.id}`} className="text-blue-600 hover:underline">
-                      {item.productCode}
-                    </Link>
-                  </TableCell>
-                  <TableCell>
-                    <Link to={`/product/${item.id}`} className="text-blue-600 hover:underline">
-                      {item.productName}
-                    </Link>
-                  </TableCell>
-                  <TableCell>{item.category}</TableCell>
-                  <TableCell className="text-right">{item.quantity}</TableCell>
-                  <TableCell className="text-right">{item.price.toFixed(2)} ₺</TableCell>
+          <div className="overflow-x-auto"> {/* Tabloyu duyarlı hale getir */}
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Stok Kodu</TableHead>
+                  <TableHead>Ürün Adı</TableHead>
+                  <TableHead>Kategori</TableHead>
+                  <TableHead className="text-right">Adet</TableHead>
+                  <TableHead className="text-right">Birim Fiyat</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {dummyProducts.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell className="font-medium">
+                      <Link to={`/product/${item.id}`} className="text-blue-600 hover:underline">
+                        {item.productCode}
+                      </Link>
+                    </TableCell>
+                    <TableCell>
+                      <Link to={`/product/${item.id}`} className="text-blue-600 hover:underline">
+                        {item.productName}
+                      </Link>
+                    </TableCell>
+                    <TableCell>{item.category}</TableCell>
+                    <TableCell className="text-right">{item.quantity}</TableCell>
+                    <TableCell className="text-right">{item.price.toFixed(2)} ₺</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
     </div>

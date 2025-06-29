@@ -9,7 +9,7 @@ import { AddStockForm } from "@/components/stock/AddStockForm";
 import { dummyProducts, Product } from "@/data/dummyProducts";
 import { Link } from "react-router-dom";
 import { EmptyState } from "@/components/EmptyState";
-import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
+import { SeoHead } from "@/components/seo/SeoHead";
 
 export const StockPage = () => {
   const [stockItems, setStockItems] = useState<Product[]>(dummyProducts);
@@ -31,14 +31,14 @@ export const StockPage = () => {
   return (
     <div className="space-y-6">
       <SeoHead title="Stok Yönetimi" description="Ürün stoklarınızı yönetin ve yeni ürünler ekleyin." />
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
         <div>
           <h1 className="text-3xl font-bold">Stok Yönetimi</h1>
           <p className="text-gray-600 dark:text-gray-400">Ürün stoklarınızı buradan yönetebilirsiniz</p>
         </div>
         <Dialog open={isAddStockDialogOpen} onOpenChange={setIsAddStockDialogOpen}>
           <DialogTrigger asChild>
-            <Button>
+            <Button className="w-full sm:w-auto">
               <PlusCircle className="mr-2 h-4 w-4" />
               Stok Ekle
             </Button>
@@ -76,12 +76,12 @@ export const StockPage = () => {
       </div>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
+        <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
           <CardTitle>Stok Listesi</CardTitle>
-          <div className="flex space-x-2">
+          <div className="flex space-x-2 w-full sm:w-auto">
             <Input
               placeholder="Ürün ara..."
-              className="max-w-sm"
+              className="max-w-sm w-full"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -89,47 +89,49 @@ export const StockPage = () => {
         </CardHeader>
         <CardContent>
           {filteredStockItems.length > 0 ? (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Stok Kodu</TableHead>
-                  <TableHead>Ürün Adı</TableHead>
-                  <TableHead>Kategori</TableHead>
-                  <TableHead className="text-right">Adet</TableHead>
-                  <TableHead className="text-right">Birim Fiyat</TableHead>
-                  <TableHead className="text-right">İşlemler</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredStockItems.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell className="font-medium">
-                      <Link to={`/product/${item.id}`} className="text-blue-600 hover:underline">
-                        {item.productCode}
-                      </Link>
-                    </TableCell>
-                    <TableCell>
-                      <Link to={`/product/${item.id}`} className="text-blue-600 hover:underline">
-                        {item.productName}
-                      </Link>
-                    </TableCell>
-                    <TableCell>{item.category}</TableCell>
-                    <TableCell className="text-right">{item.quantity}</TableCell>
-                    <TableCell className="text-right">{item.price.toFixed(2)} ₺</TableCell>
-                    <TableCell className="text-right">
-                      <Link to={`/stock/edit/${item.id}`}>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                      </Link>
-                    </TableCell>
+            <div className="overflow-x-auto"> {/* Tabloyu duyarlı hale getir */}
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Stok Kodu</TableHead>
+                    <TableHead>Ürün Adı</TableHead>
+                    <TableHead>Kategori</TableHead>
+                    <TableHead className="text-right">Adet</TableHead>
+                    <TableHead className="text-right">Birim Fiyat</TableHead>
+                    <TableHead className="text-right">İşlemler</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {filteredStockItems.map((item) => (
+                    <TableRow key={item.id}>
+                      <TableCell className="font-medium">
+                        <Link to={`/product/${item.id}`} className="text-blue-600 hover:underline">
+                          {item.productCode}
+                        </Link>
+                      </TableCell>
+                      <TableCell>
+                        <Link to={`/product/${item.id}`} className="text-blue-600 hover:underline">
+                          {item.productName}
+                        </Link>
+                      </TableCell>
+                      <TableCell>{item.category}</TableCell>
+                      <TableCell className="text-right">{item.quantity}</TableCell>
+                      <TableCell className="text-right">{item.price.toFixed(2)} ₺</TableCell>
+                      <TableCell className="text-right">
+                        <Link to={`/stock/edit/${item.id}`}>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                        </Link>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           ) : (
             <EmptyState
               title="Ürün Bulunamadı"

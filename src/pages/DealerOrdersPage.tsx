@@ -14,7 +14,7 @@ import { PlusCircle, ShoppingCart, Package, Truck } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AddOrderForm } from "@/components/orders/AddOrderForm";
 import { format } from "date-fns";
-import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
+import { SeoHead } from "@/components/seo/SeoHead";
 
 // Örnek bayi sipariş verileri
 const dummyDealerOrders = [
@@ -71,16 +71,16 @@ const DealerOrdersPage = () => {
       </div>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0 pb-2">
           <CardTitle className="text-xl font-semibold">Sipariş Listesi</CardTitle>
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2 w-full sm:w-auto">
             <Input
               placeholder="Sipariş ara..."
-              className="max-w-sm"
+              className="max-w-sm w-full"
             />
             <Dialog open={isAddOrderDialogOpen} onOpenChange={setIsAddOrderDialogOpen}>
               <DialogTrigger asChild>
-                <Button>
+                <Button className="w-full sm:w-auto">
                   <PlusCircle className="mr-2 h-4 w-4" />
                   Yeni Sipariş Oluştur
                 </Button>
@@ -98,30 +98,32 @@ const DealerOrdersPage = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Sipariş No</TableHead>
-                <TableHead>Ürün Adı</TableHead>
-                <TableHead className="text-right">Miktar</TableHead>
-                <TableHead className="text-right">Toplam Tutar</TableHead>
-                <TableHead>Tarih</TableHead>
-                <TableHead>Durum</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {dummyDealerOrders.map((order) => (
-                <TableRow key={order.id}>
-                  <TableCell className="font-medium">{order.orderNumber}</TableCell>
-                  <TableCell>{order.productName}</TableCell>
-                  <TableCell className="text-right">{order.quantity}</TableCell>
-                  <TableCell className="text-right">{order.totalPrice.toFixed(2)} ₺</TableCell>
-                  <TableCell>{format(order.orderDate, "dd.MM.yyyy")}</TableCell>
-                  <TableCell>{order.status}</TableCell>
+          <div className="overflow-x-auto"> {/* Tabloyu duyarlı hale getir */}
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Sipariş No</TableHead>
+                  <TableHead>Ürün Adı</TableHead>
+                  <TableHead className="text-right">Miktar</TableHead>
+                  <TableHead className="text-right">Toplam Tutar</TableHead>
+                  <TableHead>Tarih</TableHead>
+                  <TableHead>Durum</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {dummyDealerOrders.map((order) => (
+                  <TableRow key={order.id}>
+                    <TableCell className="font-medium">{order.orderNumber}</TableCell>
+                    <TableCell>{order.productName}</TableCell>
+                    <TableCell className="text-right">{order.quantity}</TableCell>
+                    <TableCell className="text-right">{order.totalPrice.toFixed(2)} ₺</TableCell>
+                    <TableCell>{format(order.orderDate, "dd.MM.yyyy")}</TableCell>
+                    <TableCell>{order.status}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
     </div>
