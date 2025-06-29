@@ -57,7 +57,7 @@ export function AddEditPageForm({ initialData, onSuccess }: AddEditPageFormProps
       id: initialData?.id || `PAGE-${Date.now()}`,
       createdAt: initialData?.createdAt || new Date(),
       updatedAt: new Date(),
-      parentId: values.parentId === "" ? null : values.parentId, // Boş stringi null'a çevir
+      parentId: values.parentId === "none" ? null : values.parentId, // "none" stringini null'a çevir
     };
 
     if (initialData?.id) {
@@ -125,14 +125,14 @@ export function AddEditPageForm({ initialData, onSuccess }: AddEditPageFormProps
           render={({ field }) => (
             <FormItem>
               <FormLabel>Üst Sayfa (Opsiyonel)</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value || ""}>
+              <Select onValueChange={field.onChange} defaultValue={field.value || "none"}> {/* Default value 'none' olarak ayarlandı */}
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Üst sayfa seçin (ana sayfa ise boş bırakın)" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="">Ana Sayfa (Üst Sayfa Yok)</SelectItem>
+                  <SelectItem value="none">Ana Sayfa (Üst Sayfa Yok)</SelectItem> {/* Value 'none' olarak değiştirildi */}
                   {mainPages.map(page => (
                     <SelectItem key={page.id} value={page.id}>
                       {page.title}
