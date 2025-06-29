@@ -3,8 +3,9 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-import { NotificationBell } from "@/components/notifications/NotificationBell"; // NotificationBell import edildi
-import { dummyNotifications, Notification } from "@/data/dummyNotifications"; // dummyNotifications import edildi
+import { NotificationBell } from "@/components/notifications/NotificationBell";
+import { dummyNotifications, Notification } from "@/data/dummyNotifications";
+import { ThemeToggle } from "@/components/theme/ThemeToggle"; // ThemeToggle import edildi
 
 interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   title?: string;
@@ -55,6 +56,7 @@ export function Header({ title, className, ...props }: HeaderProps) {
       <div className="flex items-center space-x-4">
         {isAuthenticated && (
           <>
+            <ThemeToggle /> {/* ThemeToggle buraya eklendi */}
             <NotificationBell
               notifications={notifications}
               onMarkAsRead={handleMarkAsRead}
