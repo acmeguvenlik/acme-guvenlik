@@ -19,6 +19,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { AddTransactionForm } from "@/components/dealers/AddTransactionForm";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { showSuccess } from "@/utils/toast";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 const DealerTransactionsPage = () => {
   const { dealerId } = useParams<{ dealerId: string }>();
@@ -31,9 +32,8 @@ const DealerTransactionsPage = () => {
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | undefined>(undefined);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState<string>("Tümü");
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc'); // 'desc' varsayılan olarak en yeni en üstte
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
-  // Bayi ve işlemlerini yükle
   useEffect(() => {
     const foundDealer = dummyDealers.find(d => d.id === dealerId);
     if (!foundDealer) {
@@ -47,7 +47,6 @@ const DealerTransactionsPage = () => {
     setTransactions(filteredTransactions);
   }, [dealerId, navigate]);
 
-  // İşlemleri filtrele ve sırala
   const filteredAndSortedTransactions = useMemo(() => {
     let tempTransactions = transactions.filter(transaction =>
       transaction.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -80,27 +79,24 @@ const DealerTransactionsPage = () => {
   };
 
   const handleAddTransactionSuccess = (newTransaction: Transaction) => {
-    dummyTransactions.push(newTransaction); // Global dummy listeye ekle
-    setTransactions((prev) => [...prev, newTransaction]); // Yerel state'i güncelle
-    updateDealerBalance(newTransaction, true); // Bakiyeyi artır
+    dummyTransactions.push(newTransaction);
+    setTransactions((prev) => [...prev, newTransaction]);
+    updateDealerBalance(newTransaction, true);
     setIsAddTransactionDialogOpen(false);
   };
 
   const handleEditTransactionSuccess = (updatedTransaction: Transaction) => {
     const oldTransaction = dummyTransactions.find(t => t.id === updatedTransaction.id);
     if (oldTransaction) {
-      // Önce eski tutarı geri al, sonra yeni tutarı ekle
-      updateDealerBalance(oldTransaction, false); // Eski tutarı çıkar
-      updateDealerBalance(updatedTransaction, true); // Yeni tutarı ekle
+      updateDealerBalance(oldTransaction, false);
+      updateDealerBalance(updatedTransaction, true);
 
-      // Global dummy listeyi güncelle
       const globalIndex = dummyTransactions.findIndex(t => t.id === updatedTransaction.id);
       if (globalIndex !== -1) {
         dummyTransactions[globalIndex] = updatedTransaction;
       }
     }
     
-    // Yerel state'i güncelle
     setTransactions((prev) =>
       prev.map((t) =>
         t.id === updatedTransaction.id ? updatedTransaction : t
@@ -114,14 +110,12 @@ const DealerTransactionsPage = () => {
     if (window.confirm("Bu işlemi silmek istediğinizden emin misiniz?")) {
       const transactionToDelete = dummyTransactions.find(t => t.id === id);
       if (transactionToDelete) {
-        updateDealerBalance(transactionToDelete, false); // Tutarı bakiyeden çıkar
+        updateDealerBalance(transactionToDelete, false);
         
-        // Global dummy listeden sil
         const globalIndex = dummyTransactions.findIndex(t => t.id === id);
         if (globalIndex !== -1) {
           dummyTransactions.splice(globalIndex, 1);
         }
-        // Yerel state'i güncelle
         setTransactions((prev) => prev.filter((t) => t.id !== id));
         showSuccess("İşlem başarıyla silindi!");
       }
@@ -135,6 +129,7 @@ const DealerTransactionsPage = () => {
 
   return (
     <div className="space-y-6">
+      <SeoHead title={`${dealerName} Cari Hesap Hareketleri`} description={`${dealerName} bayisinin tüm finansal hareketlerini inceleyin.`} />
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">{dealerName} Cari Hesap Hareketleri</h1>
         <Link to="/dealers">

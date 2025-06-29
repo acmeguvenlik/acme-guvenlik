@@ -7,49 +7,47 @@ import { dummyBlogPosts, BlogPost } from "@/data/dummyBlogPosts";
 import { useAuth } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
-import { Skeleton } from "@/components/ui/skeleton"; // Skeleton import edildi
+import { Skeleton } from "@/components/ui/skeleton";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 const DealerDashboardPage = () => {
   const { userRole } = useAuth();
   const [recentAnnouncements, setRecentAnnouncements] = useState<Announcement[]>([]);
   const [recentTickets, setRecentTickets] = useState<Ticket[]>([]);
   const [recentBlogPosts, setRecentBlogPosts] = useState<BlogPost[]>([]);
-  const [isLoading, setIsLoading] = useState(true); // Yükleme durumu
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Gerçek uygulamada, bu kısım giriş yapan bayinin ID'sine göre filtrelenmelidir.
-  const currentDealerId = "D001"; // Örnek olarak sabit bir bayi ID'si
+  const currentDealerId = "D001";
 
   useEffect(() => {
     setIsLoading(true);
     const timer = setTimeout(() => {
-      // Bayi veya tüm kullanıcılara yönelik son 3 duyuruyu filtrele
       const filteredAnnouncements = dummyAnnouncements
         .filter(ann => ann.targetRole === 'dealer' || ann.targetRole === 'all')
         .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
         .slice(0, 3);
       setRecentAnnouncements(filteredAnnouncements);
 
-      // Bayiye ait son 3 açık veya yanıtlanmış destek talebini filtrele
       const filteredTickets = dummyTickets
         .filter(ticket => ticket.dealerId === currentDealerId && (ticket.status === 'Açık' || ticket.status === 'Yanıtlandı'))
         .sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime())
         .slice(0, 3);
       setRecentTickets(filteredTickets);
 
-      // Son 3 blog yazısını filtrele
       const filteredBlogPosts = dummyBlogPosts
         .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
         .slice(0, 3);
       setRecentBlogPosts(filteredBlogPosts);
 
       setIsLoading(false);
-    }, 1000); // 1 saniye yükleme süresi
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, [userRole, currentDealerId]);
 
   return (
     <div className="space-y-6">
+      <SeoHead title="Bayi Paneli" description="Acme Güvenlik Bayi Paneli ana sayfası. Siparişlerinizi, stok durumunuzu ve faturalarınızı takip edin." />
       <h1 className="text-3xl font-bold">Bayi Paneli - Acme Güvenlik</h1>
       <p className="text-gray-600">Bayi sistemine hoş geldiniz. Buradan siparişlerinizi ve stok durumunuzu takip edebilirsiniz.</p>
 
@@ -149,7 +147,6 @@ const DealerDashboardPage = () => {
           ) : (
             <p className="text-muted-foreground">Henüz duyuru bulunmamaktadır.</p>
           )}
-          {/* Bayi paneli için tüm duyuruları görme linki şimdilik yok, admin paneline yönlendirme yapılabilir veya ayrı bir sayfa eklenebilir. */}
         </CardContent>
       </Card>
 

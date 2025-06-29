@@ -2,8 +2,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Package, Boxes } from "lucide-react";
-import { dummyProducts } from "@/data/dummyProducts"; // dummyProducts import edildi
-import { Link } from "react-router-dom"; // Link import edildi
+import { dummyProducts } from "@/data/dummyProducts";
+import { Link } from "react-router-dom";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 const DealerStockPage = () => {
   const totalProductTypes = dummyProducts.length;
@@ -11,6 +12,7 @@ const DealerStockPage = () => {
 
   return (
     <div className="space-y-6">
+      <SeoHead title="Ürün Kataloğu" description="Mevcut ürünlerimizi ve stok durumlarını inceleyin." />
       <h1 className="text-3xl font-bold">Ürün Kataloğu</h1>
       <p className="text-gray-600 dark:text-gray-400">Mevcut ürünlerimizi ve stok durumlarını buradan inceleyebilirsiniz.</p>
 

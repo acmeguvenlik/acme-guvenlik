@@ -3,10 +3,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SiteSettingsForm } from "@/components/settings/SiteSettingsForm";
 import { RegistrationSettingsForm } from "@/components/settings/RegistrationSettingsForm";
 import { SeoSettingsForm } from "@/components/settings/SeoSettingsForm";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 const AdminSettingsPage = () => {
   return (
     <div className="space-y-6">
+      <SeoHead title="Ayarlar" description="Uygulamanızın genel ayarlarını, kayıt ve SEO ayarlarını yönetin." />
       <h1 className="text-3xl font-bold">Ayarlar</h1>
       <p className="text-gray-600">Uygulamanızın genel ayarlarını buradan yönetin.</p>
 

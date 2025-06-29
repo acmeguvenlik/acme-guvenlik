@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DealerProfileForm } from "@/components/dealer-profile/DealerProfileForm";
 import { useState } from "react";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 const dummyDealerProfile = {
   name: "ABC Ticaret",
@@ -13,13 +14,13 @@ const DealerProfilePage = () => {
   const [profileData, setProfileData] = useState(dummyDealerProfile);
 
   const handleSaveProfile = (values: typeof dummyDealerProfile) => {
-    // Gerçek bir uygulamada bu veriler backend'e gönderilir.
     setProfileData(values);
     console.log("Güncellenmiş profil verileri:", values);
   };
 
   return (
     <div className="space-y-6">
+      <SeoHead title="Profilim" description="Kişisel ve bayi bilgilerinizi güncelleyin." />
       <h1 className="text-3xl font-bold">Profilim</h1>
       <p className="text-gray-600">Kişisel ve bayi bilgilerinizi buradan güncelleyebilirsiniz.</p>
 

@@ -13,8 +13,9 @@ import { ShoppingCart, CheckCircle, Clock, MoreHorizontal } from "lucide-react";
 import { format } from "date-fns";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { UpdateOrderStatusForm } from "@/components/orders/UpdateOrderStatusForm"; // Yeni form bileşeni import edildi
+import { UpdateOrderStatusForm } from "@/components/orders/UpdateOrderStatusForm";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 // Örnek tüm sipariş verileri (admin görünümü için)
 interface Order {
@@ -69,6 +70,7 @@ const OrdersPage = () => {
 
   return (
     <div className="space-y-6">
+      <SeoHead title="Sipariş Yönetimi" description="Tüm bayi siparişlerini görüntüleyin ve yönetin." />
       <h1 className="text-3xl font-bold">Sipariş Yönetimi</h1>
       <p className="text-gray-600">Tüm bayi siparişlerini buradan yönetebilirsiniz.</p>
 
@@ -125,7 +127,7 @@ const OrdersPage = () => {
                 <TableHead className="text-right">Toplam Tutar</TableHead>
                 <TableHead>Tarih</TableHead>
                 <TableHead>Durum</TableHead>
-                <TableHead className="text-right">İşlemler</TableHead> {/* Yeni İşlemler sütunu */}
+                <TableHead className="text-right">İşlemler</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -152,7 +154,6 @@ const OrdersPage = () => {
                             Durumu Güncelle
                           </DropdownMenuItem>
                         </DialogTrigger>
-                        {/* Diğer işlemler buraya eklenebilir */}
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>
@@ -163,7 +164,6 @@ const OrdersPage = () => {
         </CardContent>
       </Card>
 
-      {/* Sipariş Durumu Güncelleme Diyaloğu */}
       <Dialog open={isUpdateStatusDialogOpen} onOpenChange={setIsUpdateStatusDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>

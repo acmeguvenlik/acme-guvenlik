@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/table";
 import { ReceiptText, DollarSign, Clock } from "lucide-react";
 import { format } from "date-fns";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 // Örnek fatura verileri (InvoicesPage'den alınmıştır, daha sonra API'den gelebilir)
 const dummyInvoices = [
@@ -32,6 +33,7 @@ const DealerInvoicesPage = () => {
 
   return (
     <div className="space-y-6">
+      <SeoHead title="Faturalarım" description="Size ait faturaları takip edin ve durumlarını görüntüleyin." />
       <h1 className="text-3xl font-bold">Faturalarım</h1>
       <p className="text-gray-600">Size ait faturaları buradan takip edebilirsiniz.</p>
 

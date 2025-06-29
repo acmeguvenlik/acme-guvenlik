@@ -2,23 +2,22 @@ import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, CalendarDays, User, Tag, Edit, Trash2 } from "lucide-react"; // Edit ve Trash2 import edildi
+import { ArrowLeft, CalendarDays, User, Tag, Edit, Trash2 } from "lucide-react";
 import { dummyBlogPosts } from "@/data/dummyBlogPosts";
 import { format } from "date-fns";
-import { useAuth } from "@/context/AuthContext"; // useAuth hook'unu import et
-import { showSuccess } from "@/utils/toast"; // showSuccess toast'u import edildi
+import { useAuth } from "@/context/AuthContext";
+import { showSuccess } from "@/utils/toast";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 const BlogPostDetailPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-  const { userRole } = useAuth(); // Kullanıcı rolünü al
-  const [post, setPost] = useState(dummyBlogPosts.find(p => p.slug === slug)); // Postu state olarak yönet
+  const { userRole } = useAuth();
+  const [post, setPost] = useState(dummyBlogPosts.find(p => p.slug === slug));
 
-  // dummyBlogPosts'ta dışarıdan bir değişiklik olduğunda state'i güncellemek için
-  // (gerçek bir uygulamada bu bir API çağrısı veya global state yönetimi ile yapılırdı)
   useEffect(() => {
     setPost(dummyBlogPosts.find(p => p.slug === slug));
-  }, [slug, dummyBlogPosts]); // dummyBlogPosts referansı değişirse (örneğin yeni bir dizi atanırsa) tetiklenir
+  }, [slug, dummyBlogPosts]);
 
   const handleDeleteBlogPost = () => {
     if (!post) return;
@@ -27,7 +26,7 @@ const BlogPostDetailPage = () => {
       if (index !== -1) {
         dummyBlogPosts.splice(index, 1);
         showSuccess("Blog yazısı başarıyla silindi!");
-        navigate("/blog"); // Silme sonrası blog listesine geri dön
+        navigate("/blog");
       }
     }
   };
@@ -48,12 +47,19 @@ const BlogPostDetailPage = () => {
 
   return (
     <div className="space-y-6">
+      <SeoHead
+        title={post.seo?.metaTitle || post.title}
+        description={post.seo?.metaDescription || post.content.replace(/<[^>]*>?/gm, '').substring(0, 160)}
+        keywords={post.seo?.keywords || post.tags.join(", ")}
+        imageUrl={post.imageUrl}
+        canonicalUrl={`${window.location.origin}/blog/${post.slug}`}
+      />
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">{post.title}</h1>
         <div className="flex items-center space-x-2">
-          {userRole === 'admin' && ( // Sadece admin rolü için düzenleme ve silme butonları
+          {userRole === 'admin' && (
             <>
-              <Link to={`/blog/edit/${post.id}`}> {/* Düzenleme sayfasına yönlendirme */}
+              <Link to={`/blog/edit/${post.id}`}>
                 <Button variant="outline" size="sm">
                   <Edit className="h-4 w-4 mr-2" /> Düzenle
                 </Button>

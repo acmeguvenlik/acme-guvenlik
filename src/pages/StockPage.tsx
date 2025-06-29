@@ -8,21 +8,19 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { AddStockForm } from "@/components/stock/AddStockForm";
 import { dummyProducts, Product } from "@/data/dummyProducts";
 import { Link } from "react-router-dom";
-import { EmptyState } from "@/components/EmptyState"; // EmptyState import edildi
+import { EmptyState } from "@/components/EmptyState";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 export const StockPage = () => {
   const [stockItems, setStockItems] = useState<Product[]>(dummyProducts);
   const [searchTerm, setSearchTerm] = useState("");
   const [isAddStockDialogOpen, setIsAddStockDialogOpen] = useState(false);
-  // isEditStockDialogOpen ve selectedProduct state'leri kaldırıldı
 
   const handleAddStockSuccess = (newProduct: Product) => {
     const newId = `STK-${String(stockItems.length + 1).padStart(3, '0')}`;
     setStockItems((prev) => [...prev, { ...newProduct, id: newId, productCode: newId }]);
     setIsAddStockDialogOpen(false);
   };
-
-  // handleEditStockSuccess ve openEditDialog fonksiyonları kaldırıldı
 
   const filteredStockItems = stockItems.filter(item =>
     item.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -32,6 +30,7 @@ export const StockPage = () => {
 
   return (
     <div className="space-y-6">
+      <SeoHead title="Stok Yönetimi" description="Ürün stoklarınızı yönetin ve yeni ürünler ekleyin." />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Stok Yönetimi</h1>

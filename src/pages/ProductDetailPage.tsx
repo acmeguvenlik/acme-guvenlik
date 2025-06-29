@@ -2,8 +2,9 @@ import { useParams, Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { dummyProducts } from "@/data/dummyProducts"; // Dummy ürün verileri import edildi
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"; // Carousel bileşenleri import edildi
+import { dummyProducts } from "@/data/dummyProducts";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 const ProductDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -25,6 +26,13 @@ const ProductDetailPage = () => {
 
   return (
     <div className="space-y-6">
+      <SeoHead
+        title={product.seo?.metaTitle || product.productName}
+        description={product.seo?.metaDescription || product.description}
+        keywords={product.seo?.keywords || product.category}
+        imageUrl={product.imageUrls?.[0]}
+        canonicalUrl={`${window.location.origin}/product/${product.id}`}
+      />
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Ürün Detayı: {product.productName}</h1>
         <Link to="/stock">

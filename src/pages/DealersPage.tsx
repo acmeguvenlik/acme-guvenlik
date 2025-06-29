@@ -16,7 +16,8 @@ import { AddDealerForm, DealerFormData } from "@/components/dealers/AddDealerFor
 import { showError, showSuccess } from "@/utils/toast";
 import { Link } from "react-router-dom";
 import { dummyDealers as initialDummyDealers } from "@/data/dummyDealers";
-import { EmptyState } from "@/components/EmptyState"; // EmptyState import edildi
+import { EmptyState } from "@/components/EmptyState";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 const DealersPage = () => {
   const [dealers, setDealers] = useState<DealerFormData[]>(initialDummyDealers);
@@ -26,7 +27,6 @@ const DealersPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleAddDealerSuccess = (newDealerData: DealerFormData) => {
-    // Yeni bir ID oluştur (şimdilik basit bir yöntem)
     const newId = `D${String(dealers.length + 1).padStart(3, '0')}`;
     setDealers((prev) => [...prev, { ...newDealerData, id: newId }]);
     setIsAddDealerDialogOpen(false);
@@ -67,6 +67,7 @@ const DealersPage = () => {
 
   return (
     <div className="space-y-6">
+      <SeoHead title="Bayiler ve Cari Hesaplar" description="Sisteme kayıtlı bayilerinizi ve cari hesaplarını yönetin." />
       <h1 className="text-3xl font-bold">Bayiler ve Cari Hesaplar Yönetimi</h1>
       <p className="text-gray-600">Sisteme kayıtlı bayilerinizi ve cari hesaplarını buradan yönetebilirsiniz.</p>
 

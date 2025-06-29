@@ -1,15 +1,16 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SalesChart } from "@/components/reports/SalesChart";
 import { LineChart, DollarSign, TrendingUp } from "lucide-react";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 const ReportsPage = () => {
-  // Örnek rapor özet verileri
   const totalSalesValue = 45231.89;
   const totalOrders = 150;
   const averageOrderValue = totalSalesValue / totalOrders;
 
   return (
     <div className="space-y-6">
+      <SeoHead title="Raporlar ve Analizler" description="İşletmenizin performansını gösteren raporları inceleyin." />
       <h1 className="text-3xl font-bold">Raporlar ve Analizler</h1>
       <p className="text-gray-600">İşletmenizin performansını gösteren raporları buradan inceleyebilirsiniz.</p>
 

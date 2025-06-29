@@ -6,6 +6,7 @@ import { dummyBlogPosts, BlogPost } from "@/data/dummyBlogPosts";
 import { AddBlogPostForm } from "@/components/blog/AddBlogPostForm";
 import { showSuccess } from "@/utils/toast";
 import { useState, useEffect } from "react";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 const EditBlogPostPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -17,7 +18,7 @@ const EditBlogPostPage = () => {
     if (foundPost) {
       setPost(foundPost);
     } else {
-      navigate("/not-found"); // Yazı bulunamazsa 404 sayfasına yönlendir
+      navigate("/not-found");
     }
   }, [id, navigate]);
 
@@ -26,7 +27,7 @@ const EditBlogPostPage = () => {
     if (postIndex !== -1) {
       dummyBlogPosts[postIndex] = updatedData;
       showSuccess("Blog yazısı başarıyla güncellendi!");
-      navigate("/blog"); // Düzenleme sonrası blog listesine geri dön
+      navigate("/blog");
     } else {
       console.error("Blog yazısı bulunamadı, güncelleme yapılamadı.");
       navigate("/blog");
@@ -34,11 +35,12 @@ const EditBlogPostPage = () => {
   };
 
   if (!post) {
-    return null; // Yönlendirme yapıldığı için burada null dönebiliriz
+    return null;
   }
 
   return (
     <div className="space-y-6">
+      <SeoHead title={`Blog Yazısını Düzenle: ${post.title}`} description={`"${post.title}" başlıklı blog yazısını düzenleyin.`} />
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Blog Yazısını Düzenle: {post.title}</h1>
         <Link to="/blog">

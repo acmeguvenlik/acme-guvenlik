@@ -14,6 +14,7 @@ import { PlusCircle, ReceiptText, DollarSign, Clock } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AddInvoiceForm } from "@/components/invoices/AddInvoiceForm";
 import { format } from "date-fns";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 // Örnek fatura verileri
 const dummyInvoices = [
@@ -29,7 +30,6 @@ const InvoicesPage = () => {
 
   const handleAddInvoiceSuccess = () => {
     setIsAddInvoiceDialogOpen(false);
-    // Burada yeni eklenen faturayı listeye eklemek için bir state güncellemesi veya veri çekme işlemi yapılabilir.
   };
 
   const totalInvoices = dummyInvoices.length;
@@ -38,6 +38,7 @@ const InvoicesPage = () => {
 
   return (
     <div className="space-y-6">
+      <SeoHead title="Faturalar Yönetimi" description="Sisteme kayıtlı faturalarınızı yönetin ve yeni faturalar ekleyin." />
       <h1 className="text-3xl font-bold">Faturalar Yönetimi</h1>
       <p className="text-gray-600">Sisteme kayıtlı faturalarınızı buradan yönetebilirsiniz.</p>
 

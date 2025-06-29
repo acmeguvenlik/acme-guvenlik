@@ -32,8 +32,9 @@ import EditProductPage from "./pages/EditProductPage";
 import BlogPage from "./pages/BlogPage";
 import BlogPostDetailPage from "./pages/BlogPostDetailPage";
 import EditBlogPostPage from "./pages/EditBlogPostPage";
-import AddBlogPostPage from "./pages/AddBlogPostPage"; // Yeni import
-import { ThemeProvider } from "./components/theme/ThemeProvider"; 
+import AddBlogPostPage from "./pages/AddBlogPostPage";
+import { ThemeProvider } from "./components/theme/ThemeProvider";
+import { HelmetProvider } from 'react-helmet-async'; // HelmetProvider import edildi
 
 const queryClient = new QueryClient();
 
@@ -246,7 +247,7 @@ const AppContent = () => {
         } 
       />
       <Route 
-        path="/blog/add" // Yeni blog yazısı ekleme rotası
+        path="/blog/add"
         element={
           <ProtectedRoute allowedRoles={['admin']}>
             <MainLayout>
@@ -352,7 +353,9 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-            <AppContent />
+            <HelmetProvider> {/* HelmetProvider buraya eklendi */}
+              <AppContent />
+            </HelmetProvider>
           </ThemeProvider>
         </AuthProvider>
       </BrowserRouter>

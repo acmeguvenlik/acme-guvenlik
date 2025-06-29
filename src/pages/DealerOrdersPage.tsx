@@ -14,6 +14,7 @@ import { PlusCircle, ShoppingCart, Package, Truck } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AddOrderForm } from "@/components/orders/AddOrderForm";
 import { format } from "date-fns";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 // Örnek bayi sipariş verileri
 const dummyDealerOrders = [
@@ -27,7 +28,6 @@ const DealerOrdersPage = () => {
 
   const handleAddOrderSuccess = () => {
     setIsAddOrderDialogOpen(false);
-    // Burada yeni eklenen siparişi listeye eklemek için bir state güncellemesi veya veri çekme işlemi yapılabilir.
   };
 
   const totalOrders = dummyDealerOrders.length;
@@ -36,6 +36,7 @@ const DealerOrdersPage = () => {
 
   return (
     <div className="space-y-6">
+      <SeoHead title="Siparişlerim" description="Geçmiş ve mevcut siparişlerinizi takip edin." />
       <h1 className="text-3xl font-bold">Siparişlerim</h1>
       <p className="text-gray-600">Geçmiş ve mevcut siparişlerinizi buradan takip edebilirsiniz.</p>
 

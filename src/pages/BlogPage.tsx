@@ -9,7 +9,8 @@ import { Search, Tag, CalendarDays, User, BookOpen, PlusCircle, Edit, Trash2 } f
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { showSuccess } from "@/utils/toast";
 import { useAuth } from "@/context/AuthContext";
-import { EmptyState } from "@/components/EmptyState"; // EmptyState import edildi
+import { EmptyState } from "@/components/EmptyState";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 const BlogPage = () => {
   const { userRole } = useAuth();
@@ -61,6 +62,7 @@ const BlogPage = () => {
 
   return (
     <div className="space-y-6">
+      <SeoHead title="Blog Yazıları" description="Acme Güvenlik blog yazıları: En son güvenlik trendleri, ipuçları ve sektör haberleri." keywords="blog, güvenlik, teknoloji, ipuçları, haberler" canonicalUrl={`${window.location.origin}/blog`} />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Blog Yazıları</h1>

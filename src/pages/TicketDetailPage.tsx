@@ -9,6 +9,7 @@ import { TicketMessageForm } from "@/components/tickets/TicketMessageForm";
 import { useAuth } from "@/context/AuthContext";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { showSuccess } from "@/utils/toast";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 const TicketDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -21,7 +22,7 @@ const TicketDetailPage = () => {
     if (foundTicket) {
       setTicket(foundTicket);
     } else {
-      navigate("/not-found"); // Talep bulunamazsa 404 sayfasına yönlendir
+      navigate("/not-found");
     }
   }, [id, navigate]);
 
@@ -30,7 +31,7 @@ const TicketDetailPage = () => {
 
     const newMessage: TicketMessage = {
       id: `MSG-${Date.now()}`,
-      senderId: userRole === 'admin' ? "U001" : "D001", // Örnek ID'ler
+      senderId: userRole === 'admin' ? "U001" : "D001",
       senderRole: userRole === 'admin' ? "admin" : "dealer",
       content,
       createdAt: new Date(),
@@ -40,10 +41,9 @@ const TicketDetailPage = () => {
       ...ticket,
       messages: [...ticket.messages, newMessage],
       updatedAt: new Date(),
-      status: ticket.status === 'Çözüldü' || ticket.status === 'Kapalı' ? 'Açık' : 'Yanıtlandı', // Mesaj gelince durumu güncelle
+      status: ticket.status === 'Çözüldü' || ticket.status === 'Kapalı' ? 'Açık' : 'Yanıtlandı',
     };
 
-    // Dummy veriyi güncelle (gerçek uygulamada backend API çağrısı olur)
     const ticketIndex = dummyTickets.findIndex(t => t.id === ticket.id);
     if (ticketIndex !== -1) {
       dummyTickets[ticketIndex] = updatedTicket;
@@ -69,11 +69,12 @@ const TicketDetailPage = () => {
   };
 
   if (!ticket) {
-    return null; // Yönlendirme yapıldığı için burada null dönebiliriz
+    return null;
   }
 
   return (
     <div className="space-y-6">
+      <SeoHead title={`Talep Detayı: ${ticket.subject}`} description={`Destek talebi #${ticket.id} detayları ve mesajları.`} />
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Talep Detayı: {ticket.subject}</h1>
         <Link to={userRole === 'admin' ? "/admin-tickets" : "/dealer-tickets"}>

@@ -8,7 +8,8 @@ import { dummyBlogPosts, BlogPost } from "@/data/dummyBlogPosts";
 import { useAuth } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
-import { Skeleton } from "@/components/ui/skeleton"; // Skeleton import edildi
+import { Skeleton } from "@/components/ui/skeleton";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 // Dummy kullanıcı sayısı (gerçek uygulamada API'den gelir)
 const dummyTotalUsers = 3; 
@@ -57,6 +58,7 @@ const DashboardPage = () => {
 
   return (
     <div className="space-y-6">
+      <SeoHead title="Yönetim Paneli" description="Acme Güvenlik Yönetim Paneli ana sayfası. Bayi, stok, fatura ve sipariş özetlerini görüntüleyin." />
       <h1 className="text-3xl font-bold">Yönetim Paneli - Acme Güvenlik</h1>
       <p className="text-gray-600">B2B sistemine hoş geldiniz. Buradan bayilerinizi, stoklarınızı ve finansal işlemlerinizi yönetebilirsiniz.</p>
 

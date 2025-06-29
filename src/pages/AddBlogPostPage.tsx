@@ -5,18 +5,20 @@ import { ArrowLeft } from "lucide-react";
 import { AddBlogPostForm } from "@/components/blog/AddBlogPostForm";
 import { dummyBlogPosts, BlogPost } from "@/data/dummyBlogPosts";
 import { showSuccess } from "@/utils/toast";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 const AddBlogPostPage = () => {
   const navigate = useNavigate();
 
   const handleAddBlogPostSuccess = (newPost: BlogPost) => {
-    dummyBlogPosts.push(newPost); // Dummy veriye yeni yazıyı ekle
+    dummyBlogPosts.push(newPost);
     showSuccess("Blog yazısı başarıyla eklendi!");
-    navigate("/blog"); // Ekleme sonrası blog listesine geri dön
+    navigate("/blog");
   };
 
   return (
     <div className="space-y-6">
+      <SeoHead title="Yeni Blog Yazısı Ekle" description="Blogunuza yeni bir içerik oluşturun." />
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Yeni Blog Yazısı Ekle</h1>
         <Link to="/blog">

@@ -5,6 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { dummyProducts, Product } from "@/data/dummyProducts";
 import { AddStockForm } from "@/components/stock/AddStockForm";
 import { showSuccess } from "@/utils/toast";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 const EditProductPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -16,10 +17,8 @@ const EditProductPage = () => {
     if (productIndex !== -1) {
       dummyProducts[productIndex] = updatedData;
       showSuccess("Ürün başarıyla güncellendi!");
-      navigate("/stock"); // Düzenleme sonrası stok listesine geri dön
+      navigate("/stock");
     } else {
-      // Bu senaryo normalde olmamalı, çünkü ürün ID'si ile geliyoruz.
-      // Ancak bir hata durumunda kullanıcıyı bilgilendirebiliriz.
       console.error("Ürün bulunamadı, güncelleme yapılamadı.");
       navigate("/stock");
     }
@@ -41,6 +40,7 @@ const EditProductPage = () => {
 
   return (
     <div className="space-y-6">
+      <SeoHead title={`Ürün Düzenle: ${product.productName}`} description={`"${product.productName}" ürün bilgilerini güncelleyin.`} />
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Ürün Düzenle: {product.productName}</h1>
         <Link to="/stock">

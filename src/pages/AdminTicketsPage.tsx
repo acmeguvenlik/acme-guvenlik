@@ -14,19 +14,17 @@ import { dummyTickets, Ticket } from "@/data/dummyTickets";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Button } from "@/components/ui/button"; // Button bileşeni import edildi
+import { Button } from "@/components/ui/button";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 const AdminTicketsPage = () => {
-  // dummyTickets'ın güncel bir kopyasını kullanarak state'i başlat
   const [tickets, setTickets] = useState<Ticket[]>(() => [...dummyTickets]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState<string>("Tümü");
 
-  // dummyTickets'ta dışarıdan bir değişiklik olduğunda state'i güncellemek için
-  // (gerçek bir uygulamada bu bir API çağrısı veya global state yönetimi ile yapılırdı)
   useEffect(() => {
     setTickets([...dummyTickets]);
-  }, [dummyTickets]); // dummyTickets referansı değişirse (örneğin yeni bir dizi atanırsa) tetiklenir
+  }, [dummyTickets]);
 
   const filteredTickets = tickets.filter(ticket =>
     (ticket.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -42,6 +40,7 @@ const AdminTicketsPage = () => {
 
   return (
     <div className="space-y-6">
+      <SeoHead title="Destek Talepleri Yönetimi" description="Tüm destek taleplerini görüntüleyin ve yönetin." />
       <h1 className="text-3xl font-bold">Destek Talepleri Yönetimi</h1>
       <p className="text-gray-600">Tüm destek taleplerini buradan yönetebilirsiniz.</p>
 

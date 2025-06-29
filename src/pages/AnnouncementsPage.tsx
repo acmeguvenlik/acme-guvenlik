@@ -16,6 +16,7 @@ import { AddAnnouncementForm } from "@/components/announcements/AddAnnouncementF
 import { dummyAnnouncements, Announcement } from "@/data/dummyAnnouncements";
 import { showSuccess } from "@/utils/toast";
 import { format } from "date-fns";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 const AnnouncementsPage = () => {
   const [announcements, setAnnouncements] = useState<Announcement[]>(dummyAnnouncements);
@@ -59,6 +60,7 @@ const AnnouncementsPage = () => {
 
   return (
     <div className="space-y-6">
+      <SeoHead title="Duyurular" description="Sistemdeki duyuruları yönetin ve yeni duyurular ekleyin." />
       <h1 className="text-3xl font-bold">Duyurular Yönetimi</h1>
       <p className="text-gray-600">Sistemdeki duyuruları buradan yönetebilirsiniz.</p>
 

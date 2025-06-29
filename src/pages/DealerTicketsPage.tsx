@@ -17,16 +17,15 @@ import { dummyTickets, Ticket } from "@/data/dummyTickets";
 import { useAuth } from "@/context/AuthContext";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 const DealerTicketsPage = () => {
-  const { userRole } = useAuth(); // Kullanıcı rolünü al
+  const { userRole } = useAuth();
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [isAddTicketDialogOpen, setIsAddTicketDialogOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Gerçek uygulamada, bu kısım giriş yapan bayinin ID'sine göre filtrelenmelidir.
-  // Şimdilik dummyTickets'taki 'ABC Ticaret' (D001) bayisinin taleplerini gösteriyoruz.
-  const currentDealerId = "D001"; // Örnek olarak sabit bir bayi ID'si
+  const currentDealerId = "D001";
 
   useEffect(() => {
     const filteredForDealer = dummyTickets.filter(ticket => ticket.dealerId === currentDealerId);
@@ -50,6 +49,7 @@ const DealerTicketsPage = () => {
 
   return (
     <div className="space-y-6">
+      <SeoHead title="Destek Taleplerim" description="Oluşturduğunuz destek taleplerini takip edin." />
       <h1 className="text-3xl font-bold">Destek Taleplerim</h1>
       <p className="text-gray-600">Oluşturduğunuz destek taleplerini buradan takip edebilirsiniz.</p>
 

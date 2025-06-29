@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/context/AuthContext";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 const formSchema = z.object({
   username: z.string().min(1, {
@@ -40,6 +41,7 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+      <SeoHead title="Giriş Yap" description="Acme Güvenlik Yönetim Paneli'ne giriş yapın." />
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl">Giriş Yap</CardTitle>

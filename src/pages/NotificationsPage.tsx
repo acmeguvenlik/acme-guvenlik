@@ -17,6 +17,7 @@ import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { showSuccess } from "@/utils/toast";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 const NotificationsPage = () => {
   const { userRole } = useAuth();
@@ -26,7 +27,6 @@ const NotificationsPage = () => {
   const [filterType, setFilterType] = useState<string>("Tümü");
 
   useEffect(() => {
-    // Kullanıcı rolüne göre bildirimleri filtrele
     const filteredForRole = dummyNotifications.filter(notif =>
       notif.targetRole === 'all' || notif.targetRole === userRole
     );
@@ -37,7 +37,6 @@ const NotificationsPage = () => {
     setNotifications((prev) =>
       prev.map((notif) => (notif.id === id ? { ...notif, read: true } : notif))
     );
-    // Dummy veriyi de güncelle
     const dummyIndex = dummyNotifications.findIndex(n => n.id === id);
     if (dummyIndex !== -1) {
       dummyNotifications[dummyIndex].read = true;
@@ -54,7 +53,6 @@ const NotificationsPage = () => {
   const handleDeleteNotification = (id: string) => {
     if (window.confirm("Bu bildirimi silmek istediğinizden emin misiniz?")) {
       setNotifications((prev) => prev.filter((notif) => notif.id !== id));
-      // Dummy veriden de sil
       const dummyIndex = dummyNotifications.findIndex(n => n.id === id);
       if (dummyIndex !== -1) {
         dummyNotifications.splice(dummyIndex, 1);
@@ -66,7 +64,6 @@ const NotificationsPage = () => {
   const handleDeleteAllReadNotifications = () => {
     if (window.confirm("Okunmuş tüm bildirimleri silmek istediğinizden emin misiniz?")) {
       setNotifications((prev) => prev.filter((notif) => !notif.read));
-      // Dummy veriden de sil
       for (let i = dummyNotifications.length - 1; i >= 0; i--) {
         if (dummyNotifications[i].read) {
           dummyNotifications.splice(i, 1);
@@ -115,6 +112,7 @@ const NotificationsPage = () => {
 
   return (
     <div className="space-y-6">
+      <SeoHead title="Bildirimler" description="Tüm bildirimlerinizi yönetin ve görüntüleyin." />
       <h1 className="text-3xl font-bold">Bildirimler</h1>
       <p className="text-gray-600 dark:text-gray-400">Tüm bildirimlerinizi buradan yönetebilirsiniz.</p>
 

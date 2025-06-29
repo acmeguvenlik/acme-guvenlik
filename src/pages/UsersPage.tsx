@@ -14,6 +14,7 @@ import { PlusCircle, Edit, Trash2, Users } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AddUserForm, UserFormData } from "@/components/users/AddUserForm";
 import { showSuccess } from "@/utils/toast";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 // Örnek kullanıcı verileri
 const initialDummyUsers: UserFormData[] = [
@@ -65,6 +66,7 @@ const UsersPage = () => {
 
   return (
     <div className="space-y-6">
+      <SeoHead title="Kullanıcı Yönetimi" description="Sisteme kayıtlı kullanıcıları yönetin ve yeni kullanıcılar ekleyin." />
       <h1 className="text-3xl font-bold">Kullanıcı Yönetimi</h1>
       <p className="text-gray-600">Sisteme kayıtlı kullanıcıları buradan yönetebilirsiniz.</p>
 

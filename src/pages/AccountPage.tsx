@@ -2,15 +2,14 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { AccountSettingsForm } from "@/components/account/AccountSettingsForm";
 import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect } from "react";
-import { ThemeToggle } from "@/components/theme/ThemeToggle"; // ThemeToggle import edildi
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
+import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
 
 const AccountPage = () => {
   const { userRole } = useAuth();
   const [userEmail, setUserEmail] = useState<string>("");
 
   useEffect(() => {
-    // Gerçek uygulamada bu kısım API'den kullanıcının e-postasını çeker.
-    // Şimdilik dummy bir e-posta kullanıyoruz.
     if (userRole === 'admin') {
       setUserEmail("admin@acme.com");
     } else if (userRole === 'dealer') {
@@ -21,16 +20,16 @@ const AccountPage = () => {
   }, [userRole]);
 
   const handleSaveAccountSettings = (email: string, newPassword?: string) => {
-    // Burada e-posta ve/veya şifre güncelleme işlemleri backend'e gönderilir.
     console.log("Kullanıcı e-postası güncellendi:", email);
     if (newPassword) {
       console.log("Kullanıcı şifresi güncellendi.");
     }
-    setUserEmail(email); // UI'da e-postayı güncelle
+    setUserEmail(email);
   };
 
   return (
     <div className="space-y-6">
+      <SeoHead title="Hesap Ayarları" description="Kişisel hesap bilgilerinizi ve şifrenizi yönetin." />
       <h1 className="text-3xl font-bold">Hesap Ayarları</h1>
       <p className="text-gray-600 dark:text-gray-400">Kişisel hesap bilgilerinizi ve şifrenizi buradan yönetin.</p>
 
