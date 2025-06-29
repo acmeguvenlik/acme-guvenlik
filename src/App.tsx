@@ -34,7 +34,9 @@ import BlogPostDetailPage from "./pages/BlogPostDetailPage";
 import EditBlogPostPage from "./pages/EditBlogPostPage";
 import AddBlogPostPage from "./pages/AddBlogPostPage";
 import { ThemeProvider } from "./components/theme/ThemeProvider";
-import { HelmetProvider } from 'react-helmet-async'; // HelmetProvider import edildi
+import { HelmetProvider } from 'react-helmet-async';
+import AdminPagesPage from "./pages/AdminPagesPage"; // Yeni import
+import DynamicPageDisplayPage from "./pages/DynamicPageDisplayPage"; // Yeni import
 
 const queryClient = new QueryClient();
 
@@ -277,6 +279,28 @@ const AppContent = () => {
         } 
       />
 
+      {/* Dinamik Sayfa Rotaları */}
+      <Route
+        path="/admin-pages"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <MainLayout>
+              <AdminPagesPage />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/pages/:slug"
+        element={
+          <ProtectedRoute allowedRoles={['admin', 'dealer']}> {/* Tüm kullanıcılar veya belirli roller */}
+            <MainLayout>
+              <DynamicPageDisplayPage />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+
       {/* Bayi Paneli Rotası */}
       <Route 
         path="/dealer-dashboard" 
@@ -353,7 +377,7 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-            <HelmetProvider> {/* HelmetProvider buraya eklendi */}
+            <HelmetProvider>
               <AppContent />
             </HelmetProvider>
           </ThemeProvider>

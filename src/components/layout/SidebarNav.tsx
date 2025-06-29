@@ -1,8 +1,8 @@
-import React from "react"; // React import edildi
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { LayoutDashboard, Users, Package, ReceiptText, ShoppingCart, User, Settings, UserCog, BarChart, Megaphone, TicketIcon, Bell, Rss } from "lucide-react";
+import { LayoutDashboard, Users, Package, ReceiptText, ShoppingCart, User, Settings, UserCog, BarChart, Megaphone, TicketIcon, Bell, Rss, FileText } from "lucide-react"; // FileText iconu eklendi
 import { useAuth } from "@/context/AuthContext";
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
@@ -70,6 +70,11 @@ export function SidebarNav({ className, ...props }: SidebarNavProps) {
       icon: Rss,
     },
     {
+      title: "Sayfalar", // Yeni dinamik sayfa yönetimi linki
+      href: "/admin-pages",
+      icon: FileText,
+    },
+    {
       title: "Ayarlar",
       href: "/settings",
       icon: Settings,
@@ -116,6 +121,11 @@ export function SidebarNav({ className, ...props }: SidebarNavProps) {
       title: "Blog",
       href: "/blog",
       icon: Rss,
+    },
+    {
+      title: "Sayfalar", // Bayi panelinde dinamik sayfaları görüntüleme linki
+      href: "/pages/hakkimizda", // Örnek olarak Hakkımızda sayfasına yönlendir
+      icon: FileText,
     },
     {
       title: "Profilim",
