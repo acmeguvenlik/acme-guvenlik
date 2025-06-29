@@ -2,8 +2,9 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { LayoutDashboard, Users, Package, ReceiptText, ShoppingCart, User, Settings, UserCog, BarChart, Megaphone, TicketIcon, Bell, Rss, FileText } from "lucide-react"; // FileText iconu eklendi
+import { LayoutDashboard, Users, Package, ReceiptText, ShoppingCart, User, Settings, UserCog, BarChart, Megaphone, TicketIcon, Bell, Rss, FileText } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
+import { useTranslation } from "react-i18next"; // useTranslation hook'u eklendi
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
   className?: string;
@@ -12,75 +13,76 @@ interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
 export function SidebarNav({ className, ...props }: SidebarNavProps) {
   const location = useLocation();
   const { userRole } = useAuth();
+  const { t } = useTranslation(); // useTranslation hook'unu kullan
 
   const adminNavItems = [
     {
-      title: "Dashboard",
+      title: t("sidebar.dashboard"),
       href: "/dashboard",
       icon: LayoutDashboard,
     },
     {
-      title: "Bayiler",
+      title: t("sidebar.dealers"),
       href: "/dealers",
       icon: Users,
     },
     {
-      title: "Stok",
+      title: t("sidebar.stock"),
       href: "/stock",
       icon: Package,
     },
     {
-      title: "Faturalar",
+      title: t("sidebar.invoices"),
       href: "/invoices",
       icon: ReceiptText,
     },
     {
-      title: "Siparişler",
+      title: t("sidebar.orders"),
       href: "/orders",
       icon: ShoppingCart,
     },
     {
-      title: "Kullanıcılar",
+      title: t("sidebar.users"),
       href: "/users",
       icon: UserCog,
     },
     {
-      title: "Raporlar",
+      title: t("sidebar.reports"),
       href: "/reports",
       icon: BarChart,
     },
     {
-      title: "Duyurular",
+      title: t("sidebar.announcements"),
       href: "/announcements",
       icon: Megaphone,
     },
     {
-      title: "Destek Talepleri",
+      title: t("sidebar.supportTickets"),
       href: "/admin-tickets",
       icon: TicketIcon,
     },
     {
-      title: "Bildirimler",
+      title: t("sidebar.notifications"),
       href: "/notifications",
       icon: Bell,
     },
     {
-      title: "Blog",
+      title: t("sidebar.blog"),
       href: "/blog",
       icon: Rss,
     },
     {
-      title: "Sayfalar", // Yeni dinamik sayfa yönetimi linki
+      title: t("sidebar.pages"),
       href: "/admin-pages",
       icon: FileText,
     },
     {
-      title: "Ayarlar",
+      title: t("sidebar.settings"),
       href: "/settings",
       icon: Settings,
     },
     {
-      title: "Hesabım",
+      title: t("sidebar.myAccount"),
       href: "/account",
       icon: User,
     },
@@ -88,52 +90,52 @@ export function SidebarNav({ className, ...props }: SidebarNavProps) {
 
   const dealerNavItems = [
     {
-      title: "Bayi Paneli",
+      title: t("sidebar.dealerPanel"),
       href: "/dealer-dashboard",
       icon: LayoutDashboard,
     },
     {
-      title: "Siparişlerim",
+      title: t("sidebar.myOrders"),
       href: "/dealer-orders",
       icon: ShoppingCart,
     },
     {
-      title: "Ürün Kataloğu",
+      title: t("sidebar.productCatalog"),
       href: "/dealer-stock",
       icon: Package,
     },
     {
-      title: "Faturalarım",
+      title: t("sidebar.myInvoices"),
       href: "/dealer-invoices",
       icon: ReceiptText,
     },
     {
-      title: "Destek Taleplerim",
+      title: t("sidebar.mySupportTickets"),
       href: "/dealer-tickets",
       icon: TicketIcon,
     },
     {
-      title: "Bildirimler",
+      title: t("sidebar.notifications"),
       href: "/notifications",
       icon: Bell,
     },
     {
-      title: "Blog",
+      title: t("sidebar.blog"),
       href: "/blog",
       icon: Rss,
     },
     {
-      title: "Sayfalar", // Bayi panelinde dinamik sayfaları görüntüleme linki
-      href: "/pages/hakkimizda", // Örnek olarak Hakkımızda sayfasına yönlendir
+      title: t("sidebar.pages"),
+      href: "/pages/hakkimizda",
       icon: FileText,
     },
     {
-      title: "Profilim",
+      title: t("sidebar.myProfile"),
       href: "/dealer-profile",
       icon: User,
     },
     {
-      title: "Hesabım",
+      title: t("sidebar.myAccount"),
       href: "/account",
       icon: User,
     },

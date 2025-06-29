@@ -1,0 +1,57 @@
+{
+  "common": {
+    "appTitle": "Acme Güvenlik Yönetim Paneli",
+    "welcomeMessageAdmin": "B2B sistemine hoş geldiniz. Buradan bayilerinizi, stoklarınızı ve finansal işlemlerinizi yönetebilirsiniz.",
+    "welcomeMessageDealer": "Bayi sistemine hoş geldiniz. Buradan siparişlerinizi ve stok durumunuzu takip edebilirsiniz.",
+    "logout": "Çıkış Yap",
+    "changeTheme": "Temayı Değiştir",
+    "light": "Açık",
+    "dark": "Koyu",
+    "system": "Sistem",
+    "notifications": "Bildirimler",
+    "unreadNotifications": "okunmamış",
+    "clearAll": "Tümünü Temizle",
+    "noNotifications": "Henüz bildirim yok.",
+    "viewAllNotifications": "Tüm Bildirimleri Gör",
+    "loading": "Yükleniyor..."
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "dealers": "Bayiler",
+    "stock": "Stok",
+    "invoices": "Faturalar",
+    "orders": "Siparişler",
+    "users": "Kullanıcılar",
+    "reports": "Raporlar",
+    "announcements": "Duyurular",
+    "supportTickets": "Destek Talepleri",
+    "notifications": "Bildirimler",
+    "blog": "Blog",
+    "pages": "Sayfalar",
+    "settings": "Ayarlar",
+    "myAccount": "Hesabım",
+    "dealerPanel": "Bayi Paneli",
+    "myOrders": "Siparişlerim",
+    "productCatalog": "Ürün Kataloğu",
+    "myInvoices": "Faturalarım",
+    "mySupportTickets": "Destek Taleplerim",
+    "myProfile": "Profilim"
+  },
+  "dashboard": {
+    "totalDealers": "Toplam Bayi",
+    "totalStockValue": "Toplam Stok Değeri",
+    "pendingInvoices": "Bekleyen Faturalar",
+    "totalUsers": "Toplam Kullanıcı",
+    "recentAnnouncements": "Son Duyurular",
+    "recentSupportTickets": "Son Destek Talepleri",
+    "recentBlogPosts": "Son Blog Yazıları",
+    "reportSummaries": "Rapor Özetleri",
+    "monthlySalesRevenueChart": "Aylık Satış ve Gelir Grafiği"
+  },
+  "dealerDashboard": {
+    "pendingOrders": "Bekleyen Siparişler",
+    "productsInStock": "Stoktaki Ürünler",
+    "pendingInvoices": "Bekleyen Faturalar",
+    "profileInformation": "Profil Bilgileri"
+  }
+}

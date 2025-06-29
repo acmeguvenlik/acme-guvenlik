@@ -1,0 +1,57 @@
+{
+  "common": {
+    "appTitle": "Acme Security Management Panel",
+    "welcomeMessageAdmin": "Welcome to the B2B system. From here you can manage your dealers, stock, and financial transactions.",
+    "welcomeMessageDealer": "Welcome to the Dealer system. From here you can track your orders and stock status.",
+    "logout": "Logout",
+    "changeTheme": "Change Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "notifications": "Notifications",
+    "unreadNotifications": "unread",
+    "clearAll": "Clear All",
+    "noNotifications": "No notifications yet.",
+    "viewAllNotifications": "View All Notifications",
+    "loading": "Loading..."
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "dealers": "Dealers",
+    "stock": "Stock",
+    "invoices": "Invoices",
+    "orders": "Orders",
+    "users": "Users",
+    "reports": "Reports",
+    "announcements": "Announcements",
+    "supportTickets": "Support Tickets",
+    "notifications": "Notifications",
+    "blog": "Blog",
+    "pages": "Pages",
+    "settings": "Settings",
+    "myAccount": "My Account",
+    "dealerPanel": "Dealer Panel",
+    "myOrders": "My Orders",
+    "productCatalog": "Product Catalog",
+    "myInvoices": "My Invoices",
+    "mySupportTickets": "My Support Tickets",
+    "myProfile": "My Profile"
+  },
+  "dashboard": {
+    "totalDealers": "Total Dealers",
+    "totalStockValue": "Total Stock Value",
+    "pendingInvoices": "Pending Invoices",
+    "totalUsers": "Total Users",
+    "recentAnnouncements": "Recent Announcements",
+    "recentSupportTickets": "Recent Support Tickets",
+    "recentBlogPosts": "Recent Blog Posts",
+    "reportSummaries": "Report Summaries",
+    "monthlySalesRevenueChart": "Monthly Sales and Revenue Chart"
+  },
+  "dealerDashboard": {
+    "pendingOrders": "Pending Orders",
+    "productsInStock": "Products in Stock",
+    "pendingInvoices": "Pending Invoices",
+    "profileInformation": "Profile Information"
+  }
+}

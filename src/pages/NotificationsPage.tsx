@@ -17,7 +17,8 @@ import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { showSuccess } from "@/utils/toast";
-import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
+import { SeoHead } from "@/components/seo/SeoHead";
+import { useTranslation } from "react-i18next"; // useTranslation hook'u eklendi
 
 const NotificationsPage = () => {
   const { userRole } = useAuth();
@@ -25,6 +26,7 @@ const NotificationsPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterReadStatus, setFilterReadStatus] = useState<string>("Tümü");
   const [filterType, setFilterType] = useState<string>("Tümü");
+  const { t } = useTranslation(); // useTranslation hook'unu kullan
 
   useEffect(() => {
     const filteredForRole = dummyNotifications.filter(notif =>
@@ -112,53 +114,53 @@ const NotificationsPage = () => {
 
   return (
     <div className="space-y-6">
-      <SeoHead title="Bildirimler" description="Tüm bildirimlerinizi yönetin ve görüntüleyin." />
-      <h1 className="text-3xl font-bold">Bildirimler</h1>
-      <p className="text-gray-600 dark:text-gray-400">Tüm bildirimlerinizi buradan yönetebilirsiniz.</p>
+      <SeoHead title={t("sidebar.notifications")} description={t("common.notifications")} />
+      <h1 className="text-3xl font-bold">{t("common.notifications")}</h1>
+      <p className="text-gray-600 dark:text-gray-400">{t("common.notifications")}</p>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Toplam Bildirim</CardTitle>
+            <CardTitle className="text-sm font-medium">{{{t("common.notifications")}}} ({{totalCount}})</CardTitle>
             <Bell className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalCount}</div>
+            <div className="text-2xl font-bold">{{totalCount}}</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Okunmamış Bildirim</CardTitle>
+            <CardTitle className="text-sm font-medium">{{t("common.notifications")}} ({{unreadCount}})</CardTitle>
             <Mail className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{unreadCount}</div>
+            <div className="text-2xl font-bold">{{unreadCount}}</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Okunmuş Bildirim</CardTitle>
+            <CardTitle className="text-sm font-medium">{{t("common.notifications")}} ({{totalCount - unreadCount}})</CardTitle>
             <MailOpen className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalCount - unreadCount}</div>
+            <div className="text-2xl font-bold">{{totalCount - unreadCount}}</div>
           </CardContent>
         </Card>
       </div>
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Bildirim Listesi</CardTitle>
+          <CardTitle>{t("common.notifications")}</CardTitle>
           <div className="flex items-center space-x-2">
             <Input
-              placeholder="Bildirim ara..."
+              placeholder={t("common.notifications")}
               className="max-w-sm"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             <Select onValueChange={setFilterReadStatus} defaultValue="Tümü">
               <SelectTrigger className="w-[150px]">
-                <SelectValue placeholder="Durum" />
+                <SelectValue placeholder={t("common.notifications")} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="Tümü">Tümü</SelectItem>
@@ -168,7 +170,7 @@ const NotificationsPage = () => {
             </Select>
             <Select onValueChange={setFilterType} defaultValue="Tümü">
               <SelectTrigger className="w-[150px]">
-                <SelectValue placeholder="Tip" />
+                <SelectValue placeholder={t("common.notifications")} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="Tümü">Tümü</SelectItem>

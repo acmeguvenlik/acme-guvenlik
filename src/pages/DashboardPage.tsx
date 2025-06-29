@@ -9,7 +9,8 @@ import { useAuth } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { Skeleton } from "@/components/ui/skeleton";
-import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
+import { SeoHead } from "@/components/seo/SeoHead";
+import { useTranslation } from "react-i18next"; // useTranslation hook'u eklendi
 
 // Dummy kullanıcı sayısı (gerçek uygulamada API'den gelir)
 const dummyTotalUsers = 3; 
@@ -25,6 +26,7 @@ const DashboardPage = () => {
   const [recentTickets, setRecentTickets] = useState<Ticket[]>([]);
   const [recentBlogPosts, setRecentBlogPosts] = useState<BlogPost[]>([]);
   const [isLoading, setIsLoading] = useState(true); // Yükleme durumu
+  const { t } = useTranslation(); // useTranslation hook'unu kullan
 
   useEffect(() => {
     setIsLoading(true);
@@ -58,9 +60,9 @@ const DashboardPage = () => {
 
   return (
     <div className="space-y-6">
-      <SeoHead title="Yönetim Paneli" description="Acme Güvenlik Yönetim Paneli ana sayfası. Bayi, stok, fatura ve sipariş özetlerini görüntüleyin." />
-      <h1 className="text-3xl font-bold">Yönetim Paneli - Acme Güvenlik</h1>
-      <p className="text-gray-600">B2B sistemine hoş geldiniz. Buradan bayilerinizi, stoklarınızı ve finansal işlemlerinizi yönetebilirsiniz.</p>
+      <SeoHead title={t("sidebar.dashboard")} description={t("common.welcomeMessageAdmin")} />
+      <h1 className="text-3xl font-bold">{t("common.appTitle")}</h1>
+      <p className="text-gray-600">{t("common.welcomeMessageAdmin")}</p>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {isLoading ? (
@@ -81,46 +83,46 @@ const DashboardPage = () => {
           <>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Toplam Bayi</CardTitle>
+                <CardTitle className="text-sm font-medium">{t("dashboard.totalDealers")}</CardTitle>
                 <Users className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">2,350</div>
                 <p className="text-xs text-muted-foreground">+20.1% geçen aydan</p>
-                <Link to="/dealers" className="text-sm text-blue-600 hover:underline mt-2 block">Bayileri Yönet</Link>
+                <Link to="/dealers" className="text-sm text-blue-600 hover:underline mt-2 block">{t("sidebar.dealers")}</Link>
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Toplam Stok Değeri</CardTitle>
+                <CardTitle className="text-sm font-medium">{t("dashboard.totalStockValue")}</CardTitle>
                 <Package className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">₺45,231.89</div>
                 <p className="text-xs text-muted-foreground">+180.1% geçen aydan</p>
-                <Link to="/stock" className="text-sm text-blue-600 hover:underline mt-2 block">Stokları Yönet</Link>
+                <Link to="/stock" className="text-sm text-blue-600 hover:underline mt-2 block">{t("sidebar.stock")}</Link>
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Bekleyen Faturalar</CardTitle>
+                <CardTitle className="text-sm font-medium">{t("dashboard.pendingInvoices")}</CardTitle>
                 <ReceiptText className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">12</div>
                 <p className="text-xs text-muted-foreground">-5% geçen aydan</p>
-                <Link to="/invoices" className="text-sm text-blue-600 hover:underline mt-2 block">Faturaları Yönet</Link>
+                <Link to="/invoices" className="text-sm text-blue-600 hover:underline mt-2 block">{t("sidebar.invoices")}</Link>
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Toplam Kullanıcı</CardTitle>
+                <CardTitle className="text-sm font-medium">{t("dashboard.totalUsers")}</CardTitle>
                 <UserCog className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{dummyTotalUsers}</div>
                 <p className="text-xs text-muted-foreground">Sistemdeki kayıtlı kullanıcı sayısı</p>
-                <Link to="/users" className="text-sm text-blue-600 hover:underline mt-2 block">Kullanıcıları Yönet</Link>
+                <Link to="/users" className="text-sm text-blue-600 hover:underline mt-2 block">{t("sidebar.users")}</Link>
               </CardContent>
             </Card>
           </>
@@ -130,7 +132,7 @@ const DashboardPage = () => {
       {/* Duyurular Kartı */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-xl font-semibold">Son Duyurular</CardTitle>
+          <CardTitle className="text-xl font-semibold">{t("dashboard.recentAnnouncements")}</CardTitle>
           <Megaphone className="h-5 w-5 text-muted-foreground" />
         </CardHeader>
         <CardContent>
@@ -159,7 +161,7 @@ const DashboardPage = () => {
             <p className="text-muted-foreground">Henüz duyuru bulunmamaktadır.</p>
           )}
           <div className="mt-4 text-right">
-            <Link to="/announcements" className="text-sm text-blue-600 hover:underline">Tüm Duyuruları Gör</Link>
+            <Link to="/announcements" className="text-sm text-blue-600 hover:underline">{t("sidebar.announcements")}</Link>
           </div>
         </CardContent>
       </Card>
@@ -167,7 +169,7 @@ const DashboardPage = () => {
       {/* Son Destek Talepleri Kartı */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-xl font-semibold">Son Destek Talepleri</CardTitle>
+          <CardTitle className="text-xl font-semibold">{t("dashboard.recentSupportTickets")}</CardTitle>
           <TicketIcon className="h-5 w-5 text-muted-foreground" />
         </CardHeader>
         <CardContent>
@@ -200,7 +202,7 @@ const DashboardPage = () => {
             <p className="text-muted-foreground">Henüz açık veya yanıtlanmış destek talebi bulunmamaktadır.</p>
           )}
           <div className="mt-4 text-right">
-            <Link to="/admin-tickets" className="text-sm text-blue-600 hover:underline">Tüm Talepleri Yönet</Link>
+            <Link to="/admin-tickets" className="text-sm text-blue-600 hover:underline">{t("sidebar.supportTickets")}</Link>
           </div>
         </CardContent>
       </Card>
@@ -208,7 +210,7 @@ const DashboardPage = () => {
       {/* Son Blog Yazıları Kartı */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-xl font-semibold">Son Blog Yazıları</CardTitle>
+          <CardTitle className="text-xl font-semibold">{t("dashboard.recentBlogPosts")}</CardTitle>
           <Rss className="h-5 w-5 text-muted-foreground" />
         </CardHeader>
         <CardContent>
@@ -243,13 +245,13 @@ const DashboardPage = () => {
             <p className="text-muted-foreground">Henüz blog yazısı bulunmamaktadır.</p>
           )}
           <div className="mt-4 text-right">
-            <Link to="/blog" className="text-sm text-blue-600 hover:underline">Tüm Blog Yazılarını Gör</Link>
+            <Link to="/blog" className="text-sm text-blue-600 hover:underline">{t("sidebar.blog")}</Link>
           </div>
         </CardContent>
       </Card>
 
       {/* Rapor Özet Kartları */}
-      <h2 className="text-2xl font-bold mt-8 mb-4">Rapor Özetleri</h2>
+      <h2 className="text-2xl font-bold mt-8 mb-4">{t("dashboard.reportSummaries")}</h2>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {isLoading ? (
           Array.from({ length: 3 }).map((_, i) => (
@@ -301,7 +303,7 @@ const DashboardPage = () => {
       </div>
 
       {/* Satış Grafiği */}
-      <h2 className="text-2xl font-bold mt-8 mb-4">Aylık Satış ve Gelir Grafiği</h2>
+      <h2 className="text-2xl font-bold mt-8 mb-4">{t("dashboard.monthlySalesRevenueChart")}</h2>
       {isLoading ? (
         <Card>
           <CardHeader>

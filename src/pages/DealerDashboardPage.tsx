@@ -8,7 +8,8 @@ import { useAuth } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { Skeleton } from "@/components/ui/skeleton";
-import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
+import { SeoHead } from "@/components/seo/SeoHead";
+import { useTranslation } from "react-i18next"; // useTranslation hook'u eklendi
 
 const DealerDashboardPage = () => {
   const { userRole } = useAuth();
@@ -16,6 +17,7 @@ const DealerDashboardPage = () => {
   const [recentTickets, setRecentTickets] = useState<Ticket[]>([]);
   const [recentBlogPosts, setRecentBlogPosts] = useState<BlogPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { t } = useTranslation(); // useTranslation hook'unu kullan
 
   const currentDealerId = "D001";
 
@@ -47,9 +49,9 @@ const DealerDashboardPage = () => {
 
   return (
     <div className="space-y-6">
-      <SeoHead title="Bayi Paneli" description="Acme Güvenlik Bayi Paneli ana sayfası. Siparişlerinizi, stok durumunuzu ve faturalarınızı takip edin." />
-      <h1 className="text-3xl font-bold">Bayi Paneli - Acme Güvenlik</h1>
-      <p className="text-gray-600">Bayi sistemine hoş geldiniz. Buradan siparişlerinizi ve stok durumunuzu takip edebilirsiniz.</p>
+      <SeoHead title={t("sidebar.dealerPanel")} description={t("common.welcomeMessageDealer")} />
+      <h1 className="text-3xl font-bold">{t("sidebar.dealerPanel")} - Acme Güvenlik</h1>
+      <p className="text-gray-600">{t("common.welcomeMessageDealer")}</p>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {isLoading ? (
@@ -70,46 +72,46 @@ const DealerDashboardPage = () => {
           <>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Bekleyen Siparişler</CardTitle>
+                <CardTitle className="text-sm font-medium">{t("dealerDashboard.pendingOrders")}</CardTitle>
                 <ShoppingCart className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">5</div>
                 <p className="text-xs text-muted-foreground">Yeni siparişleriniz var</p>
-                <Link to="/dealer-orders" className="text-sm text-blue-600 hover:underline">Tüm siparişleri gör</Link>
+                <Link to="/dealer-orders" className="text-sm text-blue-600 hover:underline">{t("sidebar.myOrders")}</Link>
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Stoktaki Ürünler</CardTitle>
+                <CardTitle className="text-sm font-medium">{t("dealerDashboard.productsInStock")}</CardTitle>
                 <Package className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">150</div>
                 <p className="text-xs text-muted-foreground">Toplam farklı ürün çeşidi</p>
-                <Link to="/dealer-stock" className="text-sm text-blue-600 hover:underline">Ürün kataloğunu gör</Link>
+                <Link to="/dealer-stock" className="text-sm text-blue-600 hover:underline">{t("sidebar.productCatalog")}</Link>
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Bekleyen Faturalar</CardTitle>
+                <CardTitle className="text-sm font-medium">{t("dealerDashboard.pendingInvoices")}</CardTitle>
                 <ReceiptText className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">2</div>
                 <p className="text-xs text-muted-foreground">Ödenmemiş faturalarınız var</p>
-                <Link to="/dealer-invoices" className="text-sm text-blue-600 hover:underline">Tüm faturaları gör</Link>
+                <Link to="/dealer-invoices" className="text-sm text-blue-600 hover:underline">{t("sidebar.myInvoices")}</Link>
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Profil Bilgileri</CardTitle>
+                <CardTitle className="text-sm font-medium">{t("dealerDashboard.profileInformation")}</CardTitle>
                 <User className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">Güncelle</div>
                 <p className="text-xs text-muted-foreground">Kişisel bilgilerinizi yönetin</p>
-                <Link to="/dealer-profile" className="text-sm text-blue-600 hover:underline">Profilimi düzenle</Link>
+                <Link to="/dealer-profile" className="text-sm text-blue-600 hover:underline">{t("sidebar.myProfile")}</Link>
               </CardContent>
             </Card>
           </>
@@ -119,7 +121,7 @@ const DealerDashboardPage = () => {
       {/* Duyurular Kartı */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-xl font-semibold">Son Duyurular</CardTitle>
+          <CardTitle className="text-xl font-semibold">{t("dashboard.recentAnnouncements")}</CardTitle>
           <Megaphone className="h-5 w-5 text-muted-foreground" />
         </CardHeader>
         <CardContent>
@@ -153,7 +155,7 @@ const DealerDashboardPage = () => {
       {/* Son Destek Talepleri Kartı */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-xl font-semibold">Son Destek Taleplerim</CardTitle>
+          <CardTitle className="text-xl font-semibold">{t("dashboard.recentSupportTickets")}</CardTitle>
           <TicketIcon className="h-5 w-5 text-muted-foreground" />
         </CardHeader>
         <CardContent>
@@ -186,7 +188,7 @@ const DealerDashboardPage = () => {
             <p className="text-muted-foreground">Henüz açık veya yanıtlanmış destek talebiniz bulunmamaktadır.</p>
           )}
           <div className="mt-4 text-right">
-            <Link to="/dealer-tickets" className="text-sm text-blue-600 hover:underline">Tüm Taleplerimi Gör</Link>
+            <Link to="/dealer-tickets" className="text-sm text-blue-600 hover:underline">{t("sidebar.mySupportTickets")}</Link>
           </div>
         </CardContent>
       </Card>
@@ -194,7 +196,7 @@ const DealerDashboardPage = () => {
       {/* Son Blog Yazıları Kartı */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-xl font-semibold">Son Blog Yazıları</CardTitle>
+          <CardTitle className="text-xl font-semibold">{t("dashboard.recentBlogPosts")}</CardTitle>
           <Rss className="h-5 w-5 text-muted-foreground" />
         </CardHeader>
         <CardContent>
@@ -229,7 +231,7 @@ const DealerDashboardPage = () => {
             <p className="text-muted-foreground">Henüz blog yazısı bulunmamaktadır.</p>
           )}
           <div className="mt-4 text-right">
-            <Link to="/blog" className="text-sm text-blue-600 hover:underline">Tüm Blog Yazılarını Gör</Link>
+            <Link to="/blog" className="text-sm text-blue-600 hover:underline">{t("sidebar.blog")}</Link>
           </div>
         </CardContent>
       </Card>

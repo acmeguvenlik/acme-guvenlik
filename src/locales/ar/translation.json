@@ -1,0 +1,57 @@
+{
+  "common": {
+    "appTitle": "لوحة إدارة أكمي للأمن",
+    "welcomeMessageAdmin": "مرحبًا بك في نظام B2B. من هنا يمكنك إدارة وكلائك ومخزونك ومعاملاتك المالية.",
+    "welcomeMessageDealer": "مرحبًا بك في نظام الوكلاء. من هنا يمكنك تتبع طلباتك وحالة المخزون.",
+    "logout": "تسجيل الخروج",
+    "changeTheme": "تغيير السمة",
+    "light": "فاتح",
+    "dark": "داكن",
+    "system": "النظام",
+    "notifications": "الإشعارات",
+    "unreadNotifications": "غير مقروء",
+    "clearAll": "مسح الكل",
+    "noNotifications": "لا توجد إشعارات بعد.",
+    "viewAllNotifications": "عرض جميع الإشعارات",
+    "loading": "جار التحميل..."
+  },
+  "sidebar": {
+    "dashboard": "لوحة القيادة",
+    "dealers": "الوكلاء",
+    "stock": "المخزون",
+    "invoices": "الفواتير",
+    "orders": "الطلبات",
+    "users": "المستخدمون",
+    "reports": "التقارير",
+    "announcements": "الإعلانات",
+    "supportTickets": "تذاكر الدعم",
+    "notifications": "الإشعارات",
+    "blog": "المدونة",
+    "pages": "الصفحات",
+    "settings": "الإعدادات",
+    "myAccount": "حسابي",
+    "dealerPanel": "لوحة الوكيل",
+    "myOrders": "طلباتي",
+    "productCatalog": "كتالوج المنتجات",
+    "myInvoices": "فواتيري",
+    "mySupportTickets": "تذاكر الدعم الخاصة بي",
+    "myProfile": "ملفي الشخصي"
+  },
+  "dashboard": {
+    "totalDealers": "إجمالي الوكلاء",
+    "totalStockValue": "إجمالي قيمة المخزون",
+    "pendingInvoices": "الفواتير المعلقة",
+    "totalUsers": "إجمالي المستخدمين",
+    "recentAnnouncements": "الإعلانات الأخيرة",
+    "recentSupportTickets": "تذاكر الدعم الأخيرة",
+    "recentBlogPosts": "أحدث منشورات المدونة",
+    "reportSummaries": "ملخصات التقارير",
+    "monthlySalesRevenueChart": "مخطط المبيعات والإيرادات الشهرية"
+  },
+  "dealerDashboard": {
+    "pendingOrders": "الطلبات المعلقة",
+    "productsInStock": "المنتجات في المخزون",
+    "pendingInvoices": "الفواتير المعلقة",
+    "profileInformation": "معلومات الملف الشخصي"
+  }
+}

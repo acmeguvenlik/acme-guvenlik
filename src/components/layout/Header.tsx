@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react";
+import { LogOut, Globe } from "lucide-react"; // Globe iconu eklendi
 import { useAuth } from "@/context/AuthContext";
 import { NotificationBell } from "@/components/notifications/NotificationBell";
 import { dummyNotifications, Notification } from "@/data/dummyNotifications";
-import { ThemeToggle } from "@/components/theme/ThemeToggle"; // ThemeToggle import edildi
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
+import { useTranslation } from "react-i18next"; // useTranslation hook'u eklendi
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   title?: string;
@@ -14,6 +21,7 @@ interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {
 export function Header({ title, className, ...props }: HeaderProps) {
   const { logout, isAuthenticated, userRole } = useAuth();
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const { t, i18n } = useTranslation(); // useTranslation hook'unu kullan
 
   useEffect(() => {
     // Kullanıcı rolüne göre bildirimleri filtrele
@@ -44,6 +52,10 @@ export function Header({ title, className, ...props }: HeaderProps) {
     }
   };
 
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
+
   return (
     <header
       className={cn(
@@ -52,18 +64,38 @@ export function Header({ title, className, ...props }: HeaderProps) {
       )}
       {...props}
     >
-      <h1 className="text-xl font-semibold">{title || "Acme Güvenlik Yönetim Paneli"}</h1>
+      <h1 className="text-xl font-semibold">{t('common.appTitle')}</h1>
       <div className="flex items-center space-x-4">
         {isAuthenticated && (
           <>
-            <ThemeToggle /> {/* ThemeToggle buraya eklendi */}
+            <ThemeToggle />
             <NotificationBell
               notifications={notifications}
               onMarkAsRead={handleMarkAsRead}
               onClearAll={handleClearAllNotifications}
             />
+            {/* Dil Seçici */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="h-8 w-8 px-0">
+                  <Globe className="h-5 w-5" />
+                  <span className="sr-only">{t('common.changeLanguage')}</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => changeLanguage('tr')}>
+                  Türkçe
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => changeLanguage('en')}>
+                  English
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => changeLanguage('ar')}>
+                  العربية
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <Button variant="ghost" size="sm" onClick={logout}>
-              <LogOut className="mr-2 h-4 w-4" /> Çıkış Yap
+              <LogOut className="mr-2 h-4 w-4" /> {t('common.logout')}
             </Button>
           </>
         )}
