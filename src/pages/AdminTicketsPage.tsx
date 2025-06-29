@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
@@ -26,12 +26,14 @@ const AdminTicketsPage = () => {
     setTickets([...dummyTickets]);
   }, [dummyTickets]);
 
-  const filteredTickets = tickets.filter(ticket =>
-    (ticket.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    ticket.dealerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    ticket.id.toLowerCase().includes(searchTerm.toLowerCase())) &&
-    (filterStatus === "Tümü" || ticket.status === filterStatus)
-  );
+  const filteredTickets = useMemo(() => {
+    return tickets.filter(ticket =>
+      (ticket.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ticket.dealerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ticket.id.toLowerCase().includes(searchTerm.toLowerCase())) &&
+      (filterStatus === "Tümü" || ticket.status === filterStatus)
+    );
+  }, [tickets, searchTerm, filterStatus]);
 
   const openTickets = filteredTickets.filter(ticket => ticket.status === "Açık").length;
   const resolvedTickets = filteredTickets.filter(ticket => ticket.status === "Çözüldü").length;
