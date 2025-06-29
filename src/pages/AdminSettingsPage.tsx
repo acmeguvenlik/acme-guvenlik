@@ -3,7 +3,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SiteSettingsForm } from "@/components/settings/SiteSettingsForm";
 import { RegistrationSettingsForm } from "@/components/settings/RegistrationSettingsForm";
 import { SeoSettingsForm } from "@/components/settings/SeoSettingsForm";
-import { SeoHead } from "@/components/seo/SeoHead"; // SeoHead import edildi
+import { SeoHead } from "@/components/seo/SeoHead";
+import { Button } from "@/components/ui/button"; // Button import edildi
+import { ExternalLink } from "lucide-react"; // ExternalLink iconu import edildi
 
 const AdminSettingsPage = () => {
   return (
@@ -52,8 +54,20 @@ const AdminSettingsPage = () => {
                 Arama motoru optimizasyonu için meta etiketlerini ve diğer ayarları düzenleyin.
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-2">
+            <CardContent className="space-y-4"> {/* space-y-4 eklendi */}
               <SeoSettingsForm />
+              <div className="border-t pt-4 mt-4">
+                <h3 className="text-lg font-semibold mb-2">Site Haritası</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Arama motorlarının sitenizi daha iyi taraması için site haritası dosyanızı görüntüleyin.
+                  Dinamik içerik güncellemeleri için bu dosyanın manuel olarak veya bir derleme betiği ile güncellenmesi gerekebilir.
+                </p>
+                <Button asChild variant="outline">
+                  <a href="/sitemap.xml" target="_blank" rel="noopener noreferrer">
+                    <ExternalLink className="mr-2 h-4 w-4" /> Site Haritasını Görüntüle
+                  </a>
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
